@@ -1,6 +1,7 @@
 package nl.tue.the30daychallenge;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +31,15 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        new AsyncTask<String, Boolean, String>() {
+
+            @Override
+            protected String doInBackground(String... params) {
+                new Connector();
+                return "";
+            }
+        }.execute();
 
         setContentView(R.layout.activity_main);
 
