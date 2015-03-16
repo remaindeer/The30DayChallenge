@@ -20,10 +20,13 @@ import java.util.List;
  *
  * Created by Daan and Kevin on 3/10/15.
  */
-public class Connector {
+public class RemoteConnector {
 
     // the endpoint of the back-end
-    private static String endpoint = "http://challenge.ovoweb.net/";
+    private static String endpoint = "https://challenge.ovoweb.net/";
+
+    // the device identifier
+    private static String deviceID = null;
 
     // sorting fields
     public static enum SortField {
@@ -62,7 +65,7 @@ public class Connector {
     /**
      * A sorter for back-end results.
      */
-    public static class Sort extends Filter {
+    public static class SortFilter extends Filter {
 
         // sort field
         public SortField sortBy = SortField.LIKES;
@@ -75,7 +78,7 @@ public class Connector {
          * @param sortBy the field to sort by
          * @param reverse whether or not to reverse the ordering
          */
-        public Sort(SortField sortBy, boolean reverse) {
+        public SortFilter(SortField sortBy, boolean reverse) {
             this.sortBy = sortBy;
             this.reverse = reverse;
         }
@@ -85,7 +88,7 @@ public class Connector {
          *
          * @param sortBy the field to sort by
          */
-        public Sort(SortField sortBy) {
+        public SortFilter(SortField sortBy) {
             this.sortBy = sortBy;
         }
 
@@ -123,9 +126,9 @@ public class Connector {
     }
 
     /**
-     * A search filter for the back-end
+     * A search filter for the back-end.
      */
-    public static class Search extends Filter {
+    public static class SearchFilter extends Filter {
 
         // the query to search for
         public String query = "";
@@ -135,7 +138,7 @@ public class Connector {
          *
          * @param query query to search on
          */
-        public Search(String query) {
+        public SearchFilter(String query) {
             this.query = query;
         }
 
@@ -149,7 +152,7 @@ public class Connector {
     /**
      * A pagination filter, to retrieve challenges given an offset and a length.
      */
-    public static class Pagination extends Filter {
+    public static class PaginationFilter extends Filter {
 
         // the page to start from
         public int page = 0;
@@ -161,7 +164,7 @@ public class Connector {
          *
          * @param page the page to start from
          */
-        public Pagination(int page) {
+        public PaginationFilter(int page) {
             this.page = page;
         }
 
@@ -171,7 +174,7 @@ public class Connector {
          * @param page the page to start from
          * @param itemsPerPage the number of items per page
          */
-        public Pagination(int page, int itemsPerPage) {
+        public PaginationFilter(int page, int itemsPerPage) {
             this.page = page;
             this.itemsPerPage = itemsPerPage;
         }
@@ -184,9 +187,33 @@ public class Connector {
     }
 
     /**
+     * Retrieve challenges from a particular category.
+     */
+    public static class CategoryFilter extends Filter {
+
+        // category identifier
+        private int categoryID = -1;
+
+        /**
+         * Filter challenges for a certain category identifier.
+         *
+         * @param categoryID category identifier
+         */
+        public CategoryFilter(int categoryID) {
+            this.categoryID = categoryID;
+        }
+
+        // retrieve the query string
+        public String getQueryString() {
+            return "categoryID=" + categoryID;
+        }
+
+    }
+
+    /**
      * Retrieve editors picks from the back-end.
      */
-    public static class EditorsPicks extends Filter {
+    public static class EditorsPicksFilter extends Filter {
 
         // whether or not to only use editors picks
         public boolean enabled = true;
@@ -212,6 +239,7 @@ public class Connector {
         Response result = new Response();
         try {
             URL url = new URL(endpoint + path);
+            Log.d("Connector", "New request [url=" + (endpoint + path) + "]");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(method);
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -232,37 +260,104 @@ public class Connector {
      * @param filters filters to use
      * @return a list of challenges
      */
-    public static List<Challenge> getChallenges(Filter... filters) {
+    public static List<RemoteChallenge> getChallenges(Filter... filters) {
         Gson gson = new Gson();
         Log.d("Connector", "getChallenges");
         String path = "challenge?";
         for (Filter filter: filters) {
             path += filter.getQueryString() + "&";
         }
-        Response response = Connector.sendRequest(path, "GET");
+        Response response = RemoteConnector.sendRequest(path, "GET");
         Log.d("Connector", "Response code: " + response.statusCode);
         Type type = new TypeToken<List<Category>>() {}.getType();
         List<Category> list = gson.fromJson(response.reader, type);
         Log.d("Connector", "Result: " + list);
-        Log.d("Connector", path);
         return null;
+    }
+
+    /**
+     * Add a challenge.
+     *
+     * @param categoryID the ID of the category for the challenge
+     * @param title the title of the challenge
+     * @param description the description of the challenge
+     */
+    public static RemoteChallenge addChallenge(int categoryID, String title, String description) {
+        Gson gson = new Gson();
+        Log.d("Connector", "addChallenge");
+        Response response = sendRequest("challenge/create?categoryID=" + categoryID + "&title=" + URLEncoder.encode(title) + "&description=" + URLEncoder.encode(description), "GET");
+        Type type = new TypeToken<RemoteChallenge>() {}.getType();
+        RemoteChallenge remoteChallenge = gson.fromJson(response.reader, type);
+        Log.d("Connector", "Result: " + remoteChallenge);
+        return remoteChallenge;
+    }
+
+    /**
+     * Download a challenge (aka create an attempt).
+     *
+     * @param challengeID the ID of the challenge to download
+     */
+    public static boolean downloadChallenge(int challengeID) {
+        Log.d("Connector", "downloadChallenge");
+        Response response = sendRequest("download?deviceID=" + getDeviceID() + "&challengeID=" + challengeID, "GET");
+        if (response.statusCode == 200) return true;
+        return false;
+    }
+
+    /**
+     * (Un)like a challenge.
+     *
+     * @param challengeID the ID of the challenge to (un)like
+     * @param hasLiked whether or not the challenge was liked (true for like, false for unlike)
+     */
+    public static boolean likeChallenge(int challengeID, boolean hasLiked) {
+        Log.d("Connector", "downloadChallenge");
+        String hasLikedString = "0";
+        if (hasLiked) hasLikedString = "1";
+        Response response = sendRequest("like?deviceID=" + getDeviceID() + "&challengeID=" + challengeID + "&hasLiked=" + hasLikedString, "GET");
+        if (response.statusCode == 200) return true;
+        return false;
+    }
+
+    /**
+     * Complete a challenge.
+     *
+     * @param challengeID the ID of the challenge that was completed
+     */
+    public static boolean completeChallenge(int challengeID) {
+        Log.d("Connector", "completeChallenge");
+        Response response = sendRequest("complete?deviceID=" + getDeviceID() + "&challengeID=" + challengeID, "GET");
+        if (response.statusCode == 200) return true;
+        return false;
+    }
+
+    public static String getDeviceID() {
+        return deviceID;
+    }
+
+    public static void setDeviceID(String deviceID) {
+        RemoteConnector.deviceID = deviceID;
+        Log.d("Connector", "setDeviceID [deviceID=" + deviceID + "]");
+    }
+
+    public static RemoteChallenge getChallenge(int challengeID) throws RemoteChallengeNotFoundException {
+        Gson gson = new Gson();
+        Response response = sendRequest("get-challenge?challengeID=" + challengeID, "GET");
+        if (response.statusCode != 200) throw new RemoteChallengeNotFoundException();
+        Type type = new TypeToken<RemoteChallenge>() {}.getType();
+        return gson.fromJson(response.reader, type);
     }
 
     /**
      * Construct the connector.
      */
-    public Connector() {
-        Log.d("Connector", "constructor");
-        Connector.getChallenges(new Search("just"), new Pagination(0, 1));
-    }
-
-    /**
-     * Just for testing.
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        new Connector();
+    public RemoteConnector(String deviceID) {
+        //Log.d("Connector", "constructor");
+        //Connector.getChallenges(new SearchFilter("just"));
+        //Connector.setDeviceID(deviceID);
+        //Connector.downloadChallenge(14);
+        //Connector.likeChallenge(14, true);
+        //Connector.completeChallenge(14);*/
     }
 
 }

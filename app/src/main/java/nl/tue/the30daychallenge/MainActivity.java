@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -30,13 +29,15 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final MainActivity me = this;
         super.onCreate(savedInstanceState);
 
         new AsyncTask<String, Boolean, String>() {
 
             @Override
             protected String doInBackground(String... params) {
-                new Connector();
+                //new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
+                new LocalConnector(me);
                 return "";
             }
         }.execute();
