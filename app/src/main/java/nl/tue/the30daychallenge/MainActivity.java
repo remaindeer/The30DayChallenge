@@ -51,6 +51,7 @@ public class MainActivity extends ActionBarActivity
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, pendingIntent);
 
+
                 //new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
                 try {
                     new LocalConnector(me);
