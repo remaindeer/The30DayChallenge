@@ -26,7 +26,7 @@ import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 public class RemoteConnector {
 
     // the endpoint of the back-end
-    private static String endpoint = "https://challenge.ovoweb.net/";
+    private static String endpoint = "http://challenge.ovoweb.net/";
 
     // the device identifier
     private static String deviceID = null;
@@ -275,10 +275,10 @@ public class RemoteConnector {
         }
         Response response = RemoteConnector.sendRequest(path, "GET");
         Log.d("Connector", "Response code: " + response.statusCode);
-        Type type = new TypeToken<List<Category>>() {}.getType();
-        List<Category> list = gson.fromJson(response.reader, type);
+        Type type = new TypeToken<List<RemoteChallenge>>() {}.getType();
+        List<RemoteChallenge> list = gson.fromJson(response.reader, type);
         Log.d("Connector", "Result: " + list);
-        return null;
+        return list;
     }
 
     /**
@@ -352,6 +352,23 @@ public class RemoteConnector {
         if (response.statusCode != 200) throw new RemoteChallengeNotFoundException();
         Type type = new TypeToken<RemoteChallenge>() {}.getType();
         return gson.fromJson(response.reader, type);
+    }
+
+    /**
+     * Retrieve a list of categories.
+     *
+     * @return a list of categories
+     */
+    public static List<Category> getCategories() throws NoServerConnectionException {
+        Gson gson = new Gson();
+        Log.d("Connector", "getChallenges");
+        String path = "category?";
+        Response response = RemoteConnector.sendRequest(path, "GET");
+        Log.d("Connector", "Response code: " + response.statusCode);
+        Type type = new TypeToken<List<Category>>() {}.getType();
+        List<Category> list = gson.fromJson(response.reader, type);
+        Log.d("Connector", "Result: " + list);
+        return list;
     }
 
     /**

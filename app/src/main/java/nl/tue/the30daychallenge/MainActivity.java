@@ -8,13 +8,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import nl.tue.the30daychallenge.data.LocalConnector;
+import nl.tue.the30daychallenge.data.RemoteConnector;
+import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -39,7 +41,12 @@ public class MainActivity extends ActionBarActivity
             @Override
             protected String doInBackground(String... params) {
                 //new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
-                new LocalConnector(me);
+                //new LocalConnector(me);
+                try {
+                    Log.d("Connector", RemoteConnector.getChallenges().toString());
+                } catch (NoServerConnectionException e) {
+                    e.printStackTrace();
+                }
                 return "";
             }
         }.execute();

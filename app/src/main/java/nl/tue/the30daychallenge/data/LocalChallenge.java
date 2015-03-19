@@ -85,7 +85,7 @@ public class LocalChallenge extends Challenge {
         this.description = description;
         Date now = Calendar.getInstance().getTime();
         this.startDate = new Timestamp(now.getTime());
-        this.lastChecked = this.startDate;
+        this.lastChecked = new Timestamp(getMidnight().getLastMidnight().getTime() - 1000);
         save();
     }
 
@@ -183,38 +183,41 @@ public class LocalChallenge extends Challenge {
         sync();
     }
 
+    public Midnight getMidnight() {
+        return new Midnight(12, 30);
+    }
+
+    public long calculateDeltaCheckTime() {
+        return getMidnight().getLastMidnight().getTime() - lastChecked.getTime();
+    }
+
     public boolean isAlreadyCheckedToday() {
-        Midnight m = new Midnight(12, 30);
-        long deltaMillis = m.getLastMidnight().getTime() - lastChecked.getTime();
-        if (deltaMillis < 24 * 60 * 60 * 1000 && deltaMillis > 0) {
-            // the valid case :)
-        } else {
-            if (deltaMillis <= 0) {
-                // already checked
-                return true;
-            }
-        }
+        if (!canCheck() && calculateDeltaCheckTime() <= 0) return true;
+        return false;
+    }
+
+    public boolean isFailed() {
+        if (!canCheck() && calculateDeltaCheckTime() > 0) return true;
+        return false;
+    }
+
+    public boolean canCheck() {
+        long deltaMillis = calculateDeltaCheckTime();
+        if (deltaMillis < 24 * 60 * 60 * 1000 && deltaMillis > 0) return true;
         return false;
     }
 
     public void check() throws ChallengeFailedException, ChallengeAlreadyCheckedException {
         Date nowDate = Calendar.getInstance().getTime();
         Timestamp now = new Timestamp(nowDate.getTime());
-        Midnight m = new Midnight(12, 30);
-        long deltaMillis = m.getLastMidnight().getTime() - lastChecked.getTime();
-        if (deltaMillis < 24 * 60 * 60 * 1000 && deltaMillis > 0) {
-            // last checked was within 24 hours of now (valid)
+        if (canCheck()) {
             this.lastChecked = now;
             this.save();
         } else {
-            if (deltaMillis > 0) {
-                // too late
-                throw new ChallengeFailedException();
-            } else {
-                // already checked
-                throw new ChallengeAlreadyCheckedException();
-            }
+            if (isFailed()) throw new ChallengeFailedException();
+            if (isAlreadyCheckedToday()) throw new ChallengeAlreadyCheckedException();
         }
+        throw new IllegalStateException();
     }
 
     @Override
