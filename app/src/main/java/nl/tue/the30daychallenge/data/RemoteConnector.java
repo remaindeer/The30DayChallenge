@@ -305,7 +305,7 @@ public class RemoteConnector {
                 public boolean verify(String hostname, SSLSession session) {
                     HostnameVerifier hv =
                             HttpsURLConnection.getDefaultHostnameVerifier();
-                    return hv.verify("www.ovoweb.net", session);
+                    return hv.verify("challenge.ovoweb.net", session);
                 }
             };
 

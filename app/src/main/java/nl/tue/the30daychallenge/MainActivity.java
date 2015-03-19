@@ -3,8 +3,8 @@ package nl.tue.the30daychallenge;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -24,8 +24,10 @@ import android.view.ViewGroup;
 import java.util.Calendar;
 
 import nl.tue.the30daychallenge.data.LocalConnector;
+import nl.tue.the30daychallenge.data.RemoteConnector;
 import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
 import nl.tue.the30daychallenge.exception.ChallengeFailedException;
+import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -64,12 +66,12 @@ public class MainActivity extends ActionBarActivity
                 } catch (ChallengeFailedException e) {
                     Log.d("Connector", e.toString());
                 }
-                /*try {
-                    //RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
-                    //Log.d("Connector", RemoteConnector.getChallenges().toString());
+                try {
+                    RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
+                    Log.d("Connector", RemoteConnector.getChallenges().toString());
                 } catch (NoServerConnectionException e) {
                     e.printStackTrace();
-                }*/
+                }
                 return "";
             }
         }.execute();
