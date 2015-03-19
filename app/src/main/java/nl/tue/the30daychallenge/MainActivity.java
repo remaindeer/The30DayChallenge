@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -97,10 +96,6 @@ public class MainActivity extends ActionBarActivity
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onSectionAttached(int number) {
-        Intent intent;
-        Fragment newFragment;
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
@@ -112,8 +107,14 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_library);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
-                        .add(R.id.container, new LibraryFragment())
+                        .replace(R.id.container, new LibraryFragment())
                         .commit();
+                break;
+            case 4:
+                mTitle = "Testing fragment";
+                FragmentManager manager = getSupportFragmentManager();
+                manager.beginTransaction().replace(R.id.container, new TestFragment()).commit();
+                break;
         }
     }
 
