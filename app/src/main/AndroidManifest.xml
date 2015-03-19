@@ -22,10 +22,7 @@
         </activity>
         <activity
             android:name=".ChallengeDetails"
-            android:label="@string/title_activity_challenge_details" >
-        </activity>
-        <activity
-            android:label="@string/title_activity_test"
+            android:label="@string/title_activity_challenge_details"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
