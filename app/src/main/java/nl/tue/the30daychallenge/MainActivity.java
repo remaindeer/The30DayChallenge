@@ -1,6 +1,8 @@
 package nl.tue.the30daychallenge;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -81,6 +83,10 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void onSectionAttached(int number) {
+        Intent intent;
+        Fragment newFragment;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
@@ -89,8 +95,11 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_section2);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
+                mTitle = getString(R.string.title_library);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(R.id.container, new LibraryFragment())
+                        .commit();
         }
     }
 
