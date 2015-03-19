@@ -1,6 +1,9 @@
 package nl.tue.the30daychallenge;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Calendar;
 
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
@@ -41,6 +46,11 @@ public class MainActivity extends ActionBarActivity
 
             @Override
             protected String doInBackground(String... params) {
+                Intent alarmIntent = new Intent(me, AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(me, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, pendingIntent);
+
                 //new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
                 try {
                     new LocalConnector(me);
