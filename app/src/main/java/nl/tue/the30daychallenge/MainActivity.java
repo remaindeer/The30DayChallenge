@@ -1,12 +1,9 @@
 package nl.tue.the30daychallenge;
 
 import android.app.Activity;
-<<<<<<< HEAD
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-=======
 import android.app.FragmentTransaction;
->>>>>>> 5cecab026111b8b3736dbe8314116769dfbaf1bf
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
