@@ -1,8 +1,12 @@
 package nl.tue.the30daychallenge;
 
 import android.app.Activity;
+<<<<<<< HEAD
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+=======
+import android.app.FragmentTransaction;
+>>>>>>> 5cecab026111b8b3736dbe8314116769dfbaf1bf
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,7 +28,7 @@ import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
 import nl.tue.the30daychallenge.exception.ChallengeFailedException;
 
-public class MainActivity extends ActionBarActivity
+public class _MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
@@ -39,7 +43,7 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final MainActivity me = this;
+        final _MainActivity me = this;
         super.onCreate(savedInstanceState);
 
         new AsyncTask<String, Boolean, String>() {
@@ -92,6 +96,10 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void onSectionAttached(int number) {
+        Intent intent;
+        Fragment newFragment;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
@@ -100,8 +108,11 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_section2);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
+                mTitle = getString(R.string.title_library);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(R.id.container, new LibraryFragment())
+                        .commit();
         }
     }
 
@@ -176,7 +187,7 @@ public class MainActivity extends ActionBarActivity
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
+            ((_MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
