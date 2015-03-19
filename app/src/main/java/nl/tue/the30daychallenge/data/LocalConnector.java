@@ -6,8 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
+import nl.tue.the30daychallenge.exception.ChallengeFailedException;
 
 /**
  * An object which is a gateway to the back-end.
@@ -18,7 +22,7 @@ public class LocalConnector extends SQLiteOpenHelper {
 
     public static SQLiteDatabase db;
 
-    public LocalConnector(Context context) {
+    public LocalConnector(Context context) throws ChallengeAlreadyCheckedException, ChallengeFailedException {
         super(context, "30DayChallenge", null, 1);
         LocalConnector.db = this.getWritableDatabase();
         LocalConnector.db.execSQL("DROP TABLE IF EXISTS LocalChallenge");
@@ -36,7 +40,9 @@ public class LocalConnector extends SQLiteOpenHelper {
         //cursor.moveToFirst();
         //Log.d("Connector", cursor.getString(cursor.getColumnIndexOrThrow("title")));
 
-        //challenge2.check();
+        challenge2.lastChecked = new Timestamp(0);
+        challenge2.save();
+        challenge2.check();
 
         for (Challenge c: LocalConnector.getChallenges()) {
             Log.d("Connector", c.toString());

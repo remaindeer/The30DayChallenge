@@ -21,9 +21,9 @@ public class LocalChallenge extends Challenge {
 
     public int localID = -1;
     public int remoteChallengeID = -1;
-    public RemoteChallenge remoteChallenge = null;
-    public boolean isCompleted = false;
-    public boolean hasLiked = false;
+    private RemoteChallenge remoteChallenge = null;
+    private boolean isCompleted = false;
+    private boolean hasLiked = false;
     public int highscore = 0;
     public int amountOfTimesFailed = 0;
     public boolean isUploaded = false;
@@ -73,6 +73,11 @@ public class LocalChallenge extends Challenge {
         this.startDate = Timestamp.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("startDate")));
         this.lastChecked = Timestamp.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("lastChecked")));
         return true;
+    }
+
+    public RemoteChallenge getRemoteChallenge() throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        loadRemoteChallenge(this.remoteChallengeID);
+        return this.remoteChallenge;
     }
 
     public void delete() {
@@ -153,7 +158,13 @@ public class LocalChallenge extends Challenge {
     }
 
     public void loadRemoteChallenge(int remoteChallengeID) throws NoServerConnectionException, RemoteChallengeNotFoundException {
-        RemoteChallenge result = RemoteConnector.getChallenge(remoteChallengeID);
+        if (this.remoteChallengeID != -1 && this.remoteChallenge == null) {
+            this.remoteChallenge = RemoteConnector.getChallenge(remoteChallengeID);
+        }
+    }
+
+    public boolean isLiked() {
+        return this.hasLiked;
     }
 
     public void setLike(boolean hasLiked) throws NoServerConnectionException, RemoteChallengeNotFoundException {
@@ -216,8 +227,8 @@ public class LocalChallenge extends Challenge {
         } else {
             if (isFailed()) throw new ChallengeFailedException();
             if (isAlreadyCheckedToday()) throw new ChallengeAlreadyCheckedException();
+            throw new IllegalStateException();
         }
-        throw new IllegalStateException();
     }
 
     @Override

@@ -15,8 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import nl.tue.the30daychallenge.data.RemoteConnector;
-import nl.tue.the30daychallenge.exception.NoServerConnectionException;
+import nl.tue.the30daychallenge.data.LocalConnector;
+import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
+import nl.tue.the30daychallenge.exception.ChallengeFailedException;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -41,12 +42,19 @@ public class MainActivity extends ActionBarActivity
             @Override
             protected String doInBackground(String... params) {
                 //new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
-                //new LocalConnector(me);
                 try {
-                    Log.d("Connector", RemoteConnector.getChallenges().toString());
+                    new LocalConnector(me);
+                } catch (ChallengeAlreadyCheckedException e) {
+                    Log.d("Connector", e.toString());
+                } catch (ChallengeFailedException e) {
+                    Log.d("Connector", e.toString());
+                }
+                /*try {
+                    //RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
+                    //Log.d("Connector", RemoteConnector.getChallenges().toString());
                 } catch (NoServerConnectionException e) {
                     e.printStackTrace();
-                }
+                }*/
                 return "";
             }
         }.execute();

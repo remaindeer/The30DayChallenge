@@ -5,15 +5,30 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManagerFactory;
 
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
@@ -26,10 +41,12 @@ import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 public class RemoteConnector {
 
     // the endpoint of the back-end
-    private static String endpoint = "http://challenge.ovoweb.net/";
+    private static String endpoint = "https://challenge.ovoweb.net/";
 
     // the device identifier
     private static String deviceID = null;
+
+    private static InputStream certificate = null;
 
     // sorting fields
     public static enum SortField {
@@ -231,6 +248,10 @@ public class RemoteConnector {
 
     }
 
+    public static void setCertificate(InputStream cert) {
+        RemoteConnector.certificate = cert;
+    }
+
     /**
      * Send a back-end request.
      *
@@ -248,14 +269,66 @@ public class RemoteConnector {
         }
         Log.d("Connector", "New request [url=" + (endpoint + path) + "]");
         try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+// Load CAs from an InputStream
+// (could be from a resource or ByteArrayInputStream or ...)
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+// From https://www.washington.edu/itconnect/security/ca/load-der.crt
+
+            InputStream caInput = new BufferedInputStream(RemoteConnector.certificate);
+            Certificate ca = null;
+            try {
+                ca = cf.generateCertificate(caInput);
+                Log.d("Connector", "ca=" + ((X509Certificate) ca).getSubjectDN());
+            } catch (CertificateException e) {
+                Log.d("Connector", e.toString());
+            } finally {
+                caInput.close();
+            }
+
+// Create a KeyStore containing our trusted CAs
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+            keyStore.load(null, null);
+            keyStore.setCertificateEntry("ca", ca);
+
+// Create a TrustManager that trusts the CAs in our KeyStore
+            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+            tmf.init(keyStore);
+
+// Create an SSLContext that uses our TrustManager
+            SSLContext context = SSLContext.getInstance("SSL");
+            context.init(null, tmf.getTrustManagers(), null);
+
+            HostnameVerifier hostnameVerifier = new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    HostnameVerifier hv =
+                            HttpsURLConnection.getDefaultHostnameVerifier();
+                    return hv.verify("www.ovoweb.net", session);
+                }
+            };
+
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setSSLSocketFactory(context.getSocketFactory());
             connection.setRequestMethod(method);
+            connection.setHostnameVerifier(hostnameVerifier);
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
             connection.connect();
             result.statusCode = connection.getResponseCode();
             result.reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            Log.d("Connector", "status code: " + connection.getResponseCode());
         } catch (IOException exception) {
+            Log.d("Connector", exception.toString());
             throw new NoServerConnectionException();
+        } catch (NoSuchAlgorithmException e) {
+            Log.d("Connector", e.toString());
+        } catch (CertificateException e) {
+            Log.d("Connector", e.toString());
+        } catch (KeyStoreException e) {
+            Log.d("Connector", e.toString());
+        } catch (KeyManagementException e) {
+            Log.d("Connector", e.toString());
         }
         return result;
     }
