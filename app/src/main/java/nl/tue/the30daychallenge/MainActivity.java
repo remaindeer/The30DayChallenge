@@ -28,7 +28,7 @@ import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
 import nl.tue.the30daychallenge.exception.ChallengeFailedException;
 
-public class _MainActivity extends ActionBarActivity
+public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
@@ -43,7 +43,7 @@ public class _MainActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final _MainActivity me = this;
+        final MainActivity me = this;
         super.onCreate(savedInstanceState);
 
         new AsyncTask<String, Boolean, String>() {
@@ -187,7 +187,7 @@ public class _MainActivity extends ActionBarActivity
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((_MainActivity) activity).onSectionAttached(
+            ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
