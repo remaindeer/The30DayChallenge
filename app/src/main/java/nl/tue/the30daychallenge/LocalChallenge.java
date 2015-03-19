@@ -25,9 +25,10 @@ public class LocalChallenge extends Challenge {
     public boolean isUploaded = false;
     public Timestamp startDate;
     public Timestamp lastChecked;
+    public boolean shouldBeUploaded = false;
+    public boolean inSync = false;
 
     public void save() {
-        int i = 0;
         SQLiteDatabase db = LocalConnector.db;
         ContentValues values = new ContentValues();
         values.put("title", title);
@@ -36,20 +37,18 @@ public class LocalChallenge extends Challenge {
         values.put("hasLiked", hasLiked);
         values.put("amountOfTimesFailed", amountOfTimesFailed);
         values.put("isUploaded", isUploaded);
+        values.put("inSync", inSync);
+        values.put("shouldBeUploaded", shouldBeUploaded);
         values.put("lastChecked", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(lastChecked));
         values.put("startDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(startDate));
         if (localID == -1) {
             // new record
             this.localID = (int) db.insert("LocalChallenge", null, values);
             Log.d("Connector", "" + this.localID);
-            check();
         } else {
             // update: existing record
+            db.update("LocalChallenge", values, "localID = ?", new String[]{"" + localID});
         }
-    }
-
-    public void check() {
-
     }
 
     public boolean load(int localID) {
@@ -65,6 +64,8 @@ public class LocalChallenge extends Challenge {
         this.isCompleted = (cursor.getInt(cursor.getColumnIndexOrThrow("isCompleted")) == 1);
         this.hasLiked = (cursor.getInt(cursor.getColumnIndexOrThrow("hasLiked")) == 1);
         this.isUploaded = (cursor.getInt(cursor.getColumnIndexOrThrow("isUploaded")) == 1);
+        this.inSync = (cursor.getInt(cursor.getColumnIndexOrThrow("inSync")) == 1);
+        this.shouldBeUploaded = (cursor.getInt(cursor.getColumnIndexOrThrow("shouldBeUploaded")) == 1);
         this.amountOfTimesFailed = cursor.getInt(cursor.getColumnIndexOrThrow("amountOfTimesFailed"));
         this.startDate = Timestamp.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("startDate")));
         this.lastChecked = Timestamp.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("lastChecked")));
@@ -82,7 +83,6 @@ public class LocalChallenge extends Challenge {
         Date now = Calendar.getInstance().getTime();
         this.startDate = new Timestamp(now.getTime());
         this.lastChecked = this.startDate;
-        Log.d("Connector", "Coole constructor");
         save();
     }
 
@@ -91,7 +91,6 @@ public class LocalChallenge extends Challenge {
     }
 
     public static void create() {
-        Log.d("Connector", "createDatabases");
         SQLiteDatabase db = LocalConnector.db;
         db.execSQL("CREATE TABLE IF NOT EXISTS LocalChallenge ("
                 + "localID INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -106,7 +105,48 @@ public class LocalChallenge extends Challenge {
                 + "isUploaded TEXT, "
                 + "startDate TEXT, "
                 + "lastChecked TEXT, "
+                + "inSync INTEGER, "
+                + "shouldBeUploaded INTEGER, "
                 + "remoteChallengeID INTEGER)");
+    }
+
+    public static void syncAll() throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        SQLiteDatabase db = LocalConnector.db;
+        Cursor cursor = db.query("LocalChallenge", new String[]{"*"}, "inSync = 0", null, null, null, null);
+        cursor.moveToFirst();
+        do {
+            int localID = cursor.getInt(cursor.getColumnIndexOrThrow("localID"));
+            new LocalChallenge(localID).sync();
+        } while (cursor.moveToNext());
+    }
+
+    public void sync() throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        if (!inSync) {
+            if (this.remoteChallengeID == -1 && this.shouldBeUploaded) {
+                // not in sync
+                this.remoteChallenge = RemoteConnector.addChallenge(categoryID, title, description);
+                if (this.remoteChallenge != null) {
+                    this.remoteChallengeID = this.remoteChallenge.challengeID;
+                    this.save();
+                }
+            }
+
+            loadRemoteChallenge(this.remoteChallengeID);
+
+            RemoteConnector.likeChallenge(this.remoteChallengeID, this.hasLiked);
+            this.save();
+
+            if (this.isCompleted) {
+                RemoteConnector.completeChallenge(this.remoteChallengeID);
+                this.save();
+            }
+
+            RemoteConnector.downloadChallenge(this.remoteChallengeID);
+            this.save();
+
+            this.inSync = true;
+            this.save();
+        }
     }
 
     public void loadRemoteChallenge(int remoteChallengeID) throws NoServerConnectionException, RemoteChallengeNotFoundException {
@@ -114,9 +154,48 @@ public class LocalChallenge extends Challenge {
         Log.d("Connector", result.toString());
     }
 
-    public void setLike(boolean hasLiked) {
+    public void setLike(boolean hasLiked) throws NoServerConnectionException, RemoteChallengeNotFoundException {
         this.hasLiked = hasLiked;
+        this.inSync = false;
         this.save();
+        sync();
+    }
+
+    public void setCompleted() throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        this.isCompleted = true;
+        this.inSync = false;
+        this.save();
+        sync();
+    }
+
+    public void setDownloaded() throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        this.inSync = false;
+        this.save();
+        sync();
+    }
+
+    public void upload() throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        this.shouldBeUploaded = true;
+        this.inSync = false;
+        this.save();
+        sync();
+    }
+
+    public void check() {
+        Date nowDate = Calendar.getInstance().getTime();
+        Timestamp now = new Timestamp(nowDate.getTime());
+        Midnight m = new Midnight(12, 30);
+        long deltaMillis = m.getLastMidnight().getTime() - lastChecked.getTime();
+        if (deltaMillis < 24 * 60 * 60 * 1000 && deltaMillis > 0) {
+            // last checked was within 24 hours of now (valid)
+
+        } else {
+            if (deltaMillis > 0) {
+                // too late
+            } else {
+                // already checked
+            }
+        }
     }
 
     @Override

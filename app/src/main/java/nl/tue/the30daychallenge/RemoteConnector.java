@@ -235,21 +235,24 @@ public class RemoteConnector {
      * @param method the method to use (POST, GET, ...)
      * @return a response
      */
-    public static Response sendRequest(String path, String method) {
+    public static Response sendRequest(String path, String method) throws NoServerConnectionException {
         Response result = new Response();
+        URL url = null;
         try {
-            URL url = new URL(endpoint + path);
-            Log.d("Connector", "New request [url=" + (endpoint + path) + "]");
+            url = new URL(endpoint + path);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.d("Connector", "New request [url=" + (endpoint + path) + "]");
+        try {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(method);
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
             connection.connect();
             result.statusCode = connection.getResponseCode();
             result.reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            throw new NoServerConnectionException();
         }
         return result;
     }
@@ -260,7 +263,7 @@ public class RemoteConnector {
      * @param filters filters to use
      * @return a list of challenges
      */
-    public static List<RemoteChallenge> getChallenges(Filter... filters) {
+    public static List<RemoteChallenge> getChallenges(Filter... filters) throws NoServerConnectionException {
         Gson gson = new Gson();
         Log.d("Connector", "getChallenges");
         String path = "challenge?";
@@ -282,7 +285,7 @@ public class RemoteConnector {
      * @param title the title of the challenge
      * @param description the description of the challenge
      */
-    public static RemoteChallenge addChallenge(int categoryID, String title, String description) {
+    public static RemoteChallenge addChallenge(int categoryID, String title, String description) throws NoServerConnectionException {
         Gson gson = new Gson();
         Log.d("Connector", "addChallenge");
         Response response = sendRequest("challenge/create?categoryID=" + categoryID + "&title=" + URLEncoder.encode(title) + "&description=" + URLEncoder.encode(description), "GET");
@@ -297,7 +300,7 @@ public class RemoteConnector {
      *
      * @param challengeID the ID of the challenge to download
      */
-    public static boolean downloadChallenge(int challengeID) {
+    public static boolean downloadChallenge(int challengeID) throws NoServerConnectionException {
         Log.d("Connector", "downloadChallenge");
         Response response = sendRequest("download?deviceID=" + getDeviceID() + "&challengeID=" + challengeID, "GET");
         if (response.statusCode == 200) return true;
@@ -310,7 +313,7 @@ public class RemoteConnector {
      * @param challengeID the ID of the challenge to (un)like
      * @param hasLiked whether or not the challenge was liked (true for like, false for unlike)
      */
-    public static boolean likeChallenge(int challengeID, boolean hasLiked) {
+    public static boolean likeChallenge(int challengeID, boolean hasLiked) throws NoServerConnectionException {
         Log.d("Connector", "downloadChallenge");
         String hasLikedString = "0";
         if (hasLiked) hasLikedString = "1";
@@ -324,7 +327,7 @@ public class RemoteConnector {
      *
      * @param challengeID the ID of the challenge that was completed
      */
-    public static boolean completeChallenge(int challengeID) {
+    public static boolean completeChallenge(int challengeID) throws NoServerConnectionException {
         Log.d("Connector", "completeChallenge");
         Response response = sendRequest("complete?deviceID=" + getDeviceID() + "&challengeID=" + challengeID, "GET");
         if (response.statusCode == 200) return true;
@@ -340,7 +343,7 @@ public class RemoteConnector {
         Log.d("Connector", "setDeviceID [deviceID=" + deviceID + "]");
     }
 
-    public static RemoteChallenge getChallenge(int challengeID) throws RemoteChallengeNotFoundException {
+    public static RemoteChallenge getChallenge(int challengeID) throws RemoteChallengeNotFoundException, NoServerConnectionException {
         Gson gson = new Gson();
         Response response = sendRequest("get-challenge?challengeID=" + challengeID, "GET");
         if (response.statusCode != 200) throw new RemoteChallengeNotFoundException();
