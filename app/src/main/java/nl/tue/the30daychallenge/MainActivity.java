@@ -44,13 +44,13 @@ public class MainActivity extends ActionBarActivity
 
         new AsyncTask<String, Boolean, String>() {
 
+            // test code
             @Override
             protected String doInBackground(String... params) {
                 Intent alarmIntent = new Intent(me, AlarmReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(me, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, pendingIntent);
-
 
                 //new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
                 try {
