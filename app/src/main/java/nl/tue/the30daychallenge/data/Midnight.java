@@ -1,4 +1,4 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.data;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

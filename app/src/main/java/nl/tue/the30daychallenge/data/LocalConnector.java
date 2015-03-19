@@ -1,9 +1,10 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.data;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class LocalConnector extends SQLiteOpenHelper {
     public LocalConnector(Context context) {
         super(context, "30DayChallenge", null, 1);
         LocalConnector.db = this.getWritableDatabase();
-        LocalConnector.db.execSQL("DROP LocalChallenge IF EXISTS");
+        LocalConnector.db.execSQL("DROP TABLE IF EXISTS LocalChallenge");
 
         // create databases
         LocalChallenge.create();
@@ -35,10 +36,10 @@ public class LocalConnector extends SQLiteOpenHelper {
         //cursor.moveToFirst();
         //Log.d("Connector", cursor.getString(cursor.getColumnIndexOrThrow("title")));
 
-        challenge2.check();
+        //challenge2.check();
 
         for (Challenge c: LocalConnector.getChallenges()) {
-            System.out.println(c);
+            Log.d("Connector", c.toString());
         }
     }
 

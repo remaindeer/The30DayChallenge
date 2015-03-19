@@ -1,4 +1,4 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.exception;
 
 /**
  * Created by kevin on 3/16/15.

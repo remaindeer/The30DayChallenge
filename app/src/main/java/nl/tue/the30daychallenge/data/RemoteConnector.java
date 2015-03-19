@@ -1,4 +1,4 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.data;
 
 import android.util.Log;
 
@@ -14,6 +14,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
+
+import nl.tue.the30daychallenge.exception.NoServerConnectionException;
+import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 
 /**
  * An object which is a gateway to the back-end.

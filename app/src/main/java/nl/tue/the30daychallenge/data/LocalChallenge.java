@@ -1,14 +1,18 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
+import nl.tue.the30daychallenge.exception.ChallengeFailedException;
+import nl.tue.the30daychallenge.exception.NoServerConnectionException;
+import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 
 /**
  * Created by kevin on 3/12/15.
@@ -44,7 +48,6 @@ public class LocalChallenge extends Challenge {
         if (localID == -1) {
             // new record
             this.localID = (int) db.insert("LocalChallenge", null, values);
-            Log.d("Connector", "" + this.localID);
         } else {
             // update: existing record
             db.update("LocalChallenge", values, "localID = ?", new String[]{"" + localID});
@@ -151,7 +154,6 @@ public class LocalChallenge extends Challenge {
 
     public void loadRemoteChallenge(int remoteChallengeID) throws NoServerConnectionException, RemoteChallengeNotFoundException {
         RemoteChallenge result = RemoteConnector.getChallenge(remoteChallengeID);
-        Log.d("Connector", result.toString());
     }
 
     public void setLike(boolean hasLiked) throws NoServerConnectionException, RemoteChallengeNotFoundException {
@@ -181,19 +183,36 @@ public class LocalChallenge extends Challenge {
         sync();
     }
 
-    public void check() {
+    public boolean isAlreadyCheckedToday() {
+        Midnight m = new Midnight(12, 30);
+        long deltaMillis = m.getLastMidnight().getTime() - lastChecked.getTime();
+        if (deltaMillis < 24 * 60 * 60 * 1000 && deltaMillis > 0) {
+            // the valid case :)
+        } else {
+            if (deltaMillis <= 0) {
+                // already checked
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void check() throws ChallengeFailedException, ChallengeAlreadyCheckedException {
         Date nowDate = Calendar.getInstance().getTime();
         Timestamp now = new Timestamp(nowDate.getTime());
         Midnight m = new Midnight(12, 30);
         long deltaMillis = m.getLastMidnight().getTime() - lastChecked.getTime();
         if (deltaMillis < 24 * 60 * 60 * 1000 && deltaMillis > 0) {
             // last checked was within 24 hours of now (valid)
-
+            this.lastChecked = now;
+            this.save();
         } else {
             if (deltaMillis > 0) {
                 // too late
+                throw new ChallengeFailedException();
             } else {
                 // already checked
+                throw new ChallengeAlreadyCheckedException();
             }
         }
     }
