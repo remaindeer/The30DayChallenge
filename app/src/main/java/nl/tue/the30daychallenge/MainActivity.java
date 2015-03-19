@@ -1,11 +1,13 @@
 package nl.tue.the30daychallenge;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +40,7 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
+    @TargetApi(Build.VERSION_CODES.CUPCAKE)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final MainActivity me = this;
@@ -92,6 +95,7 @@ public class MainActivity extends ActionBarActivity
                 .commit();
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onSectionAttached(int number) {
         Intent intent;
         Fragment newFragment;
