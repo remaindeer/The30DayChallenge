@@ -19,7 +19,7 @@ public class Settings {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         manager.cancel(pendingIntent); // if any exists
-        manager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 5000, pendingIntent);
+        manager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 10000, pendingIntent);
     }
 
 }
