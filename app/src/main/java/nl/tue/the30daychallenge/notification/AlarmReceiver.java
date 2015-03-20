@@ -1,4 +1,4 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.notification;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,6 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+
+import nl.tue.the30daychallenge.MainActivity;
+import nl.tue.the30daychallenge.R;
 
 /**
  * Created by kevin on 3/19/15.
