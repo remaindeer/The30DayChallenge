@@ -121,6 +121,7 @@ public class LocalChallenge extends Challenge {
     public static void syncAll() throws NoServerConnectionException, RemoteChallengeNotFoundException {
         SQLiteDatabase db = LocalConnector.db;
         Cursor cursor = db.query("LocalChallenge", new String[]{"*"}, "inSync = 0", null, null, null, null);
+        if (cursor.getCount() == 0) return;
         cursor.moveToFirst();
         do {
             int localID = cursor.getInt(cursor.getColumnIndexOrThrow("localID"));

@@ -13,14 +13,15 @@ public class AlarmReceiverChallengeFailed extends AlarmReceiver {
     public NotificationCompat.Builder createNotification(Context context) {
         NotificationCompat.Builder builder = super.createNotification(context);
         builder
-                .setContentTitle("COOL2")
-                .setContentText("AWESOME")
+                .setContentTitle("30 day challenge")
+                .setContentText("")
         ;
         return builder;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        loadDatabase(context);
         this.notificationBuilder = createNotification(context);
         super.onReceive(context, intent);
     }

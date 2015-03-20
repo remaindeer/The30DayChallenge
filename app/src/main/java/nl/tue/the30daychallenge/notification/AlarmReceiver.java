@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 
 import nl.tue.the30daychallenge.MainActivity;
 import nl.tue.the30daychallenge.R;
+import nl.tue.the30daychallenge.data.LocalConnector;
 
 /**
  * Created by kevin on 3/20/15.
@@ -33,7 +34,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onReceive(Context context, Intent intent) {
-
         Intent resultIntent = new Intent(context, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(MainActivity.class);
@@ -42,6 +42,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         notificationBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(AlarmReceiver.currentID++, notificationBuilder.build());
+    }
+
+    public static void loadDatabase(Context context) {
+        new LocalConnector(context);
     }
 
 }

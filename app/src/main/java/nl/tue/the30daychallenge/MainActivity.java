@@ -41,6 +41,7 @@ public class MainActivity extends ActionBarActivity
 
         // DO NOT REMOVE OR MODIFY THIS LINE (NEVER EVER, REALLY)!!!!!!!!!11!!
         RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
+        new LocalConnector(me.getApplicationContext());
 
         new AsyncTask<String, Boolean, String>() {
 

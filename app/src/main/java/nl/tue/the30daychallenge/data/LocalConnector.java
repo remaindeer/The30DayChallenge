@@ -17,14 +17,18 @@ public class LocalConnector extends SQLiteOpenHelper {
 
     public static SQLiteDatabase db;
 
+    public static LocalConnector instance = null;
+
     public LocalConnector(Context context) {
         super(context, "30DayChallenge", null, 1);
-        if (db == null) {
+        if (LocalConnector.instance == null) {
+
             LocalConnector.db = this.getWritableDatabase();
             LocalConnector.db.execSQL("DROP TABLE IF EXISTS LocalChallenge");
 
             // create databases
             LocalChallenge.create();
+            LocalConnector.instance = this;
         }
 
         //LocalChallenge challenge = new LocalChallenge("title", "description");
@@ -52,10 +56,11 @@ public class LocalConnector extends SQLiteOpenHelper {
      *
      * @return a list of all local challenges
      */
-    public List<LocalChallenge> getChallenges() {
+    public static List<LocalChallenge> getChallenges() {
         List<LocalChallenge> challenges = new ArrayList();
         SQLiteDatabase db = LocalConnector.db;
         Cursor cursor = db.query("LocalChallenge", new String[]{"*"}, null, null, null, null, null);
+        if (cursor.getCount() == 0) return challenges;
         cursor.moveToFirst();
         do {
             int localID = cursor.getInt(cursor.getColumnIndexOrThrow("localID"));
