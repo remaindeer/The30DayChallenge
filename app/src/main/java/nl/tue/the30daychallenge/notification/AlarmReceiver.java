@@ -27,7 +27,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.abc_cab_background_top_material)
-                        .setVibrate(vibratePattern);
+                        .setContentTitle("30 day challenge")
+                        .setVibrate(vibratePattern)
+                ;
         return mBuilder;
     }
 
@@ -45,7 +47,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     public static void loadDatabase(Context context) {
-        new LocalConnector(context);
+        LocalConnector.load(context);
     }
 
 }

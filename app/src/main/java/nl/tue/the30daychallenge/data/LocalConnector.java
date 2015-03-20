@@ -17,19 +17,20 @@ public class LocalConnector extends SQLiteOpenHelper {
 
     public static SQLiteDatabase db;
 
-    public static LocalConnector instance = null;
+    public static void dropDatabase() {
+        LocalConnector.db.execSQL("DROP TABLE IF EXISTS LocalChallenge");
+    }
+
+    public static void load(Context context) {
+        new LocalConnector(context);
+    }
 
     public LocalConnector(Context context) {
         super(context, "30DayChallenge", null, 1);
-        if (LocalConnector.instance == null) {
 
-            LocalConnector.db = this.getWritableDatabase();
-            LocalConnector.db.execSQL("DROP TABLE IF EXISTS LocalChallenge");
-
-            // create databases
-            LocalChallenge.create();
-            LocalConnector.instance = this;
-        }
+        LocalConnector.db = this.getWritableDatabase();
+        // create databases
+        LocalChallenge.create();
 
         //LocalChallenge challenge = new LocalChallenge("title", "description");
         //LocalChallenge challenge2 = new LocalChallenge("title2", "description2");

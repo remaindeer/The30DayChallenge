@@ -3,6 +3,7 @@ package nl.tue.the30daychallenge.data;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -196,7 +197,7 @@ public class LocalChallenge extends Challenge {
     }
 
     public Midnight getMidnight() {
-        return new Midnight(12, 30);
+        return new Midnight();
     }
 
     public long calculateDeltaCheckTime() {
@@ -204,12 +205,18 @@ public class LocalChallenge extends Challenge {
     }
 
     public boolean isAlreadyCheckedToday() {
-        if (!canCheck() && calculateDeltaCheckTime() <= 0) return true;
+        if (calculateDeltaCheckTime() <= 0) return true;
+        return false;
+    }
+
+    public boolean isFailedYesterday() {
+        Log.d("Connector", "" + calculateDeltaCheckTime());
+        if (isFailed() && calculateDeltaCheckTime() <= (24 + 24) * 60 * 60 * 1000) return true;
         return false;
     }
 
     public boolean isFailed() {
-        if (!canCheck() && calculateDeltaCheckTime() > 0) return true;
+        if (calculateDeltaCheckTime() > 24 * 60 * 60 * 1000) return true;
         return false;
     }
 

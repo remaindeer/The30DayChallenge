@@ -5,22 +5,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import nl.tue.the30daychallenge.Settings;
+
 /**
  * Created by kevin on 3/16/15.
  */
 public class Midnight {
 
-    int hours = 0;
-    int minutes = 0;
+    int hours = -1;
+    int minutes = -1;
 
-    public Midnight(int hours, int minutes) {
-        this.hours = hours;
-        this.minutes = minutes;
-    }
-
-    public Midnight(Timestamp t) {
-        this.hours = t.getHours();
-        this.minutes = t.getMinutes();
+    public Midnight() {
+        this.hours = Settings.midnightHours;
+        this.minutes = Settings.midnightMinutes;
     }
 
     public Timestamp getLastMidnight() {
