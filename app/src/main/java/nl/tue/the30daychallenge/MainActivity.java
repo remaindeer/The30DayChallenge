@@ -3,14 +3,14 @@ package nl.tue.the30daychallenge;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.PendingIntent;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -89,7 +89,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
@@ -97,8 +97,6 @@ public class MainActivity extends ActionBarActivity
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onSectionAttached(int number) {
-        Intent intent;
-        Fragment newFragment;
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         switch (number) {
@@ -110,10 +108,14 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 3:
                 mTitle = getString(R.string.title_library);
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .add(R.id.container, new LibraryFragment())
+                transaction.replace(R.id.container, new LibraryFragment())
                         .commit();
+                break;
+            case 4:
+                mTitle = "Testing Fragment. Add tests here";
+                transaction.replace(R.id.container, new TestFragment())
+                        .commit();
+                break;
         }
     }
 

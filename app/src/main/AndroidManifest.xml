@@ -29,5 +29,4 @@
                 android:value="nl.tue.the30daychallenge.MainActivity" />
         </activity>
     </application>
-
 </manifest>
