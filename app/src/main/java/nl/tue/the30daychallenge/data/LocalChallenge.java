@@ -86,9 +86,14 @@ public class LocalChallenge extends Challenge {
         db.execSQL("DELETE FROM LocalChallenge WHERE localID = ?", new String[]{"" + this.localID});
     }
 
-    public LocalChallenge(String title, String description) {
+    public LocalChallenge(String title, String description, int categoryID) {
+        createChallenge(title, description, categoryID);
+    }
+
+    public void createChallenge(String title, String description, int categoryID) {
         this.title = title;
         this.description = description;
+        this.categoryID = categoryID;
         Date now = Calendar.getInstance().getTime();
         this.startDate = new Timestamp(now.getTime());
         this.lastChecked = new Timestamp(getMidnight().getLastMidnight().getTime() - 1000);
@@ -151,7 +156,7 @@ public class LocalChallenge extends Challenge {
                 this.save();
             }
 
-            RemoteConnector.downloadChallenge(this.remoteChallengeID);
+            RemoteConnector.createAttempt(this.remoteChallengeID);
             this.save();
 
             this.inSync = true;
@@ -161,8 +166,15 @@ public class LocalChallenge extends Challenge {
 
     public void loadRemoteChallenge(int remoteChallengeID) throws NoServerConnectionException, RemoteChallengeNotFoundException {
         if (this.remoteChallengeID != -1 && this.remoteChallenge == null) {
+            this.remoteChallengeID = remoteChallengeID;
             this.remoteChallenge = RemoteConnector.getChallenge(remoteChallengeID);
         }
+    }
+
+    public LocalChallenge(RemoteChallenge remoteChallenge) throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        createChallenge(remoteChallenge.title, remoteChallenge.description, remoteChallenge.categoryID);
+        remoteChallengeID = remoteChallenge.challengeID;
+        this.remoteChallenge = remoteChallenge;
     }
 
     public boolean isLiked() {
