@@ -1,6 +1,7 @@
 package nl.tue.the30daychallenge;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,6 +53,11 @@ public class TestFragment extends Fragment {
             for (RemoteChallenge test : challenges) {
                 Log.d("challenges", test.description);
             }
+            RemoteChallenge test = challenges.get(0);
+            DetailsFragment fragment = new DetailsFragment(test);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.add(R.id.TestContainer, fragment).commit();
+
         }
     }
 }
