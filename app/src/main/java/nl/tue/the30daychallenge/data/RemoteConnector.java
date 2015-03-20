@@ -46,7 +46,8 @@ public class RemoteConnector {
     // the device identifier
     private static String deviceID = null;
 
-    private static InputStream certificate = null;
+    private static InputStream certificateInput = null;
+    private static Certificate certificate = null;
 
     // sorting fields
     public static enum SortField {
@@ -249,7 +250,7 @@ public class RemoteConnector {
     }
 
     public static void setCertificate(InputStream cert) {
-        RemoteConnector.certificate = cert;
+        RemoteConnector.certificateInput = cert;
     }
 
     /**
@@ -274,22 +275,23 @@ public class RemoteConnector {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
 // From https://www.washington.edu/itconnect/security/ca/load-der.crt
 
-            InputStream caInput = new BufferedInputStream(RemoteConnector.certificate);
-            Certificate ca = null;
-            try {
-                ca = cf.generateCertificate(caInput);
-                Log.d("Connector", "ca=" + ((X509Certificate) ca).getSubjectDN());
-            } catch (CertificateException e) {
-                Log.d("Connector", e.toString());
-            } finally {
-                caInput.close();
+            if (certificate == null) {
+                InputStream caInput = new BufferedInputStream(RemoteConnector.certificateInput);
+                try {
+                    certificate = cf.generateCertificate(caInput);
+                    Log.d("Connector", "ca=" + ((X509Certificate) certificate).getSubjectDN());
+                } catch (CertificateException e) {
+                    Log.d("Connector", e.toString());
+                } finally {
+                    caInput.close();
+                }
             }
 
 // Create a KeyStore containing our trusted CAs
             String keyStoreType = KeyStore.getDefaultType();
             KeyStore keyStore = KeyStore.getInstance(keyStoreType);
             keyStore.load(null, null);
-            keyStore.setCertificateEntry("ca", ca);
+            keyStore.setCertificateEntry("ca", certificate);
 
 // Create a TrustManager that trusts the CAs in our KeyStore
             String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();

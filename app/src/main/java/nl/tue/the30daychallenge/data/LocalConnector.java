@@ -53,7 +53,7 @@ public class LocalConnector extends SQLiteOpenHelper {
      * @return a list of all local challenges
      */
     public List<LocalChallenge> getChallenges() {
-        List<LocalChallenge> challenges = new ArrayList<>();
+        List<LocalChallenge> challenges = new ArrayList();
         SQLiteDatabase db = LocalConnector.db;
         Cursor cursor = db.query("LocalChallenge", new String[]{"*"}, null, null, null, null, null);
         cursor.moveToFirst();
