@@ -12,6 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <receiver android:name=".notification.AlarmReceiverChallengeFailed" android:process=":remote" />
+        <receiver android:name=".notification.AlarmReceiverReminder" android:process=":remote" />
         <receiver android:name=".notification.DeviceBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

@@ -9,13 +9,11 @@ import android.support.v4.app.NotificationCompat;
  */
 public class AlarmReceiverChallengeFailed extends AlarmReceiver {
 
-    private long[] vibratePattern = new long[]{0, 300, 50, 300, 50, 300};
-
     @Override
     public NotificationCompat.Builder createNotification(Context context) {
         NotificationCompat.Builder builder = super.createNotification(context);
         builder
-                .setContentTitle("COOL")
+                .setContentTitle("COOL2")
                 .setContentText("AWESOME")
         ;
         return builder;

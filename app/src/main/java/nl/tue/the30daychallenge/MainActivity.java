@@ -2,19 +2,15 @@ package nl.tue.the30daychallenge;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nl.tue.the30daychallenge.data.LocalConnector;
-import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
-import nl.tue.the30daychallenge.exception.ChallengeFailedException;
+import nl.tue.the30daychallenge.data.RemoteConnector;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -44,6 +39,9 @@ public class MainActivity extends ActionBarActivity
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
 
+        // DO NOT REMOVE OR MODIFY THIS LINE (NEVER EVER, REALLY)!!!!!!!!!11!!
+        RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
+
         new AsyncTask<String, Boolean, String>() {
 
             // test code
@@ -53,13 +51,7 @@ public class MainActivity extends ActionBarActivity
                 Settings.scheduleNotification(me.getApplicationContext());
 
                 //new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
-                try {
-                    new LocalConnector(me);
-                } catch (ChallengeAlreadyCheckedException e) {
-                    Log.d("Connector", e.toString());
-                } catch (ChallengeFailedException e) {
-                    Log.d("Connector", e.toString());
-                }
+                new LocalConnector(me);
                 /*try {
                     //RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
                     //Log.d("Connector", RemoteConnector.getChallenges().toString());
