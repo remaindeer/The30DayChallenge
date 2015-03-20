@@ -21,8 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Calendar;
-
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
 import nl.tue.the30daychallenge.exception.ChallengeFailedException;
@@ -51,10 +49,8 @@ public class MainActivity extends ActionBarActivity
             // test code
             @Override
             protected String doInBackground(String... params) {
-                Intent alarmIntent = new Intent(me, AlarmReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(me, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, pendingIntent);
+
+                Settings.scheduleNotification(me.getApplicationContext());
 
                 //new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
                 try {
