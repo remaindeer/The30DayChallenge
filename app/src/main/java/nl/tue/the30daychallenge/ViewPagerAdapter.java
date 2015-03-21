@@ -1,5 +1,6 @@
 package nl.tue.the30daychallenge;
 
+import android.app.ListFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -16,7 +17,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         this.Titles = mTitles;
         this.NumbOfTabs = mNumbOfTabsumb;
-
     }
 
     //This method return the fragment for the every position in the View Pager
@@ -30,10 +30,9 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         }
         else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
         {
-            TabCat tab2 = new TabCat();
+            CatItemFragment tab2 = new CatItemFragment();
             return tab2;
         }
-
     }
 
     // This method return the titles for the Tabs in the Tab Strip
