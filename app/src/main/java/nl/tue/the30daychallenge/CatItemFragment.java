@@ -1,5 +1,9 @@
 package nl.tue.the30daychallenge;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -40,16 +45,24 @@ public class CatItemFragment extends Fragment implements AbsListView.OnItemClick
         super.onCreate(savedInstanceState);
 
         categoryListItemList = new ArrayList();
-        categoryListItemList.add(new CategoryListItem("Chores", R.mipmap.category_icon_chores));
-        categoryListItemList.add(new CategoryListItem("Creativity", R.mipmap.category_icon_creativity));
-        categoryListItemList.add(new CategoryListItem("Finance", R.mipmap.category_icon_finance));
-        categoryListItemList.add(new CategoryListItem("Fitness", R.mipmap.category_icon_fitness));
-        categoryListItemList.add(new CategoryListItem("Funny", R.mipmap.category_icon_funny));
-        categoryListItemList.add(new CategoryListItem("Intellectual", R.mipmap.category_icon_intellectual));
-        categoryListItemList.add(new CategoryListItem("Mental health", R.mipmap.category_icon_mental_health));
-        categoryListItemList.add(new CategoryListItem("Outgoing", R.mipmap.category_icon_outgoing));
-        categoryListItemList.add(new CategoryListItem("Relationship", R.mipmap.category_icon_relationship));
-        categoryListItemList.add(new CategoryListItem("Social", R.mipmap.category_icon_social));
+        //categories that are on the server (not all images correct)
+        categoryListItemList.add(new CategoryListItem("Fitness",1, R.mipmap.category_icon_fitness));
+        categoryListItemList.add(new CategoryListItem("Diets",2, R.mipmap.category_icon_fitness));
+        categoryListItemList.add(new CategoryListItem("Mental health",3, R.mipmap.category_icon_mental_health));
+        categoryListItemList.add(new CategoryListItem("Chores",4, R.mipmap.category_icon_chores));
+        categoryListItemList.add(new CategoryListItem("Intellectual",5, R.mipmap.category_icon_intellectual));
+        categoryListItemList.add(new CategoryListItem("Relationship",6, R.mipmap.category_icon_relationship));
+        categoryListItemList.add(new CategoryListItem("Career",7, R.mipmap.category_icon_relationship));
+        categoryListItemList.add(new CategoryListItem("Party",8, R.mipmap.category_icon_relationship));
+        categoryListItemList.add(new CategoryListItem("Finance",9, R.mipmap.category_icon_finance));
+        categoryListItemList.add(new CategoryListItem("Funny",10, R.mipmap.category_icon_funny));
+        categoryListItemList.add(new CategoryListItem("Other",11, R.mipmap.category_icon_social));
+
+        //not yet present on server:
+        categoryListItemList.add(new CategoryListItem("Creativity",12, R.mipmap.category_icon_creativity));
+        categoryListItemList.add(new CategoryListItem("Outgoing",13, R.mipmap.category_icon_outgoing));
+        categoryListItemList.add(new CategoryListItem("Social",14, R.mipmap.category_icon_social));
+
 
         mAdapter = new CategoryListAdapter(getActivity(), categoryListItemList);
     }
@@ -74,6 +87,12 @@ public class CatItemFragment extends Fragment implements AbsListView.OnItemClick
         CategoryListItem item = (CategoryListItem) this.categoryListItemList.get(position);
         Toast.makeText(getActivity(), item.getItemTitle() + " Clicked!"
                 , Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), ChallengesActivity.class);
+        Bundle b = new Bundle();
+        b.putInt("Category",item.getCategoryID());
+        intent.putExtras(b);
+        startActivity(intent);
+
     }
 
 }

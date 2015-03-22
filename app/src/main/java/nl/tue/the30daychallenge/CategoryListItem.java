@@ -7,6 +7,7 @@ public class CategoryListItem {
 
     private String itemTitle;
     private int itemCategory;
+    private int categoryID;
 
     public String getItemTitle() {
         return itemTitle;
@@ -14,13 +15,15 @@ public class CategoryListItem {
     public int getItemCategory() {
         return itemCategory;
     }
+    public int getCategoryID() {return categoryID;}
 
     public void setItemTitle(String itemTitle){
         this.itemTitle = itemTitle;
     }
 
-    public CategoryListItem(String title, int category){
+    public CategoryListItem(String title,int id, int category){
         this.itemTitle = title;
         this.itemCategory = category;
+        this.categoryID = id;
     }
 }

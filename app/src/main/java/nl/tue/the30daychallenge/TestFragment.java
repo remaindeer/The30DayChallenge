@@ -2,8 +2,8 @@ package nl.tue.the30daychallenge;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

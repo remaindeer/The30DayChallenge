@@ -2,7 +2,7 @@ package nl.tue.the30daychallenge;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -43,7 +43,7 @@ public class MainActivity extends ActionBarActivity {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.mainContent, new PreferencesFragment())
                 .commit();
@@ -97,7 +97,7 @@ public class MainActivity extends ActionBarActivity {
              * is selected.
              * */
             private void selectItemFromDrawer(int position) {
-                FragmentManager fragmentManager = getFragmentManager();
+                FragmentManager fragmentManager = getSupportFragmentManager();
 
                 switch (position) {
                     case 0:
@@ -113,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case 1:
                         fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, new PreferencesFragment())
+                                .replace(R.id.mainContent, new ChallengeItemFragment())
                                 .commit();
 
                         mDrawerList.setItemChecked(position, true);
