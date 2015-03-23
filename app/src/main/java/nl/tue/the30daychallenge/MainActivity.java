@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.mainContent, new PreferencesFragment())
+                .replace(R.id.mainContent, new MainFragment())
                 .commit();
 
 
@@ -101,7 +101,7 @@ public class MainActivity extends ActionBarActivity {
                 switch (position) {
                     case 0:
                         fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, new PreferencesFragment())
+                                .replace(R.id.mainContent, new MainFragment())
                                 .commit();
 
                         mDrawerList.setItemChecked(position, true);
