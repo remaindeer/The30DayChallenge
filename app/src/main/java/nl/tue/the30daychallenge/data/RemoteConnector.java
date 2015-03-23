@@ -142,7 +142,6 @@ public class RemoteConnector {
             }
             query += "sort=" + field;
             query += "&reverse=" + reverse;
-            query += "&seed=" + (int)Math.floor(Math.random() * 500);
             return query;
         }
     }

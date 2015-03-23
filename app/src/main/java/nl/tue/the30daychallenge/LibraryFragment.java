@@ -134,7 +134,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
                             return "";
                         }
                     }.execute();
-                    //currentState = State.RANDOM;
+                    currentState = State.RANDOM;
                 }
                 last_x = x;
                 last_y = y;
