@@ -27,6 +27,8 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
     private List challengeListItemList = new ArrayList(); // at the top of your fragment list
     private Filter categoryFilter = null;
     private boolean editorspickes = false;
+    private String query = null;
+    private int page = 0;
 
     /**
      * The fragment's ListView/GridView.
@@ -46,6 +48,11 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
 
     public ChallengeItemFragment(boolean editorspickes){
         this.editorspickes = editorspickes;
+        getChallenges();
+    }
+    public ChallengeItemFragment(String query){
+        this.query = query;
+        getChallenges();
     }
 
     /**
@@ -108,6 +115,7 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
             try {
                 ArrayList filters = new ArrayList();
                 if(categoryFilter!=null){filters.add(categoryFilter);}
+                if(query!=null){filters.add(new RemoteConnector.SearchFilter(query));}
                 if(editorspickes){filters.add(new RemoteConnector.EditorsPicksFilter());}
                 return RemoteConnector.getChallenges((Filter[])filters.toArray(new Filter[filters.size()]));
             } catch (NoServerConnectionException e) {
