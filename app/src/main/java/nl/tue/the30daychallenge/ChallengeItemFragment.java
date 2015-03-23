@@ -22,13 +22,14 @@ import nl.tue.the30daychallenge.data.RemoteConnector.Filter;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 
 
-public class ChallengeItemFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class ChallengeItemFragment extends Fragment implements AbsListView.OnItemClickListener, AbsListView.OnScrollListener {
 
     private List challengeListItemList = new ArrayList(); // at the top of your fragment list
     private Filter categoryFilter = null;
     private boolean editorspickes = false;
     private String query = null;
     private int page = 0;
+    private int itemspage= 15;
 
     /**
      * The fragment's ListView/GridView.
@@ -98,6 +99,7 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+        mListView.setOnScrollListener(this);
 
         return view;
     }
@@ -110,6 +112,20 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
         Toast.makeText(getActivity(), item.title + " Clicked!"
                 , Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if(firstVisibleItem+visibleItemCount==totalItemCount &&firstVisibleItem > 0 && totalItemCount == (page+1)*itemspage){
+            page++;
+            getChallenges();
+        }
+    }
+
     public class GetChallengesFromRemote extends AsyncTask<Void, Void, List<RemoteChallenge>> {
 
         @Override
@@ -119,7 +135,7 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
                 if(categoryFilter!=null){filters.add(categoryFilter);}
                 if(query!=null){filters.add(new RemoteConnector.SearchFilter(query));}
                 if(editorspickes){filters.add(new RemoteConnector.EditorsPicksFilter());}
-                filters.add(new RemoteConnector.PaginationFilter(page));
+                filters.add(new RemoteConnector.PaginationFilter(page,itemspage));
                 return RemoteConnector.getChallenges((Filter[])filters.toArray(new Filter[filters.size()]));
             } catch (NoServerConnectionException e) {
                 Log.d("getChallenges", "NoServerConnectionException");
