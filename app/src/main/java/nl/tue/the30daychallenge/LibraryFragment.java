@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,6 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
+
+import nl.tue.the30daychallenge.data.RemoteChallenge;
+import nl.tue.the30daychallenge.data.RemoteConnector;
+import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 
 public class LibraryFragment extends Fragment implements SensorListener {
 
@@ -112,7 +119,21 @@ public class LibraryFragment extends Fragment implements SensorListener {
                 if (speed > SHAKE_THRESHOLD) {
                     // @todo implement details screen for a random challenge
                     Log.d("Shaker", "Shaken!");
-                    currentState = State.RANDOM;
+                    new AsyncTask<String, Boolean, String>() {
+
+                        // test code
+                        @Override
+                        protected String doInBackground(String... params) {
+                            try {
+                                List<RemoteChallenge> challenges = RemoteConnector.getChallenges(new RemoteConnector.SortFilter(RemoteConnector.SortField.RANDOM));
+                                Log.d("Shaker", challenges.get(0).toString());
+                            } catch (NoServerConnectionException e) {
+                                e.printStackTrace();
+                            }
+                            return "";
+                        }
+                    }.execute();
+                    //currentState = State.RANDOM;
                 }
                 last_x = x;
                 last_y = y;
