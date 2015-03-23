@@ -102,6 +102,8 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
         return view;
     }
 
+
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         RemoteChallenge item = (RemoteChallenge) this.challengeListItemList.get(position);
@@ -117,6 +119,7 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
                 if(categoryFilter!=null){filters.add(categoryFilter);}
                 if(query!=null){filters.add(new RemoteConnector.SearchFilter(query));}
                 if(editorspickes){filters.add(new RemoteConnector.EditorsPicksFilter());}
+                filters.add(new RemoteConnector.PaginationFilter(page));
                 return RemoteConnector.getChallenges((Filter[])filters.toArray(new Filter[filters.size()]));
             } catch (NoServerConnectionException e) {
                 Log.d("getChallenges", "NoServerConnectionException");
