@@ -378,11 +378,17 @@ public class RemoteConnector {
      *
      * @param challengeID the ID of the challenge to download
      */
-    public static boolean downloadChallenge(int challengeID) throws NoServerConnectionException {
+    public static boolean createAttempt(int challengeID) throws NoServerConnectionException {
         Log.d("Connector", "downloadChallenge");
         Response response = sendRequest("download?deviceID=" + getDeviceID() + "&challengeID=" + challengeID, "GET");
         if (response.statusCode == 200) return true;
         return false;
+    }
+
+    public static LocalChallenge downloadRemoteChallenge(RemoteChallenge remoteChallenge) throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        RemoteConnector.createAttempt(remoteChallenge.challengeID);
+        LocalChallenge challenge = new LocalChallenge(remoteChallenge);
+        return challenge;
     }
 
     /**

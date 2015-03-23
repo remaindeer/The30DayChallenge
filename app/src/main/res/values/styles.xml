@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
         <!-- colorPrimary is used for the default action bar background -->
         <item name="colorPrimary">@color/primary</item>
@@ -11,7 +11,12 @@
          which is used to tint widgets -->
         <item name="colorAccent">@color/accent</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="searchViewStyle">@style/AppTheme.SearchView</item>
+    </style>
 
+    <style name="AppTheme.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@drawable/ic_action_search</item>
+        <item name="closeIcon">@drawable/ic_action_clear</item>
     </style>
 
 </resources>

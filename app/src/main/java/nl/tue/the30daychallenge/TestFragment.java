@@ -54,9 +54,9 @@ public class TestFragment extends Fragment {
                 Log.d("challenges", test.description);
             }
             RemoteChallenge test = challenges.get(0);
-            DetailsFragment fragment = new DetailsFragment(test);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.add(R.id.TestContainer, fragment).commit();
+            transaction.replace(R.id.TestContainer, new DetailsFragment(test))
+                    .commit();
         }
     }
 }
