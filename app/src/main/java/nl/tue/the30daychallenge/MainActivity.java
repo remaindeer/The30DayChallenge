@@ -1,6 +1,7 @@
 package nl.tue.the30daychallenge;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -20,8 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
-import android.os.AsyncTask;
 
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
@@ -158,13 +157,14 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                Log.d("Drawer", "onDrawerOpened");
                 invalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                Log.d(TAG, "onDrawerClosed: " + getTitle());
+                Log.d("Drawer", "onDrawerClosed: " + getTitle());
                 invalidateOptionsMenu();
             }
 
@@ -173,6 +173,7 @@ public class MainActivity extends ActionBarActivity {
                 // Pass the event to ActionBarDrawerToggle
                 // If it returns true, then it has handled
                 // the nav drawer indicator touch event
+                Log.d("Drawer", "onOptionsItemSelected: " + item);
                 if (mDrawerToggle.onOptionsItemSelected(item)) {
                     return true;
                 }
@@ -208,6 +209,15 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        // toggle the side menu
+        if (id == android.R.id.home) {
+            if (mDrawerLayout.isDrawerOpen(mDrawerPane)) {
+                mDrawerLayout.closeDrawer(mDrawerPane);
+            } else {
+                mDrawerLayout.openDrawer(mDrawerPane);
+            }
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
