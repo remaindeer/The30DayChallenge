@@ -1,9 +1,10 @@
 package nl.tue.the30daychallenge;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -19,6 +20,11 @@ public class LibraryFragment extends Fragment {
 
     // Declaring Your View and Variables
 
+    private enum STATE {
+        OVERVIEW,
+        VIEW_RANDOM_ACTIVITY
+    };
+    private STATE currentState = STATE.OVERVIEW;
     private FragmentActivity myContext;
     ViewPager pager;
     ViewPagerAdapter adapter;
@@ -27,6 +33,13 @@ public class LibraryFragment extends Fragment {
     int Numboftabs =2;
 
     public LibraryFragment() {
+    }
+
+    public void onShake() {
+        if (!currentState.equals(STATE.VIEW_RANDOM_ACTIVITY)) {
+            currentState = STATE.VIEW_RANDOM_ACTIVITY;
+            new Intent(getActivity(), ChallengesActivity.class);
+        }
     }
 
     @Override
