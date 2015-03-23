@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import nl.tue.the30daychallenge.addChallenge.AddChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
+import nl.tue.the30daychallenge.mainWindow.MainFragment;
 
 
 public class MainActivity extends ActionBarActivity {
