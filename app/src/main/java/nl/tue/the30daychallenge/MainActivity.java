@@ -2,6 +2,7 @@ package nl.tue.the30daychallenge;
 
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -31,7 +32,6 @@ import nl.tue.the30daychallenge.data.RemoteConnector;
 public class MainActivity extends ActionBarActivity {
 
     private static String TAG = MainActivity.class.getSimpleName();
-    public static LibraryFragment library = new LibraryFragment();
 
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
@@ -44,6 +44,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState){
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
+
+        LibraryFragment.sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+
         setContentView(R.layout.activity_main);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -61,8 +64,6 @@ public class MainActivity extends ActionBarActivity {
         RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
         LocalConnector.load(me.getApplicationContext());
         LocalConnector.dropDatabase();
-
-        startActivity(new Intent(this, ShakeActivity.class));
 
         new AsyncTask<String, Boolean, String>() {
 
@@ -128,7 +129,7 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case 2:
                         fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, MainActivity.library)
+                                .replace(R.id.mainContent, new LibraryFragment())
                                 .commit();
 
                         mDrawerList.setItemChecked(position, true);

@@ -42,13 +42,5 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.tue.the30daychallenge.MainActivity" />
         </activity>
-        <activity
-            android:name="nl.tue.the30daychallenge.ShakeActivity"
-            android:label="@string/app_name"
-            android:parentActivityName="nl.tue.the30daychallenge.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="nl.tue.the30daychallenge.MainActivity" />
-        </activity>
     </application>
 </manifest>

@@ -1,10 +1,9 @@
 package nl.tue.the30daychallenge;
 
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.widget.FrameLayout;
+import android.support.v4.app.FragmentTransaction;
 
 /**
  * Created by s129778 on 22-3-2015.
