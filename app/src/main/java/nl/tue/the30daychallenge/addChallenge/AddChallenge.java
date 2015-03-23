@@ -76,6 +76,7 @@ public class AddChallenge extends ActionBarActivity {
         }
         if(id == R.id.create_addChallenge){
             try{
+                Log.d("AddChallenge", "Adding challenge");
                 String title = getChallengeTitle();
                 String description = getDescription();
                 int categoryID = getCategoryId();
@@ -88,7 +89,7 @@ public class AddChallenge extends ActionBarActivity {
                         e.printStackTrace();
                     }
                 }
-                Log.d("AddChallenge", "Adding challenge");
+                finish();
             } catch (IllegalArgumentException e){
                 final AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
                 dlgAlert.setMessage(e.getMessage());

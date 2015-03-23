@@ -217,6 +217,7 @@ public class MainActivity extends ActionBarActivity {
             Intent newChallengeIntent;
             newChallengeIntent = new Intent(this, AddChallenge.class);
             startActivity(newChallengeIntent);
+
             return true;
         }
         if (id == R.id.action_settings) {
