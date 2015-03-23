@@ -17,9 +17,19 @@ public class ChallengesActivity extends FragmentActivity {
         setContentView(R.layout.challenges_activity);
         Bundle b = getIntent().getExtras();
         int category = b.getInt("Category");
-            Fragment newFragment = new ChallengeItemFragment(category);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.challengesContent, newFragment).commit();
+        String query = b.getString("query");
+        Fragment newFragment = null;
+        if(category>0){
+            newFragment = new ChallengeItemFragment(category);
+        }
+        if(query!=null){
+            newFragment = new ChallengeItemFragment(query);
+        }
+        if(newFragment==null){
+            newFragment = new ChallengeItemFragment();
+        }
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.challengesContent, newFragment).commit();
 
     }
 }
