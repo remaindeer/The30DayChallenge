@@ -18,7 +18,8 @@
     <!-- TODO: remove these? -->
     <string name="hello_world">Hello world!</string>
     <string name="hello_blank_fragment">The main page</string>
-    <string name="action_example">Example action</string>
+    <string name="action_example">Add Challenge</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_add_challenge">Add Challenge</string>
+    <string name="title_activity_details">DetailsActivity</string>
 </resources>

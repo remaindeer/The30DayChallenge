@@ -153,8 +153,6 @@ public class LibraryFragment extends Fragment implements SensorListener {
         SearchView.SearchAutoComplete theTextArea = (SearchView.SearchAutoComplete)searchView.findViewById(R.id.search_src_text);
         theTextArea.setTextColor(Color.WHITE);
 
-
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

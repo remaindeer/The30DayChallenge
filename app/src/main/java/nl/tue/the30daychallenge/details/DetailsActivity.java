@@ -1,11 +1,8 @@
 package nl.tue.the30daychallenge.details;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Activity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -14,32 +11,20 @@ import nl.tue.the30daychallenge.data.Challenge;
 import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.data.RemoteChallenge;
 
-public class DetailsFragment extends Fragment {
+public class DetailsActivity extends Activity {
 
-    public DetailsFragment(Challenge challengeToShow) {
+    public DetailsActivity(Challenge challengeToShow){
         challenge = challengeToShow;
         if(challengeToShow instanceof LocalChallenge){
             challengeIsLocal = true;
         }
     }
 
-    public DetailsFragment(){
+    public DetailsActivity(){}
 
-    }
 
     private boolean challengeIsLocal = false;
     private Challenge challenge;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-        SetChallengeTimeRunning(rootView);
-        SetButtonContent(rootView);
-        ((TextView)rootView.findViewById(R.id.details_challengeTitleBar)).setText(challenge.title);
-        ((TextView)rootView.findViewById(R.id.details_challengeDescription)).setText(challenge.description);
-        return rootView;
-    }
 
     private void SetButtonContent(View rootView) {
         Button button = (Button)rootView.findViewById(R.id.likeSlashUploadSlashDownloadButton);

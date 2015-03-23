@@ -11,25 +11,31 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <receiver android:name=".notification.AlarmReceiverChallengeFailed" android:process=":remote" />
-        <receiver android:name=".notification.AlarmReceiverReminder" android:process=":remote" />
-        <receiver android:name=".notification.DeviceBootReceiver">
+        <receiver
+            android:name=".notification.AlarmReceiverChallengeFailed"
+            android:process=":remote" />
+        <receiver
+            android:name=".notification.AlarmReceiverReminder"
+            android:process=":remote" />
+        <receiver android:name=".notification.DeviceBootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="nl.tue.the30daychallenge.ChallengesActivity"
+            android:name=".ChallengesActivity"
             android:label="@string/app_name"
-            android:parentActivityName="nl.tue.the30daychallenge.MainActivity" >
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.tue.the30daychallenge.MainActivity" />
@@ -42,5 +48,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.tue.the30daychallenge.MainActivity" />
         </activity>
+        <activity
+            android:name=".details.DetailsActivity"
+            android:label="@string/title_activity_details"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nl.tue.the30daychallenge.MainActivity" />
+        </activity>
     </application>
+
 </manifest>

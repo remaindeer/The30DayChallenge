@@ -1,6 +1,5 @@
 package nl.tue.the30daychallenge;
 
-import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -127,7 +126,6 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
     }
 
     public class GetChallengesFromRemote extends AsyncTask<Void, Void, List<RemoteChallenge>> {
-
         @Override
         protected List<RemoteChallenge> doInBackground(Void... params) {
             try {

@@ -41,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
     ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
 
@@ -53,11 +53,9 @@ public class MainActivity extends ActionBarActivity {
                 .replace(R.id.mainContent, new MainFragment())
                 .commit();
 
-
         mNavItems.add(new NavItem(getString(R.string.title_section1), "Will become mainscreen", R.drawable.ic_action_home));
         mNavItems.add(new NavItem(getString(R.string.title_section2), getString(R.string.title_section2), R.drawable.ic_action_clear));
         mNavItems.add(new NavItem(getString(R.string.title_library), getString(R.string.title_library), R.drawable.ic_action_explore));
-        mNavItems.add(new NavItem(getString(R.string.title_activity_test),"Testing Fragment. Add tests here", R.drawable.ic_action_help));
         mNavItems.add(new NavItem(getString(R.string.action_settings), getString(R.string.title_section2), R.drawable.ic_action_settings));
 
         // DO NOT REMOVE OR MODIFY THIS LINE (NEVER EVER, REALLY)!!!!!!!!!11!!
@@ -138,16 +136,6 @@ public class MainActivity extends ActionBarActivity {
                         // Close the drawer
                         mDrawerLayout.closeDrawer(mDrawerPane);
                         break;
-                    case 3:
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, new TestFragment())
-                                .commit();
-
-                        mDrawerList.setItemChecked(position, true);
-                        setTitle(mNavItems.get(position).mTitle);
-                        // Close the drawer
-                        mDrawerLayout.closeDrawer(mDrawerPane);
-                        break;
                 }
             }
 
@@ -155,7 +143,6 @@ public class MainActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItemFromDrawer(position);
             }
-
         });
 
         // Observe Open/Close Events of the Drawer begin
@@ -283,8 +270,7 @@ public class MainActivity extends ActionBarActivity {
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 view = inflater.inflate(R.layout.drawer_item, null);
-            }
-            else {
+            } else {
                 view = convertView;
             }
 
@@ -292,8 +278,8 @@ public class MainActivity extends ActionBarActivity {
             TextView subtitleView = (TextView) view.findViewById(R.id.subTitle);
             ImageView iconView = (ImageView) view.findViewById(R.id.icon);
 
-            titleView.setText( mNavItems.get(position).mTitle );
-            subtitleView.setText( mNavItems.get(position).mSubtitle );
+            titleView.setText(mNavItems.get(position).mTitle);
+            subtitleView.setText(mNavItems.get(position).mSubtitle);
             iconView.setImageResource(mNavItems.get(position).mIcon);
 
             return view;
