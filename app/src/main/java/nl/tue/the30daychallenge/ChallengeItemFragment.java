@@ -28,7 +28,7 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
     private Filter categoryFilter = null;
     private boolean editorspickes = false;
     private String query = null;
-    private int page = 1;
+    private int page = 0;
 
     /**
      * The fragment's ListView/GridView.
