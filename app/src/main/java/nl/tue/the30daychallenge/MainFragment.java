@@ -64,7 +64,6 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
         challengeListItemList.add(new ChallengeListItem("Relationship", R.mipmap.category_icon_relationship));
         challengeListItemList.add(new ChallengeListItem("Social", R.mipmap.category_icon_social));
         */
-        challengeListItemList.add(new LocalChallenge("Challenge", "describe", 1));
         mAdapter = new ChallengeListAdapterLocal(getActivity(), challengeListItemList);
 
     }

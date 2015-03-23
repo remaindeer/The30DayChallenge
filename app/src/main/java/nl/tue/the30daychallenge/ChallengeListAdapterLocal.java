@@ -1,7 +1,7 @@
 package nl.tue.the30daychallenge;
 
 /**
- * Created by s122552 on 21-3-2015.
+ * Created by s130968 on 23-3-2015.
  */
 
 import android.app.Activity;
@@ -55,7 +55,7 @@ public class ChallengeListAdapterLocal extends ArrayAdapter {
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
             if(useList){
-                viewToUse = mInflater.inflate(R.layout.challenge_list_item, null);
+                viewToUse = mInflater.inflate(R.layout.challenge_main_list_item, null);
             } else {
                 viewToUse = mInflater.inflate(R.layout.challenge_grid_item, null);
             }
