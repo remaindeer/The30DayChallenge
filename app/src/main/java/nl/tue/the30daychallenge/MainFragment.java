@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class PreferencesFragment extends Fragment {
-    public PreferencesFragment() {
+public class MainFragment extends Fragment {
+    public MainFragment() {
         // Required empty public constructor
     }
 
