@@ -14,6 +14,7 @@ import java.util.List;
 
 import nl.tue.the30daychallenge.data.RemoteChallenge;
 import nl.tue.the30daychallenge.data.RemoteConnector;
+import nl.tue.the30daychallenge.details.DetailsFragment;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 
 public class TestFragment extends Fragment {
@@ -48,6 +49,8 @@ public class TestFragment extends Fragment {
             }
         }
 
+        int amount = 0;
+
         @Override
         protected void onPostExecute(List<RemoteChallenge> challenges) {
             for (RemoteChallenge test : challenges) {
@@ -55,8 +58,9 @@ public class TestFragment extends Fragment {
             }
             RemoteChallenge test = challenges.get(0);
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.TestContainer, new DetailsFragment(test))
+            transaction.replace(R.id.TestContainer, new DetailsFragment(test), amount+"")
                     .commit();
+            amount++;
         }
     }
 }
