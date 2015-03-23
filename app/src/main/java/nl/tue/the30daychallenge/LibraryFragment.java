@@ -1,6 +1,7 @@
 package nl.tue.the30daychallenge;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
@@ -157,7 +158,11 @@ public class LibraryFragment extends Fragment implements SensorListener {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // perform query here
+                Intent intent = new Intent(getActivity(), ChallengesActivity.class);
+                Bundle b = new Bundle();
+                b.putString("query",query);
+                intent.putExtras(b);
+                startActivity(intent);
                 return true;
             }
 
