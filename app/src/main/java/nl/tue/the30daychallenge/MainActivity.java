@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import nl.tue.the30daychallenge.addChallenge.AddChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
 
@@ -224,6 +225,12 @@ public class MainActivity extends ActionBarActivity {
         }
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_example) {
+            Intent newChallengeIntent;
+            newChallengeIntent = new Intent(this, AddChallenge.class);
+            startActivity(newChallengeIntent);
+            return true;
+        }
         if (id == R.id.action_settings) {
             return true;
         }
