@@ -2,7 +2,6 @@ package nl.tue.the30daychallenge;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -57,10 +56,9 @@ public class MainActivity extends ActionBarActivity {
                 .replace(R.id.mainContent, new MainFragment())
                 .commit();
 
-        mNavItems.add(new NavItem(getString(R.string.title_section1), "Will become mainscreen", R.drawable.ic_action_home));
-        mNavItems.add(new NavItem(getString(R.string.title_section2), getString(R.string.title_section2), R.drawable.ic_action_clear));
-        mNavItems.add(new NavItem(getString(R.string.title_library), getString(R.string.title_library), R.drawable.ic_action_explore));
-        mNavItems.add(new NavItem(getString(R.string.action_settings), getString(R.string.title_section2), R.drawable.ic_action_settings));
+        mNavItems.add(new NavItem(getString(R.string.title_main), getString(R.string.description_main), R.drawable.ic_action_home));
+        mNavItems.add(new NavItem(getString(R.string.title_library), getString(R.string.description_library), R.drawable.ic_action_explore));
+        mNavItems.add(new NavItem(getString(R.string.title_settings), getString(R.string.description_settings), R.drawable.ic_action_settings));
 
         // DO NOT REMOVE OR MODIFY THIS LINE (NEVER EVER, REALLY)!!!!!!!!!11!!
         RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
@@ -120,17 +118,6 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case 1:
                         fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, new ChallengeItemFragment())
-                                .commit();
-
-                        mDrawerList.setItemChecked(position, true);
-                        setTitle(mNavItems.get(position).mTitle);
-
-                        // Close the drawer
-                        mDrawerLayout.closeDrawer(mDrawerPane);
-                        break;
-                    case 2:
-                        fragmentManager.beginTransaction()
                                 .replace(R.id.mainContent, new LibraryFragment())
                                 .commit();
 
@@ -140,7 +127,7 @@ public class MainActivity extends ActionBarActivity {
                         // Close the drawer
                         mDrawerLayout.closeDrawer(mDrawerPane);
                         break;
-                    case 3:
+                    case 2:
                         Intent settingsIntent = new Intent(me, SettingsActivity.class);
                         startActivity(settingsIntent);
 
