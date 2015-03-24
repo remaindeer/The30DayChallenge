@@ -1,0 +1,51 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:background="@color/primary"
+    tools:context="nl.tue.the30daychallenge.addChallenge.AddChallenge">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_margin="1dp"
+        android:background="@android:color/white"
+        android:layout_height="fill_parent">
+
+    <EditText
+        android:id="@+id/create_titleField"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:hint="Title" />
+
+        <EditText
+            android:id="@+id/create_descriptionField"
+            android:layout_width="fill_parent"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/create_titleField"
+            android:hint="Description" />
+        <Spinner
+            android:id="@+id/create_categorySpinner"
+            android:layout_below="@+id/create_descriptionField"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"></Spinner>
+        <TextView
+            android:id="@+id/create_uploadToServerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/create_categorySpinner"
+            android:text="Upload to server"/>
+        <CheckBox
+            android:id="@+id/create_uploadToServerCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/create_uploadToServerText"
+            android:layout_toRightOf="@+id/create_uploadToServerText" />
+
+</RelativeLayout>
+</RelativeLayout>

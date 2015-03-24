@@ -137,6 +137,15 @@ public class MainActivity extends ActionBarActivity {
                         // Close the drawer
                         mDrawerLayout.closeDrawer(mDrawerPane);
                         break;
+                    case 3:
+                        Intent settingsIntent = new Intent(me, SettingsActivity.class);
+                        startActivity(settingsIntent);
+
+                        mDrawerList.setItemChecked(position, true);
+
+                        // Close the drawer
+                        mDrawerLayout.closeDrawer(mDrawerPane);
+                        break;
                 }
             }
 
@@ -222,6 +231,8 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
             return true;
         }
 

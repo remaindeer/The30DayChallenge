@@ -45,6 +45,7 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
     private RecyclerView cardView;
     private LinearLayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
+    public static Timer timer;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -86,14 +87,16 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
         super.onCreate(savedInstanceState);
         //mAdapter = new ChallengeListAdapterLocal(getActivity(), challengeListItemList);
 
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Log.d("MainFragment", "updating view 2");
-                _handler.sendMessage(new Message());
-            }
-        }, 0, 3000);
+        if (timer == null) {
+            MainFragment.timer = new Timer();
+            MainFragment.timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    Log.d("MainFragment", "updating view");
+                    _handler.sendMessage(new Message());
+                }
+            }, 0, 3000);
+        }
 
         getChallenges();
     }
