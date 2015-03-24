@@ -27,7 +27,7 @@ public class AddChallenge extends ActionBarActivity {
         setContentView(R.layout.activity_add_challenge);
         CategorySpinnerItem[] categories = getCategories();
         Spinner categorySpinner = (Spinner)findViewById(R.id.create_categorySpinner);
-        categorySpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories));
+        categorySpinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_item, categories));
     }
 
     private CategorySpinnerItem[] getCategories(){

@@ -2,6 +2,8 @@ package nl.tue.the30daychallenge.library;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,9 +31,11 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
     private List challengeListItemList = new ArrayList(); // at the top of your fragment list
     private Filter categoryFilter = null;
     private boolean editorspickes = false;
+    private boolean progressBarVisible = false;
     private String query = null;
     private int page = 0;
     private int itemspage= 15;
+    private ProgressBar progressBar;
 
     /**
      * The fragment's ListView/GridView.
@@ -41,6 +47,7 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
      * Views.
      */
     private ListAdapter mAdapter;
+    private View view;
 
     public ChallengeItemFragment(int category){
         categoryFilter = new RemoteConnector.CategoryFilter(category);
@@ -91,10 +98,12 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_catitem, container, false);
+        view = inflater.inflate(R.layout.fragment_challengeitem, container, false);
         Log.d("Store","load view");
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
+        progressBar = ((ProgressBar)view.findViewById(R.id.progressBar1));
+        updateProgressbar();
         ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
@@ -104,6 +113,16 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
         return view;
     }
 
+    private void updateProgressbar() {
+        FrameLayout layout = (FrameLayout)view.findViewById(R.id.framelayout);
+        layout.removeView(progressBar);
+        layout.addView(progressBar);
+        if(progressBarVisible) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
+    }
 
 
     @Override
@@ -125,10 +144,21 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
             getChallenges();
         }
     }
+    public Handler _handler = new Handler() {
+
+
+        @Override
+        public void handleMessage(Message msg) {
+            updateProgressbar();
+        }
+    };
 
     public class GetChallengesFromRemote extends AsyncTask<Void, Void, List<RemoteChallenge>> {
         @Override
         protected List<RemoteChallenge> doInBackground(Void... params) {
+
+            progressBarVisible = true;
+            _handler.sendMessage(new Message());
             int i = 0;
             Log.d("getChallenges", "" + i++);
             try {
@@ -146,6 +176,8 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
 
         @Override
         protected void onPostExecute(List<RemoteChallenge> challenges) {
+            progressBarVisible = false;
+            _handler.sendMessage(new Message());
             if(challenges!=null) {
                 for (RemoteChallenge challenge : challenges) {
                     Log.d("challenges", challenge.description);

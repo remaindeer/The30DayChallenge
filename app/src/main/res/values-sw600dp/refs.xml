@@ -8,5 +8,6 @@
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
     <item name="fragment_catitem" type="layout">@layout/fragment_catitem_grid</item>
+    <item name="fragment_challengeitem" type="layout">@layout/fragment_challengeitem_grid</item>
 
 </resources>

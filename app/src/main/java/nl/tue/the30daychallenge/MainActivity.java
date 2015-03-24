@@ -132,7 +132,6 @@ public class MainActivity extends ActionBarActivity {
                     case 2:
                         Intent settingsIntent = new Intent(me, SettingsActivity.class);
                         startActivity(settingsIntent);
-
                         mDrawerList.setItemChecked(position, true);
 
                         // Close the drawer
