@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import nl.tue.the30daychallenge.addChallenge.AddChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
-import nl.tue.the30daychallenge.library.ChallengeItemFragment;
 import nl.tue.the30daychallenge.library.LibraryFragment;
 import nl.tue.the30daychallenge.mainWindow.MainFragment;
 
@@ -67,7 +66,6 @@ public class MainActivity extends ActionBarActivity {
         // DO NOT REMOVE OR MODIFY THIS LINE (NEVER EVER, REALLY)!!!!!!!!!11!!
         RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
         LocalConnector.load(me.getApplicationContext());
-        LocalConnector.dropDatabase();
 
         new AsyncTask<String, Boolean, String>() {
 
