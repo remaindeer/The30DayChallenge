@@ -1,51 +1,81 @@
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@color/primary"
-    tools:context="nl.tue.the30daychallenge.addChallenge.AddChallenge">
-
-    <RelativeLayout
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    tools:context="nl.tue.the30daychallenge.SettingsActivity">
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_margin="1dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         android:background="@android:color/white"
-        android:layout_height="fill_parent">
+        android:id="@+id/layout"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/create_titleField"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:hint="Title" />
-
-        <EditText
-            android:id="@+id/create_descriptionField"
-            android:layout_width="fill_parent"
-            android:layout_margin="5dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/create_titleField"
-            android:hint="Description" />
-        <Spinner
-            android:id="@+id/create_categorySpinner"
-            android:layout_below="@+id/create_descriptionField"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"></Spinner>
         <TextView
-            android:id="@+id/create_uploadToServerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/create_categorySpinner"
-            android:text="Upload to server"/>
-        <CheckBox
-            android:id="@+id/create_uploadToServerCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_gravity="right"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/create_uploadToServerText"
-            android:layout_toRightOf="@+id/create_uploadToServerText" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Start of next challenge day"
+            android:id="@+id/textView" />
 
-</RelativeLayout>
-</RelativeLayout>
+        <TimePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/midnightPicker"
+            android:timePickerMode="spinner"
+            android:layoutMode="opticalBounds"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enable notifications"
+            android:id="@+id/notificationEnabled"
+            android:layout_below="@+id/midnightPicker"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:checked="false" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enable notification sound"
+            android:id="@+id/soundEnabled"
+            android:layout_below="@+id/notificationPicker"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enable notification vibration"
+            android:id="@+id/vibrationsEnabled"
+            android:layout_below="@+id/soundEnabled"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Notification time"
+            android:id="@+id/textView2" />
+
+        <TimePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/notificationPicker"
+            android:timePickerMode="spinner"
+            android:layoutMode="opticalBounds"
+            android:layout_below="@+id/notificationEnabled"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+    </LinearLayout>
+</ScrollView>

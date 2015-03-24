@@ -2,6 +2,7 @@ package nl.tue.the30daychallenge;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,6 +46,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
+
+        Settings.loadSettings(getSharedPreferences("settings", 0));
 
         LibraryFragment.sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
 
