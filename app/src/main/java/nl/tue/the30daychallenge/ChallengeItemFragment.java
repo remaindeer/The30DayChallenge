@@ -65,7 +65,7 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
 
     public void getChallenges(){
         GetChallengesFromRemote get = new GetChallengesFromRemote();
-        get.execute();
+        get.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,6 +128,8 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
     public class GetChallengesFromRemote extends AsyncTask<Void, Void, List<RemoteChallenge>> {
         @Override
         protected List<RemoteChallenge> doInBackground(Void... params) {
+            int i = 0;
+            Log.d("getChallenges", "" + i++);
             try {
                 ArrayList filters = new ArrayList();
                 if(categoryFilter!=null){filters.add(categoryFilter);}

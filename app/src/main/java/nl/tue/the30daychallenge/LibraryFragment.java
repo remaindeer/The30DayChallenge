@@ -133,7 +133,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
                             }
                             return "";
                         }
-                    }.execute();
+                    }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     currentState = State.RANDOM;
                 }
                 last_x = x;

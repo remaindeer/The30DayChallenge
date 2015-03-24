@@ -82,7 +82,7 @@ public class MainActivity extends ActionBarActivity {
                 }*/
                 return "";
             }
-        }.execute();
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         // DrawerLayout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);

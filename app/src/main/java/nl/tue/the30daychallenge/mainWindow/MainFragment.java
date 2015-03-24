@@ -1,6 +1,5 @@
 package nl.tue.the30daychallenge.mainWindow;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +15,8 @@ import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.Challenge;
@@ -32,11 +33,6 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
             getChallenges();
         }
     };
-
-    /**
-     * Updates the view after 30 seconds.
-     */
-    updater testUpdater;
 
     /**
      * Running challenges we want to show.
@@ -89,8 +85,16 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //mAdapter = new ChallengeListAdapterLocal(getActivity(), challengeListItemList);
-        testUpdater = new updater(_handler);
-        testUpdater.execute();
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d("MainFragment", "updating view 2");
+                _handler.sendMessage(new Message());
+            }
+        }, 0, 3000);
+
         getChallenges();
     }
 
@@ -100,7 +104,6 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
      */
     @Override
     public void onStop() {
-        testUpdater.cancel(true);
         super.onStop();
     }
 
@@ -139,28 +142,5 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
     }
-
-    class updater extends AsyncTask<Void, Void, Void> {
-
-        private final Handler parent;
-
-        public updater(Handler parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            while (true) {
-                Log.d("MainFragment", "updating view");
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                parent.sendMessage(new Message());
-            }
-        }
-    }
-
 
 }
