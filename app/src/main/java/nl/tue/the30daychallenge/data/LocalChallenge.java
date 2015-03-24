@@ -73,6 +73,7 @@ public class LocalChallenge extends Challenge {
         this.amountOfTimesFailed = cursor.getInt(cursor.getColumnIndexOrThrow("amountOfTimesFailed"));
         this.startDate = Timestamp.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("startDate")));
         this.lastChecked = Timestamp.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("lastChecked")));
+        cursor.close();
         return true;
     }
 
@@ -134,6 +135,7 @@ public class LocalChallenge extends Challenge {
             int localID = cursor.getInt(cursor.getColumnIndexOrThrow("localID"));
             new LocalChallenge(localID).sync();
         } while (cursor.moveToNext());
+        cursor.close();
     }
 
     public void sync() throws NoServerConnectionException, RemoteChallengeNotFoundException {

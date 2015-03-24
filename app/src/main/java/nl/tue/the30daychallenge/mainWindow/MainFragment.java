@@ -58,11 +58,16 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
      * Method that is supposed to fill the view with cards
      */
     public void getChallenges() {
-        int oldCount = challengeListItemList.size();
+        Log.d("LocalChallenge", "getChallenges called");
         challengeListItemList = LocalConnector.getChallenges();
-        int newCount = challengeListItemList.size();
-        adapter = new MainWindowAdapter(challengeListItemList);
-        adapter.notifyDataSetChanged();
+        if (adapter != null) {
+            Log.d("LocalChallenge", "Adapter is set");
+            MainWindowAdapter mainAdapter = (MainWindowAdapter) adapter;
+            mainAdapter.setChallenges(challengeListItemList);
+            mainAdapter.notifyDataSetChanged();
+        } else {
+            Log.d("LocalChallenge", "Adapter is not set");
+        }
     }
 
     /**

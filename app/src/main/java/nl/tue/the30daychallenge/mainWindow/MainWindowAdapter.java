@@ -36,6 +36,10 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         // TODO: add more info
     }
 
+    public void setChallenges(List<Challenge> challenges) {
+        this.challenges = challenges;
+    }
+
     public static class MainChallengeCard extends RecyclerView.ViewHolder {
 
         protected TextView titleText;
