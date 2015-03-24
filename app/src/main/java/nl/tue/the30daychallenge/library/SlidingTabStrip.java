@@ -15,7 +15,7 @@
  */
 
 
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.library;
 import android.R;
 import android.content.Context;
 import android.graphics.Canvas;

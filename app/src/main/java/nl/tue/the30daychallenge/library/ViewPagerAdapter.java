@@ -1,6 +1,5 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.library;
 
-import android.app.ListFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;

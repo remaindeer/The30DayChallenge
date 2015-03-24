@@ -1,4 +1,4 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.library;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.RemoteChallenge;
 import nl.tue.the30daychallenge.data.RemoteConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector.Filter;

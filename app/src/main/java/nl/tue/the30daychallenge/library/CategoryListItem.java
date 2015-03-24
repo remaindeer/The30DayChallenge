@@ -1,4 +1,4 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.library;
 
 /**
  * Created by s122552 on 21-3-2015.

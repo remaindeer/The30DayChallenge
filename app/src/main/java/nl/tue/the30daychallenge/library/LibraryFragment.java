@@ -1,4 +1,4 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.library;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.RemoteChallenge;
 import nl.tue.the30daychallenge.data.RemoteConnector;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
@@ -64,6 +65,8 @@ public class LibraryFragment extends Fragment implements SensorListener {
         currentState = State.OVERVIEW;
         setHasOptionsMenu(true);
         View v =inflater.inflate(R.layout.activity_library,container,false);
+
+
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
         adapter =  new ViewPagerAdapter(myContext.getSupportFragmentManager(),Titles,Numboftabs);
@@ -180,9 +183,6 @@ public class LibraryFragment extends Fragment implements SensorListener {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

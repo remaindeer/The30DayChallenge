@@ -1,28 +1,26 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.library;
 
 /**
- * Created by s130968 on 23-3-2015.
+ * Created by s122552 on 21-3-2015.
  */
-
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.app.Activity;
 import java.util.List;
 
-import nl.tue.the30daychallenge.data.LocalChallenge;
-import nl.tue.the30daychallenge.data.RemoteChallenge;
+import nl.tue.the30daychallenge.R;
 
-public class ChallengeListAdapterLocal extends ArrayAdapter {
+public class CategoryListAdapter extends ArrayAdapter {
 
     private Context context;
     private boolean useList = true;
 
-    public ChallengeListAdapterLocal(Context context, List items) {
+    public CategoryListAdapter(Context context, List items) {
         super(context, android.R.layout.simple_list_item_1, items);
         this.context = context;
     }
@@ -32,9 +30,7 @@ public class ChallengeListAdapterLocal extends ArrayAdapter {
      */
     private class ViewHolder{
         TextView titleText;
-        TextView descriptionText;
-        TextView downloadsText;
-        TextView completionsText;
+        ImageView categoryImage;
     }
 
     /**
@@ -46,7 +42,7 @@ public class ChallengeListAdapterLocal extends ArrayAdapter {
      */
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        LocalChallenge item = (LocalChallenge)getItem(position);
+        CategoryListItem item = (CategoryListItem)getItem(position);
         View viewToUse = null;
 
         // This block exists to inflate the settings list item conditionally based on whether
@@ -55,27 +51,22 @@ public class ChallengeListAdapterLocal extends ArrayAdapter {
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
             if(useList){
-                viewToUse = mInflater.inflate(R.layout.challenge_main_list_item, null);
+                viewToUse = mInflater.inflate(R.layout.category_list_item, null);
             } else {
-                viewToUse = mInflater.inflate(R.layout.challenge_grid_item, null);
+                viewToUse = mInflater.inflate(R.layout.category_grid_item, null);
             }
 
             holder = new ViewHolder();
             holder.titleText = (TextView)viewToUse.findViewById(R.id.titleTextView);
-            holder.descriptionText = (TextView)viewToUse.findViewById(R.id.descriptionTextView);
-            holder.downloadsText = (TextView)viewToUse.findViewById(R.id.downloadsTextView);
-            holder.completionsText = (TextView)viewToUse.findViewById(R.id.completionsTextView);
-
+            holder.categoryImage = (ImageView)viewToUse.findViewById(R.id.categoryImageView);
             viewToUse.setTag(holder);
         } else {
             viewToUse = convertView;
             holder = (ViewHolder) viewToUse.getTag();
         }
 
-        holder.titleText.setText(item.title);
-        holder.descriptionText.setText(item.description);
-
-
+        holder.titleText.setText(item.getItemTitle());
+        holder.categoryImage.setImageResource(item.getItemCategory());
 
         return viewToUse;
     }

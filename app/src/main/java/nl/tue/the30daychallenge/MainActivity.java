@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import nl.tue.the30daychallenge.addChallenge.AddChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
+import nl.tue.the30daychallenge.library.ChallengeItemFragment;
+import nl.tue.the30daychallenge.library.LibraryFragment;
 import nl.tue.the30daychallenge.mainWindow.MainFragment;
 
 
@@ -60,9 +62,12 @@ public class MainActivity extends ActionBarActivity {
         mNavItems.add(new NavItem(getString(R.string.title_library), getString(R.string.description_library), R.drawable.ic_action_explore));
         mNavItems.add(new NavItem(getString(R.string.title_settings), getString(R.string.description_settings), R.drawable.ic_action_settings));
 
+        setTitle(mNavItems.get(0).mTitle);
+
         // DO NOT REMOVE OR MODIFY THIS LINE (NEVER EVER, REALLY)!!!!!!!!!11!!
         RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
         LocalConnector.load(me.getApplicationContext());
+        LocalConnector.dropDatabase();
 
         new AsyncTask<String, Boolean, String>() {
 
@@ -192,6 +197,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        getSupportActionBar().setElevation(0);
         return true;
     }
 

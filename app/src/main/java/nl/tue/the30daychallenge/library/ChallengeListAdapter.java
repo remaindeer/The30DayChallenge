@@ -1,4 +1,4 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.library;
 
 /**
  * Created by s122552 on 21-3-2015.
@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.RemoteChallenge;
 
 public class ChallengeListAdapter extends ArrayAdapter {

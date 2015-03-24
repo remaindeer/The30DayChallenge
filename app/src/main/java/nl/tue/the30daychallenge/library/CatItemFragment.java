@@ -1,4 +1,4 @@
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.library;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import nl.tue.the30daychallenge.Globals.Categories;
+import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.Category;
 
 
@@ -80,8 +80,6 @@ public class CatItemFragment extends Fragment implements AbsListView.OnItemClick
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         CategoryListItem item = (CategoryListItem) this.categoryListItemList.get(position);
-        Toast.makeText(getActivity(), item.getItemTitle() + " Clicked!"
-                , Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), ChallengesActivity.class);
         Bundle b = new Bundle();
         b.putInt("Category", item.getCategoryID());

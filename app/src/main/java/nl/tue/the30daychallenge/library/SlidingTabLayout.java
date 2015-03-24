@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package nl.tue.the30daychallenge;
+package nl.tue.the30daychallenge.library;
 
 
 import android.content.Context;
@@ -31,6 +31,8 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import nl.tue.the30daychallenge.R;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to

@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
 
-    <nl.tue.the30daychallenge.SlidingTabLayout
+    <nl.tue.the30daychallenge.library.SlidingTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
