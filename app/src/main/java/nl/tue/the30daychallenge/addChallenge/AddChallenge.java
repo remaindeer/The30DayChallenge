@@ -81,12 +81,13 @@ public class AddChallenge extends ActionBarActivity {
                 String description = getDescription();
                 int categoryID = getCategoryId();
                 Boolean toUpload = getUploadState();
-                LocalChallenge challengeToAdd = new LocalChallenge(title, description, categoryID);
-                if(toUpload){
+                LocalChallenge challengeToAdd = null;
+                challengeToAdd = new LocalChallenge(title, description, categoryID);
+                if (toUpload){
                     try {
                         challengeToAdd.upload();
                     } catch (Throwable e){
-                        e.printStackTrace();
+                        Log.d("LocalChallenge", e.toString());
                     }
                 }
                 finish();

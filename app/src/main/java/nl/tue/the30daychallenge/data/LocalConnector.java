@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class LocalConnector extends SQLiteOpenHelper {
      * @return a list of all local challenges
      */
     public static List<LocalChallenge> getChallenges() {
+        Log.d("LocalChallenge", "getChallenges()");
         List<LocalChallenge> challenges = new ArrayList();
         SQLiteDatabase db = LocalConnector.db;
         Cursor cursor = db.query("LocalChallenge", new String[]{"*"}, null, null, null, null, null);
@@ -65,6 +67,7 @@ public class LocalConnector extends SQLiteOpenHelper {
         cursor.moveToFirst();
         do {
             int localID = cursor.getInt(cursor.getColumnIndexOrThrow("localID"));
+            Log.d("LocalChallenge", "Found local challenge: " + localID);
             challenges.add(new LocalChallenge(localID));
         } while (cursor.moveToNext());
         return challenges;

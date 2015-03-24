@@ -19,7 +19,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import nl.tue.the30daychallenge.R;
-import nl.tue.the30daychallenge.data.Challenge;
+import nl.tue.the30daychallenge.data.LocalConnector;
 
 public class MainFragment extends Fragment implements AbsListView.OnItemClickListener, AbsListView.OnScrollListener {
     /**
@@ -58,23 +58,7 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
      * Method that is supposed to fill the view with cards
      */
     public void getChallenges() {
-        //challengeListItemList = LocalConnector.getChallenges();
-        challengeListItemList = new ArrayList<Challenge>();
-        challengeListItemList.add(new Challenge() {{
-            title = "Test";
-        }});
-        challengeListItemList.add(new Challenge() {{
-            title = "Test2";
-        }});
-        challengeListItemList.add(new Challenge() {{
-            title = "Test3";
-        }});
-        challengeListItemList.add(new Challenge() {{
-            title = "Test4";
-        }});
-        challengeListItemList.add(new Challenge() {{
-            title = "Test5";
-        }});
+        challengeListItemList = LocalConnector.getChallenges();
     }
 
     /**
@@ -86,13 +70,14 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //mAdapter = new ChallengeListAdapterLocal(getActivity(), challengeListItemList);
+        LocalConnector.load(getActivity());
 
         if (timer == null) {
             MainFragment.timer = new Timer();
             MainFragment.timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
-                    Log.d("MainFragment", "updating view");
+                    Log.d("LocalChallenge", "updating view");
                     _handler.sendMessage(new Message());
                 }
             }, 0, 3000);

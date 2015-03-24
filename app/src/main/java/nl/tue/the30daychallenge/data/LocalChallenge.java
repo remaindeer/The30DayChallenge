@@ -97,6 +97,7 @@ public class LocalChallenge extends Challenge {
         Date now = Calendar.getInstance().getTime();
         this.startDate = new Timestamp(now.getTime());
         this.lastChecked = new Timestamp(getMidnight().getLastMidnight().getTime() - 1000);
+        Log.d("LocalChallenge", "New local challenge: " + toString());
         save();
     }
 
