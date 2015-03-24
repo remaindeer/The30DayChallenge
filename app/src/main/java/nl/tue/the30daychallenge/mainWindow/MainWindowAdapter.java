@@ -33,6 +33,7 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
     public void onBindViewHolder(MainChallengeCard holder, int position) {
         MainChallengeCard newHolder = (MainChallengeCard) holder;
         newHolder.titleText.setText(challenges.get(position).title);
+        newHolder.descriptionText.setText(challenges.get(position).description);
         // TODO: add more info
     }
 

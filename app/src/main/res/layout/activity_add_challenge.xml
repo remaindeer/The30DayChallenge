@@ -53,6 +53,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:textColor="@color/secondary_text"/>
+
         <CheckBox
             android:id="@+id/create_uploadToServerCheckBox"
             android:layout_width="wrap_content"
