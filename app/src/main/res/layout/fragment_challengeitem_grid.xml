@@ -5,6 +5,11 @@
     android:paddingLeft="8dp"
     android:paddingRight="8dp">
 
+    <ProgressBar
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar1"
+        android:layout_gravity="center_horizontal|bottom"/>
     <GridView android:id="@android:id/list" android:layout_width="match_parent"
         android:layout_height="match_parent" android:numColumns="2" />
 

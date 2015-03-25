@@ -28,6 +28,7 @@ import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 
 public class ChallengeItemFragment extends Fragment implements AbsListView.OnItemClickListener, AbsListView.OnScrollListener {
 
+    private RemoteConnector.SortFilter sortFilter;
     private List challengeListItemList = new ArrayList(); // at the top of your fragment list
     private Filter categoryFilter = null;
     private boolean editorspickes = false;
@@ -49,7 +50,14 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
     private ListAdapter mAdapter;
     private View view;
 
-    public ChallengeItemFragment(int category){
+    public ChallengeItemFragment(int category, String sort){
+        try {
+            if (RemoteConnector.SortField.valueOf(sort) != null) {
+                sortFilter = new RemoteConnector.SortFilter(RemoteConnector.SortField.valueOf(sort));
+            }
+        } catch (IllegalArgumentException e){
+            Log.d("Sorting",e.toString());
+        }
         categoryFilter = new RemoteConnector.CategoryFilter(category);
         getChallenges();
     }
@@ -114,13 +122,15 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
     }
 
     private void updateProgressbar() {
-        FrameLayout layout = (FrameLayout)view.findViewById(R.id.framelayout);
-        layout.removeView(progressBar);
-        layout.addView(progressBar);
-        if(progressBarVisible) {
-            progressBar.setVisibility(View.VISIBLE);
-        } else {
-            progressBar.setVisibility(View.GONE);
+        if(view!=null) {
+            FrameLayout layout = (FrameLayout) view.findViewById(R.id.framelayout);
+            layout.removeView(progressBar);
+            layout.addView(progressBar);
+            if (progressBarVisible) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -164,6 +174,7 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
             try {
                 ArrayList filters = new ArrayList();
                 if(categoryFilter!=null){filters.add(categoryFilter);}
+                if(sortFilter!=null){filters.add(sortFilter);}
                 if(query!=null){filters.add(new RemoteConnector.SearchFilter(query));}
                 if(editorspickes){filters.add(new RemoteConnector.EditorsPicksFilter());}
                 filters.add(new RemoteConnector.PaginationFilter(page,itemspage));

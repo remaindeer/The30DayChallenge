@@ -118,6 +118,9 @@ public class RemoteConnector {
             String query = "";
             String field = "";
             switch (sortBy) {
+                case LIKES:
+                    field = "likes";
+                    break;
                 case COMPLETIONS:
                     field = "completions";
                     break;

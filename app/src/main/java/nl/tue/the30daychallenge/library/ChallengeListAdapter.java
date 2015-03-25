@@ -35,6 +35,7 @@ public class ChallengeListAdapter extends ArrayAdapter {
         TextView titleText;
         TextView descriptionText;
         TextView downloadsText;
+        TextView likesText;
         TextView completionsText;
     }
 
@@ -66,6 +67,7 @@ public class ChallengeListAdapter extends ArrayAdapter {
             holder.descriptionText = (TextView)viewToUse.findViewById(R.id.descriptionTextView);
             holder.downloadsText = (TextView)viewToUse.findViewById(R.id.downloadsTextView);
             holder.completionsText = (TextView)viewToUse.findViewById(R.id.completionsTextView);
+            holder.likesText = (TextView)viewToUse.findViewById(R.id.likesTextView);
 
             viewToUse.setTag(holder);
         } else {
@@ -77,7 +79,7 @@ public class ChallengeListAdapter extends ArrayAdapter {
         holder.descriptionText.setText(item.description);
         holder.downloadsText.setText("Starts: "+item.downloads);
         holder.completionsText.setText("Completions: "+item.completions);
-
+        holder.likesText.setText("Likes: "+item.likes);
 
         return viewToUse;
     }
