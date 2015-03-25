@@ -18,7 +18,4 @@
         <item name="searchIcon">@drawable/ic_action_search</item>
         <item name="closeIcon">@drawable/ic_action_clear</item>
     </style>
-
-
-
 </resources>

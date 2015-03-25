@@ -1,68 +1,115 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="nl.tue.the30daychallenge.addChallenge.AddChallenge"
+    android:paddingTop="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@android:color/white"
-    tools:context="nl.tue.the30daychallenge.addChallenge.AddChallenge">
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:background="@android:color/white"
-        android:layout_height="fill_parent"
-        android:layout_margin="1dp">
-
-        <EditText
-        android:id="@+id/create_titleField"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Title"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
-
-        <EditText
-            android:id="@+id/create_descriptionField"
-            android:layout_width="fill_parent"
-            android:layout_margin="5dp"
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/create_titleField"
-            android:hint="Description"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp" />
-        <Spinner
-            android:id="@+id/create_categorySpinner"
-            android:layout_below="@+id/create_descriptionField"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|start"
+            card_view:cardElevation="2dp"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4dp"
+            android:layout_gravity="center">
 
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"></Spinner>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/create_uploadToServerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/create_categorySpinner"
-            android:text="Upload to server"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/secondary_text"/>
+                <EditText
+                android:id="@+id/create_titleField"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:maxHeight="1dp" />
 
-        <CheckBox
-            android:id="@+id/create_uploadToServerCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_gravity="right"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/create_uploadToServerText"
-            android:layout_toRightOf="@+id/create_uploadToServerText"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp" />
+                <EditText
+                    android:id="@+id/create_descriptionField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/create_titleField"
+                    android:inputType="textMultiLine"
+                    android:hint="Description"
+                    android:ems="10"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_gravity="center_horizontal"
+                    android:minLines="3" />
 
-    </RelativeLayout>
-</RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Category:"
+                    android:id="@+id/textView3"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:textColor="@color/primary_text" />
+
+                <Spinner
+                    android:id="@+id/create_categorySpinner"
+                    android:layout_below="@+id/create_descriptionField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|start"
+
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:spinnerMode="dropdown"
+                    android:paddingLeft="4dp"></Spinner>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/create_uploadToServerText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/create_categorySpinner"
+                        android:text="Upload to server:"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/primary_text" />
+
+                    <CheckBox
+                        android:id="@+id/create_uploadToServerCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/create_uploadToServerText"
+                        android:layout_toRightOf="@+id/create_uploadToServerText"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/doneCheck"
+                    android:src="@drawable/ic_action_done_grey"
+                    android:background="@null"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="8dp" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+</LinearLayout>
+

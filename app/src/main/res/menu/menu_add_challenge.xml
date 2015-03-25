@@ -3,6 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="nl.tue.the30daychallenge.addChallenge.AddChallenge">
     <item android:id="@+id/create_addChallenge" android:title="+"
-        android:icon="@android:drawable/checkbox_on_background"
+        android:icon="@drawable/ic_action_done_white"
         android:orderInCategory="100" app:showAsAction="always" />
 </menu>

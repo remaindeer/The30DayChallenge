@@ -33,22 +33,25 @@ public class Categories {
 
     private static void initList() {
         categoryList = new ArrayList<Category>();
-        icons.put("Fitness", R.mipmap.category_icon_fitness);
-        icons.put("Diets", R.mipmap.category_icon_fitness);
-        icons.put("Mental health", R.mipmap.category_icon_mental_health);
-        icons.put("Chores", R.mipmap.category_icon_chores);
-        icons.put("Intellectual", R.mipmap.category_icon_intellectual);
-        icons.put("Relationships", R.mipmap.category_icon_relationship);
-        icons.put("Career", R.mipmap.category_icon_relationship);
-        icons.put("Party", R.mipmap.category_icon_relationship);
-        icons.put("Finance", R.mipmap.category_icon_finance);
-        icons.put("Funny", R.mipmap.category_icon_funny);
-        icons.put("Other", R.mipmap.category_icon_social);
+        icons.put("Fitness", R.drawable.cat_fitness);
+        icons.put("Diets", R.drawable.cat_diets);
+        icons.put("Mental health", R.drawable.cat_mental_health);
+        icons.put("Chores", R.drawable.cat_chores);
+        icons.put("Intellectual", R.drawable.cat_intellectual);
+        icons.put("Relationships", R.drawable.cat_relationships);
+        icons.put("Career", R.drawable.cat_career);
+        icons.put("Party", R.drawable.cat_party);
+        icons.put("Finance", R.drawable.cat_finance);
+        icons.put("Funny", R.drawable.cat_funny);
 
         //not yet present on server:
-        icons.put("Creativity", R.mipmap.category_icon_creativity);
-        icons.put("Outgoing", R.mipmap.category_icon_outgoing);
-        icons.put("Social", R.mipmap.category_icon_social);
+        icons.put("Creativity", R.drawable.cat_creativity);
+        icons.put("Outgoing", R.drawable.cat_outgoing);
+        icons.put("Social", R.drawable.cat_social);
+
+        icons.put("Other", R.drawable.cat_other);
+
+
         // TODO: if anyone knows how to do this, please repair it for me :( greetings Tane
         //getCategoriesFromOnline();
         categoryList.add(new Category() {{
