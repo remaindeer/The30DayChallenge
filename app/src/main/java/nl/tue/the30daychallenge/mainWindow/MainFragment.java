@@ -22,6 +22,7 @@ import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.LocalConnector;
 
 public class MainFragment extends Fragment implements AbsListView.OnItemClickListener, AbsListView.OnScrollListener {
+    public static Timer timer;
     /**
      * updates the view when testUpdates sends a message
      */
@@ -33,19 +34,16 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
             getChallenges();
         }
     };
-
     /**
      * Running challenges we want to show.
      */
     private List challengeListItemList = new ArrayList(); // at the top of your fragment list
-
     /**
      * The fragment's ListView/GridView.
      */
     private RecyclerView cardView;
     private LinearLayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
-    public static Timer timer;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -65,6 +63,7 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
             mainAdapter.notifyDataSetChanged();
         }
     }
+
 
     /**
      * Method that starts up the fragment
@@ -96,8 +95,22 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
      * TODO: maybe this should be implemented on onPause()...
      */
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        timer.cancel();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        timer = new Timer();
+        MainFragment.timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d("LocalChallenge", "updating view");
+                _handler.sendMessage(new Message());
+            }
+        }, 0, 3000);
+        super.onResume();
     }
 
 

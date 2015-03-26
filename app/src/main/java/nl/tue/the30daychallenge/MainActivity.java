@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import nl.tue.the30daychallenge.addChallenge.AddChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
+import nl.tue.the30daychallenge.details.DetailsActivity;
 import nl.tue.the30daychallenge.library.LibraryFragment;
 import nl.tue.the30daychallenge.mainWindow.MainFragment;
 
@@ -37,10 +38,9 @@ public class MainActivity extends ActionBarActivity {
 
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
+    ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-
-    ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,6 +225,12 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
+            return true;
+        }
+        if (id == R.id.action_mock_details) {
+            Intent DetailsIntent = new Intent(this, DetailsActivity.class);
+            //DetailsIntent.putExtra("challenge", new LocalChallenge("4","3",4));
+            startActivity(DetailsIntent);
             return true;
         }
 

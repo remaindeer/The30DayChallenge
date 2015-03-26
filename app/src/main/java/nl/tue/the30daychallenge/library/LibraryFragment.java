@@ -34,18 +34,24 @@ public class LibraryFragment extends Fragment implements SensorListener {
 
     private FragmentActivity myContext;
     private LibraryFragment me;
+    private static final int SHAKE_THRESHOLD = 4000;
+    // For shake motion detection.
+    public static SensorManager sensorMgr;
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
-    CharSequence Titles[]={"Editors picks","Categories"};
-    int Numboftabs =2;
-
-    // For shake motion detection.
-    public static SensorManager sensorMgr;
+    CharSequence Titles[] = {"Editors picks", "Categories"};
+    int Numboftabs = 2;
+    private FragmentActivity myContext;
     private long lastUpdate = -1;
     private float x, y, z;
     private float last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD = 4000;
+    private State currentState = State.OVERVIEW;
+
+    public LibraryFragment() {
+    }
+
+    ;
 
     @Override
     public void onAccuracyChanged(int sensor, int accuracy) {
@@ -67,12 +73,11 @@ public class LibraryFragment extends Fragment implements SensorListener {
         super.onCreate(savedInstanceState);
         currentState = State.OVERVIEW;
         setHasOptionsMenu(true);
-        View v =inflater.inflate(R.layout.activity_library,container,false);
-
+        View v = inflater.inflate(R.layout.activity_library, container, false);
 
 
         // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerAdapter(myContext.getSupportFragmentManager(),Titles,Numboftabs);
+        adapter = new ViewPagerAdapter(myContext.getSupportFragmentManager(), Titles, Numboftabs);
 
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) v.findViewById(R.id.pager);
@@ -94,7 +99,6 @@ public class LibraryFragment extends Fragment implements SensorListener {
         tabs.setViewPager(pager);
 
         // start motion detection
-
         boolean accelSupported = sensorMgr.registerListener(this,
                 SensorManager.SENSOR_ACCELEROMETER,
                 SensorManager.SENSOR_DELAY_GAME);
@@ -121,7 +125,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
                 y = values[SensorManager.DATA_Y];
                 z = values[SensorManager.DATA_Z];
 
-                float speed = Math.abs(x+y+z - last_x - last_y - last_z)
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z)
                         / diffTime * 10000;
                 if (speed > SHAKE_THRESHOLD) {
                     // @todo implement details screen for a random challenge
@@ -151,14 +155,14 @@ public class LibraryFragment extends Fragment implements SensorListener {
         }
     }
 
-   @Override
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.menu_library, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        SearchView.SearchAutoComplete theTextArea = (SearchView.SearchAutoComplete)searchView.findViewById(R.id.search_src_text);
+        SearchView.SearchAutoComplete theTextArea = (SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
         theTextArea.setTextColor(Color.WHITE);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -166,7 +170,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
             public boolean onQueryTextSubmit(String query) {
                 Intent intent = new Intent(getActivity(), ChallengesActivity.class);
                 Bundle b = new Bundle();
-                b.putString("query",query);
+                b.putString("query", query);
                 intent.putExtras(b);
                 startActivity(intent);
                 return true;
@@ -177,7 +181,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
                 return false;
             }
         });
-       super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -194,8 +198,12 @@ public class LibraryFragment extends Fragment implements SensorListener {
 
     @Override
     public void onAttach(Activity activity) {
-        myContext=(FragmentActivity) activity;
+        myContext = (FragmentActivity) activity;
         super.onAttach(activity);
 
+    }
+
+    private enum State {
+        RANDOM, OVERVIEW
     }
 }
