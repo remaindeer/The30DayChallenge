@@ -2,6 +2,7 @@ package nl.tue.the30daychallenge;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -9,6 +10,8 @@ import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TimePicker;
+
+import java.util.prefs.PreferenceChangeEvent;
 
 /**
  * Created by kevin on 3/24/15.
@@ -94,12 +97,12 @@ public class SettingsActivity extends ActionBarActivity implements TimePicker.On
         }
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Remove the action bar's shadow
         getSupportActionBar().setElevation(0);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
