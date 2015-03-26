@@ -6,8 +6,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <provider android:authorities="com.facebook.app.FacebookContentProvider366234573582332"
+    <provider
         android:name="com.facebook.FacebookContentProvider"
+        android:authorities="com.facebook.app.FacebookContentProvider366234573582332"
         android:exported="true" />
 
     <application
@@ -27,8 +28,9 @@
             </intent-filter>
         </receiver>
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider366234573582332"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider366234573582332"
             android:exported="true" />
 
         <activity
@@ -73,5 +75,4 @@
                 android:value="nl.tue.the30daychallenge.MainActivity" />
         </activity>
     </application>
-
 </manifest>

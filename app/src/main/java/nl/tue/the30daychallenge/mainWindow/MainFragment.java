@@ -28,7 +28,6 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
      */
     public Handler _handler = new Handler() {
 
-
         @Override
         public void handleMessage(Message msg) {
             getChallenges();
@@ -64,7 +63,6 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
         }
     }
 
-
     /**
      * Method that starts up the fragment
      *
@@ -81,6 +79,7 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
             MainFragment.timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
+                    //LocalConnector.dropDatabase();
                     Log.d("LocalChallenge", "updating view");
                     _handler.sendMessage(new Message());
                 }

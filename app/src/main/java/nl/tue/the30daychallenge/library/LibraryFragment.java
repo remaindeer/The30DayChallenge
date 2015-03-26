@@ -127,8 +127,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
                             try {
                                 List<RemoteChallenge> challenges = RemoteConnector.getChallenges(new RemoteConnector.SortFilter(RemoteConnector.SortField.RANDOM));
                                 Log.d("Shaker", challenges.get(0).toString());
-                                DetailsActivity.setChallenge(challenges.get(0));
-                                me.startActivity(new Intent(me.getActivity(), DetailsActivity.class));
+                                ShowDetails(challenges.get(0).challengeID, false);
                             } catch (NoServerConnectionException e) {
                                 e.printStackTrace();
                             }
@@ -142,6 +141,13 @@ public class LibraryFragment extends Fragment implements SensorListener {
                 last_z = z;
             }
         }
+    }
+
+    private void ShowDetails(int id, boolean isLocal) {
+        Intent TestIntent = new Intent(me.getActivity(), DetailsActivity.class);
+        TestIntent.putExtra("id", id);
+        TestIntent.putExtra("isLocal", isLocal);
+        me.startActivity(TestIntent);
     }
 
     @Override

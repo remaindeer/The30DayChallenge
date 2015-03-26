@@ -44,14 +44,13 @@ import nl.tue.the30daychallenge.mainWindow.MainFragment;
 public class MainActivity extends ActionBarActivity {
 
     private static String TAG = MainActivity.class.getSimpleName();
-
+    public CallbackManager callbackManager;
+    public ShareDialog shareDialog;
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
     ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    public CallbackManager callbackManager;
-    public ShareDialog shareDialog;
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
