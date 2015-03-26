@@ -12,7 +12,7 @@ import nl.tue.the30daychallenge.data.Category;
  */
 public class Categories {
     private static List<Category> categoryList;
-    public static HashMap<String, Integer> icons = new HashMap<>();
+    public static HashMap<String, Integer> icons = new HashMap();
 
     public static List<Category> getList() {
         if (categoryList == null || categoryList.size() == 0) {
@@ -27,7 +27,7 @@ public class Categories {
     }
 
     private static void initList() {
-        categoryList = new ArrayList<>();
+        categoryList = new ArrayList();
         icons.put("Fitness", R.drawable.cat_fitness);
         icons.put("Diets", R.drawable.cat_diets);
         icons.put("Mental health", R.drawable.cat_mental_health);
