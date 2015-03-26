@@ -3,6 +3,7 @@ package nl.tue.the30daychallenge;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +22,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
+
 import java.util.ArrayList;
 
 import nl.tue.the30daychallenge.addChallenge.AddChallenge;
@@ -40,11 +50,62 @@ public class MainActivity extends ActionBarActivity {
     ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    public CallbackManager callbackManager;
+    public ShareDialog shareDialog;
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.setApplicationId("366234573582332");
+        FacebookSdk.setApplicationName("The30DayChallenge");
+        FacebookSdk.setIsDebugEnabled(true);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+        // this part is optional
+        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                Log.d("Facebook", "Callback");
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("Facebook", "Callback");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("Facebook", "Callback");
+            }
+        });
+
+        if (ShareDialog.canShow(ShareLinkContent.class)) {
+            /*ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle("Hello Facebook")
+                    .setContentDescription(
+                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
+                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+                    .build();*/
+
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle("Hello Facebook")
+                    .setContentDescription(
+                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
+                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+                    .build();
+            Log.d("Facebook", "Share dialog: " + shareDialog.toString());
+            Log.d("Facebook", "Link content: " + linkContent.toString());
+            shareDialog.show(linkContent);
+        }
 
         Settings.loadSettings(getSharedPreferences("settings", 0));
 
