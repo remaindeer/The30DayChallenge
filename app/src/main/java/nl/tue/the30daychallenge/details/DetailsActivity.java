@@ -1,7 +1,10 @@
 package nl.tue.the30daychallenge.details;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,7 +14,7 @@ import nl.tue.the30daychallenge.data.Challenge;
 import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.data.RemoteChallenge;
 
-public class DetailsActivity extends Activity {
+public class DetailsActivity extends ActionBarActivity {
 
     public DetailsActivity(Challenge challengeToShow){
         challenge = challengeToShow;
@@ -24,10 +27,18 @@ public class DetailsActivity extends Activity {
 
 
     private boolean challengeIsLocal = false;
-    private Challenge challenge;
+    static private Challenge challenge;
 
-    private void SetButtonContent(View rootView) {
-        Button button = (Button)rootView.findViewById(R.id.likeSlashUploadSlashDownloadButton);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details);
+        SetButtonContent();
+        SetChallengeTimeRunning();
+    }
+
+    private void SetButtonContent() {
+        Button button = (Button)findViewById(R.id.likeSlashUploadSlashDownloadButton);
         if(challengeIsLocal){
             // If liking is available
             if(((LocalChallenge)challenge).isUploaded){
@@ -46,16 +57,30 @@ public class DetailsActivity extends Activity {
         });
     }
 
-    private void SetChallengeTimeRunning(View rootView) {
+    private void SetChallengeTimeRunning() {
         if(challengeIsLocal){
             LocalChallenge local = (LocalChallenge)challenge;
             String startedAt = String.format("Challenge started at %d", local.startDate);
-            ((TextView)rootView.findViewById(R.id.details_StartedAt)).setText(startedAt);
+            ((TextView)findViewById(R.id.details_StartedAt)).setText(startedAt);
         }
         else{
             RemoteChallenge remote = (RemoteChallenge)challenge;
             String startedAt = String.format("Challenge downloaded %d times", remote.downloads);
-            ((TextView)rootView.findViewById(R.id.details_StartedAt)).setText(startedAt);
+            ((TextView)findViewById(R.id.details_StartedAt)).setText(startedAt);
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static void setChallenge(Challenge challenge) {
+        DetailsActivity.challenge = challenge;
     }
 }

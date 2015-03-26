@@ -1,5 +1,6 @@
 package nl.tue.the30daychallenge.library;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.RemoteChallenge;
 import nl.tue.the30daychallenge.data.RemoteConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector.Filter;
+import nl.tue.the30daychallenge.details.DetailsActivity;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 
 
@@ -138,6 +140,8 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         RemoteChallenge item = (RemoteChallenge) this.challengeListItemList.get(position);
+        DetailsActivity details = new DetailsActivity(item);
+        startActivity(new Intent(getActivity(),DetailsActivity.class));
         Toast.makeText(getActivity(), item.title + " Clicked!"
                 , Toast.LENGTH_SHORT).show();
     }

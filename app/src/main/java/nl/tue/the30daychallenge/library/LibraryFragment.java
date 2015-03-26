@@ -25,6 +25,7 @@ import java.util.List;
 import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.RemoteChallenge;
 import nl.tue.the30daychallenge.data.RemoteConnector;
+import nl.tue.the30daychallenge.details.DetailsActivity;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 
 public class LibraryFragment extends Fragment implements SensorListener {
@@ -32,6 +33,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
     // Declaring Your View and Variables
 
     private FragmentActivity myContext;
+    private LibraryFragment me;
     ViewPager pager;
     ViewPagerAdapter adapter;
     SlidingTabLayout tabs;
@@ -56,6 +58,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
     private State currentState = State.OVERVIEW;
 
     public LibraryFragment() {
+        me = this;
     }
 
     @Override
@@ -131,6 +134,8 @@ public class LibraryFragment extends Fragment implements SensorListener {
                             try {
                                 List<RemoteChallenge> challenges = RemoteConnector.getChallenges(new RemoteConnector.SortFilter(RemoteConnector.SortField.RANDOM));
                                 Log.d("Shaker", challenges.get(0).toString());
+                                DetailsActivity.setChallenge(challenges.get(0));
+                                me.startActivity(new Intent(getActivity(),DetailsActivity.class));
                             } catch (NoServerConnectionException e) {
                                 e.printStackTrace();
                             }
