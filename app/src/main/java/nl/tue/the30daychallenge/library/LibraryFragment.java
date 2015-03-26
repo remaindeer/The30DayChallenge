@@ -139,7 +139,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
                                 List<RemoteChallenge> challenges = RemoteConnector.getChallenges(new RemoteConnector.SortFilter(RemoteConnector.SortField.RANDOM));
                                 Log.d("Shaker", challenges.get(0).toString());
                                 DetailsActivity.setChallenge(challenges.get(0));
-                                me.startActivity(new Intent(getActivity(),DetailsActivity.class));
+                                me.startActivity(new Intent(me.getActivity(),DetailsActivity.class));
                             } catch (NoServerConnectionException e) {
                                 e.printStackTrace();
                             }
