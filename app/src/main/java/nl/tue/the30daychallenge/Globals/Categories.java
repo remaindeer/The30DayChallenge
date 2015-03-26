@@ -44,7 +44,7 @@ public class Categories {
         icons.put("Finance", R.drawable.cat_finance);
         icons.put("Funny", R.drawable.cat_funny);
 
-        //not yet present on server:
+        //TODO: not yet present on server:
         icons.put("Creativity", R.drawable.cat_creativity);
         icons.put("Outgoing", R.drawable.cat_outgoing);
         icons.put("Social", R.drawable.cat_social);

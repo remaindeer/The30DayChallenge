@@ -53,15 +53,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Rating:"
-                    android:id="@+id/cardRating"
-                    android:layout_gravity="right"
-                    android:textColor="@color/accent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="downloads"
                     android:id="@+id/downloadsTextView"
                     android:textColor="@color/accent"
