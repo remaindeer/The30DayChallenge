@@ -8,10 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,8 +26,8 @@ import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 
 public class DetailsActivity extends ActionBarActivity {
 
-    private boolean challengeIsLocal = false;
-    private Challenge challenge;
+    private static boolean challengeIsLocal = false;
+    private static Challenge challenge;
 
     /**
      * To use this activity, create an intent, with as data:
@@ -41,6 +37,19 @@ public class DetailsActivity extends ActionBarActivity {
     public DetailsActivity() {
     }
 
+    public DetailsActivity(Challenge challenge) {
+        setChallenge(challenge);
+    }
+
+    public static void setChallenge(Challenge challenge) {
+        challenge = challenge;
+        if (challenge instanceof RemoteChallenge) {
+            challengeIsLocal = false;
+        } else {
+            challengeIsLocal = true;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +57,7 @@ public class DetailsActivity extends ActionBarActivity {
         Intent starterIntent = getIntent();
         Bundle data = starterIntent.getExtras();
         challengeIsLocal = data.getBoolean("isLocal");
-        if(challengeIsLocal){
+        if (challengeIsLocal) {
             getLocalChallenge(data);
         } else {
             getRemoteChallenge(data);
@@ -92,8 +101,6 @@ public class DetailsActivity extends ActionBarActivity {
         }
     }
 
-    private boolean challengeIsLocal = false;
-    static private Challenge challenge;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -101,18 +108,11 @@ public class DetailsActivity extends ActionBarActivity {
         return true;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
-        SetButtonContent();
-        SetChallengeTimeRunning();
-    }
-
     private void SetButtonContent() {
-        Button button = (Button)findViewById(R.id.likeSlashUploadSlashDownloadButton);
-        LocalChallenge localChallenge = (LocalChallenge)challenge;
-        if(challengeIsLocal){
+        ButtonState buttonState;
+        Button button = (Button) findViewById(R.id.likeSlashUploadSlashDownloadButton);
+        LocalChallenge localChallenge = (LocalChallenge) challenge;
+        if (challengeIsLocal) {
             // If liking is available
             if (localChallenge.isUploaded) {
                 if (localChallenge.isLiked()) {
@@ -144,6 +144,7 @@ public class DetailsActivity extends ActionBarActivity {
             ((TextView)findViewById(R.id.details_StartedAt)).setText(startedAt);
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -153,10 +154,6 @@ public class DetailsActivity extends ActionBarActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public static void setChallenge(Challenge challenge) {
-        DetailsActivity.challenge = challenge;
     }
 
     public void ShowMessageBox(String title, String message) {

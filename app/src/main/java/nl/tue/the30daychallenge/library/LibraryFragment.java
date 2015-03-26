@@ -32,8 +32,6 @@ public class LibraryFragment extends Fragment implements SensorListener {
 
     // Declaring Your View and Variables
 
-    private FragmentActivity myContext;
-    private LibraryFragment me;
     private static final int SHAKE_THRESHOLD = 4000;
     // For shake motion detection.
     public static SensorManager sensorMgr;
@@ -43,28 +41,19 @@ public class LibraryFragment extends Fragment implements SensorListener {
     CharSequence Titles[] = {"Editors picks", "Categories"};
     int Numboftabs = 2;
     private FragmentActivity myContext;
+    private LibraryFragment me;
     private long lastUpdate = -1;
     private float x, y, z;
     private float last_x, last_y, last_z;
     private State currentState = State.OVERVIEW;
 
     public LibraryFragment() {
+        me = this;
     }
-
-    ;
 
     @Override
     public void onAccuracyChanged(int sensor, int accuracy) {
 
-    }
-
-    private enum State {
-        RANDOM, OVERVIEW
-    };
-    private State currentState = State.OVERVIEW;
-
-    public LibraryFragment() {
-        me = this;
     }
 
     @Override
@@ -139,7 +128,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
                                 List<RemoteChallenge> challenges = RemoteConnector.getChallenges(new RemoteConnector.SortFilter(RemoteConnector.SortField.RANDOM));
                                 Log.d("Shaker", challenges.get(0).toString());
                                 DetailsActivity.setChallenge(challenges.get(0));
-                                me.startActivity(new Intent(me.getActivity(),DetailsActivity.class));
+                                me.startActivity(new Intent(me.getActivity(), DetailsActivity.class));
                             } catch (NoServerConnectionException e) {
                                 e.printStackTrace();
                             }
