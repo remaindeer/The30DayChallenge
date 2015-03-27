@@ -71,6 +71,13 @@ public class DetailsActivity extends ActionBarActivity {
                 break;
             }
         }
+
+        TextView highScore = (TextView) findViewById(R.id.details_HighScore);
+        if (challengeIsLocal) {
+            highScore.setText("Highscore: " + ((LocalChallenge) challenge).highscore + " days");
+        } else {
+            highScore.setEnabled(false);
+        }
     }
 
     private void getLocalChallenge(int id) {

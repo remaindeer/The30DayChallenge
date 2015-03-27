@@ -6,6 +6,7 @@
     android:background="@color/icons"
     android:padding="16dp"
     tools:context="nl.tue.the30daychallenge.DetailsFragment">
+
     <GridLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -25,6 +26,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="Challenge started 2 days ago" />
+
+        <TextView
+            android:id="@+id/details_HighScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp" />
 
         <TextView
             android:id="@+id/details_challengeTitleBar"
