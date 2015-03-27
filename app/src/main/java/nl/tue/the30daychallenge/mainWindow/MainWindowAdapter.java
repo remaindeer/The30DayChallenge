@@ -11,14 +11,15 @@ import java.util.List;
 
 import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.Challenge;
+import nl.tue.the30daychallenge.data.LocalChallenge;
 
 /**
  * Created by tane on 3/23/15.
  */
 public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.MainChallengeCard> {
-    List<Challenge> challenges;
+    List<LocalChallenge> challenges;
 
-    public MainWindowAdapter(List<Challenge> data){
+    public MainWindowAdapter(List<LocalChallenge> data){
         this.challenges = data;
     }
 
@@ -34,10 +35,11 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         MainChallengeCard newHolder = (MainChallengeCard) holder;
         newHolder.titleText.setText(challenges.get(position).title);
         newHolder.descriptionText.setText(challenges.get(position).description);
+       // newHolder.startDateText.setText(challenges.get(position).startDate);
         // TODO: add more info
     }
 
-    public void setChallenges(List<Challenge> challenges) {
+    public void setChallenges(List<LocalChallenge> challenges) {
         this.challenges = challenges;
     }
 
@@ -47,14 +49,14 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         protected TextView descriptionText;
         protected TextView downloadsText;
         protected TextView completedAmountText;
+        protected TextView startDateText;
         protected CardView card;
 
         public MainChallengeCard(View itemView) {
             super(itemView);
             titleText = (TextView) itemView.findViewById(R.id.titleTextView);
             descriptionText = (TextView) itemView.findViewById(R.id.descriptionTextView);
-            downloadsText = (TextView) itemView.findViewById(R.id.downloadsTextView);
-            completedAmountText = (TextView) itemView.findViewById(R.id.completionsTextView);
+            startDateText = (TextView) itemView.findViewById(R.id.startDateTextView);
             card = (CardView) itemView;
         }
     }
