@@ -23,6 +23,7 @@ public class LocalChallenge extends Challenge {
     public int localID = -1;
     public int remoteChallengeID = -1;
     public int highscore = 0;
+    public int checkCount = 0;
     public int amountOfTimesFailed = 0;
     public boolean isUploaded = false;
     public Timestamp startDate;
@@ -61,6 +62,7 @@ public class LocalChallenge extends Challenge {
                 + "isCompleted TEXT, "
                 + "hasLiked TEXT, "
                 + "highscore INTEGER, "
+                + "checkCount INTEGER, "
                 + "amountOfTimesFailed INTEGER, "
                 + "isUploaded TEXT, "
                 + "startDate TEXT, "
@@ -87,8 +89,11 @@ public class LocalChallenge extends Challenge {
         ContentValues values = new ContentValues();
         values.put("title", title);
         values.put("description", description);
+        values.put("categoryID",categoryID);
         values.put("isCompleted", isCompleted);
         values.put("hasLiked", hasLiked);
+        values.put("highscore", highscore);
+        values.put("checkCount", checkCount);
         values.put("amountOfTimesFailed", amountOfTimesFailed);
         values.put("isUploaded", isUploaded);
         values.put("inSync", inSync);
@@ -250,12 +255,19 @@ public class LocalChallenge extends Challenge {
         Timestamp now = new Timestamp(nowDate.getTime());
         if (canCheck()) {
             this.lastChecked = now;
+            checkCount++;
+            highscore = Math.max(highscore,checkCount);
             this.save();
         } else {
             if (isFailed()) throw new ChallengeFailedException();
             if (isAlreadyCheckedToday()) throw new ChallengeAlreadyCheckedException();
             throw new IllegalStateException();
         }
+    }
+
+    public void reset(){
+        checkCount = 0;
+        lastChecked = new Timestamp(Calendar.getInstance().getTime().getTime());
     }
 
     @Override
