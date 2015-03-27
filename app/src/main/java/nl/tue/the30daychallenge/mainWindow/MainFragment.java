@@ -130,7 +130,7 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
         layoutManager = new LinearLayoutManager(getActivity());
         cardView.setLayoutManager(layoutManager);
 
-        adapter = new MainWindowAdapter(challengeListItemList);
+        adapter = new MainWindowAdapter(challengeListItemList, getActivity());
         cardView.setAdapter(adapter);
 
         return view;
