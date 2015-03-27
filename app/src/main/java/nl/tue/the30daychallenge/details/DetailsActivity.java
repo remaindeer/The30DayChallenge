@@ -71,6 +71,13 @@ public class DetailsActivity extends ActionBarActivity {
                 break;
             }
         }
+
+        TextView highScore = (TextView) findViewById(R.id.details_HighScore);
+        if (challengeIsLocal) {
+            highScore.setText("Highscore: " + ((LocalChallenge) challenge).highscore + " days");
+        } else {
+            highScore.setEnabled(false);
+        }
     }
 
     private void getLocalChallenge(int id) {
@@ -184,9 +191,9 @@ public class DetailsActivity extends ActionBarActivity {
 
         ButtonState state;
         Challenge challenge;
-        Activity parent;
+        DetailsActivity parent;
 
-        public ButtonClickListener(ButtonState state, Challenge challenge, Activity parent) {
+        public ButtonClickListener(ButtonState state, Challenge challenge, DetailsActivity parent) {
             this.state = state;
             this.challenge = challenge;
             this.parent = parent;
@@ -198,6 +205,7 @@ public class DetailsActivity extends ActionBarActivity {
                 case Like:
                     if (challenge instanceof LocalChallenge) {
                         new Liker(true, (LocalChallenge) challenge).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        parent.SetButtonContent();
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be  liked",
@@ -208,6 +216,7 @@ public class DetailsActivity extends ActionBarActivity {
                 case Unlike:
                     if (challenge instanceof LocalChallenge) {
                         new Liker(false, (LocalChallenge) challenge).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        parent.SetButtonContent();
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be unliked",
