@@ -2,12 +2,19 @@ package nl.tue.the30daychallenge.mainWindow;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.Challenge;
@@ -18,6 +25,9 @@ import nl.tue.the30daychallenge.data.LocalChallenge;
  */
 public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.MainChallengeCard> {
     List<LocalChallenge> challenges;
+    String oldDate;
+    String currentDate;
+    long difference;
 
     public MainWindowAdapter(List<LocalChallenge> data){
         this.challenges = data;
@@ -32,10 +42,17 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
 
     @Override
     public void onBindViewHolder(MainChallengeCard holder, int position) {
+        Date now = Calendar.getInstance().getTime();
+        currentDate = now.toString();
+        oldDate = challenges.get(position).startDate.toString();
+        //difference = currentDate - oldDate;
+
+
         MainChallengeCard newHolder = (MainChallengeCard) holder;
         newHolder.titleText.setText(challenges.get(position).title);
         newHolder.descriptionText.setText(challenges.get(position).description);
-       // newHolder.startDateText.setText(challenges.get(position).startDate);
+        newHolder.startDateText.setText("Started " + currentDate + " days ago.");
+
         // TODO: add more info
     }
 
