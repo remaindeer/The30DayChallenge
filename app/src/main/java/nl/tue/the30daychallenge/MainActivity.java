@@ -2,10 +2,12 @@ package nl.tue.the30daychallenge;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -43,6 +45,7 @@ import nl.tue.the30daychallenge.mainWindow.MainFragment;
 
 public class MainActivity extends ActionBarActivity {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static String TAG = MainActivity.class.getSimpleName();
 
     ListView mDrawerList;
@@ -55,14 +58,24 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Log.d("Camera", imageBitmap.toString());
+        }
+        //super.onActivityResult(requestCode, resultCode, data);
+        //callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
 
         FacebookSdk.setApplicationId("366234573582332");
         FacebookSdk.setApplicationName("The30DayChallenge");
@@ -104,7 +117,7 @@ public class MainActivity extends ActionBarActivity {
                     .build();
             Log.d("Facebook", "Share dialog: " + shareDialog.toString());
             Log.d("Facebook", "Link content: " + linkContent.toString());
-            shareDialog.show(linkContent);
+            //shareDialog.show(linkContent);
         }
 
         Settings.loadSettings(getSharedPreferences("settings", 0));

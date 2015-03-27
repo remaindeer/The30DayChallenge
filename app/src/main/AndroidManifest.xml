@@ -3,8 +3,11 @@
     package="nl.tue.the30daychallenge">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <provider android:authorities="com.facebook.app.FacebookContentProvider366234573582332"
         android:name="com.facebook.FacebookContentProvider"
