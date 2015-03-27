@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginBottom="8dp"
     android:layout_marginTop="8dp"
@@ -18,9 +18,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="START DATE"
+            android:id="@+id/startDateTextView"
+            android:textColor="@color/secondary_text"
+            android:layout_gravity="left"
+            android:layout_marginLeft="10dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:orientation="vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -33,16 +43,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Title"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#FFFFFF" />
-            <TextView
-                android:id="@+id/descriptionTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="Description"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/primary_text" />
+
 
 
 
@@ -60,11 +65,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="likes"
-                android:id="@+id/startDateTextView"
-                android:textColor="@color/accent"
-                android:layout_gravity="right"
-                android:layout_marginRight="8dp" />
+                android:text="Description"
+                android:id="@+id/descriptionTextView"
+                android:textColor="@color/secondary_text" />
+
+
+
 
         </LinearLayout>
 
