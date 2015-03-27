@@ -59,15 +59,30 @@ public class LocalConnector extends SQLiteOpenHelper {
      */
     public static List<LocalChallenge> getChallenges() {
         List<LocalChallenge> challenges = new ArrayList();
+        List<LocalChallenge> failedchallenges = new ArrayList();
+        List<LocalChallenge> checkedChallenges = new ArrayList();
+        List<LocalChallenge> completedChallenges = new ArrayList();
         SQLiteDatabase db = LocalConnector.db;
         Cursor cursor = db.query("LocalChallenge", new String[]{"*"}, null, null, null, null, null);
         if (cursor.getCount() == 0) return challenges;
         cursor.moveToFirst();
         do {
             int localID = cursor.getInt(cursor.getColumnIndexOrThrow("localID"));
-            challenges.add(new LocalChallenge(localID));
+            LocalChallenge challenge = new LocalChallenge(localID);
+            if(challenge.canCheck()){
+                challenges.add(challenge);
+            } else if(challenge.isFailed()){
+                failedchallenges.add(challenge);
+            } else if(challenge.isAlreadyCheckedToday()){
+                checkedChallenges.add(challenge);
+            } else if(challenge.isCompleted()&&!challenge.canCheck()&&!challenge.isAlreadyCheckedToday()){
+                completedChallenges.add(challenge);
+            }
         } while (cursor.moveToNext());
         cursor.close();
+        challenges.addAll(checkedChallenges);
+        challenges.addAll(completedChallenges);
+        challenges.addAll(failedchallenges);
         return challenges;
     }
 
