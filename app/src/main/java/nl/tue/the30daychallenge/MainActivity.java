@@ -3,9 +3,10 @@ package nl.tue.the30daychallenge;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -24,11 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 
 import java.util.ArrayList;
@@ -63,49 +59,6 @@ public class MainActivity extends ActionBarActivity {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.setApplicationId("366234573582332");
-        FacebookSdk.setApplicationName("The30DayChallenge");
-        FacebookSdk.setIsDebugEnabled(true);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-        shareDialog = new ShareDialog(this);
-        // this part is optional
-        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-            @Override
-            public void onSuccess(Sharer.Result result) {
-                Log.d("Facebook", "Callback");
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d("Facebook", "Callback");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d("Facebook", "Callback");
-            }
-        });
-
-        if (ShareDialog.canShow(ShareLinkContent.class)) {
-            /*ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle("Hello Facebook")
-                    .setContentDescription(
-                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
-                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-                    .build();*/
-
-            ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle("Hello Facebook")
-                    .setContentDescription(
-                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
-                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-                    .build();
-            Log.d("Facebook", "Share dialog: " + shareDialog.toString());
-            Log.d("Facebook", "Link content: " + linkContent.toString());
-            shareDialog.show(linkContent);
-        }
-
         Settings.loadSettings(getSharedPreferences("settings", 0));
 
         LibraryFragment.sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -134,7 +87,7 @@ public class MainActivity extends ActionBarActivity {
 
                 Settings.scheduleNotification(me.getApplicationContext());
 
-                //new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
+                new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
                 new LocalConnector(me);
                 /*try {
                     //RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
@@ -164,12 +117,11 @@ public class MainActivity extends ActionBarActivity {
              * */
             private void selectItemFromDrawer(int position) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
-
+                Fragment fragmentInMain = new MainFragment();
                 switch (position) {
                     case 0:
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, new MainFragment())
-                                .commit();
+                        fragmentInMain.onStop();
+                        fragmentInMain = new MainFragment();
 
                         mDrawerList.setItemChecked(position, true);
                         setTitle(mNavItems.get(position).mTitle);
@@ -178,9 +130,8 @@ public class MainActivity extends ActionBarActivity {
                         mDrawerLayout.closeDrawer(mDrawerPane);
                         break;
                     case 1:
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, new LibraryFragment())
-                                .commit();
+                        fragmentInMain.onPause();
+                        fragmentInMain = new LibraryFragment();
 
                         mDrawerList.setItemChecked(position, true);
                         setTitle(mNavItems.get(position).mTitle);
@@ -189,14 +140,18 @@ public class MainActivity extends ActionBarActivity {
                         mDrawerLayout.closeDrawer(mDrawerPane);
                         break;
                     case 2:
+                        fragmentInMain.onPause();
                         Intent settingsIntent = new Intent(me, SettingsActivity.class);
                         startActivity(settingsIntent);
                         mDrawerList.setItemChecked(position, true);
 
                         // Close the drawer
                         mDrawerLayout.closeDrawer(mDrawerPane);
-                        break;
+                        return;
                 }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.mainContent, fragmentInMain)
+                        .commit();
             }
 
             @Override

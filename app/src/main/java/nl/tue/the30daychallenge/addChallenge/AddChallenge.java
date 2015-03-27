@@ -1,5 +1,7 @@
 package nl.tue.the30daychallenge.addChallenge;
 
+import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -17,8 +19,11 @@ import nl.tue.the30daychallenge.Globals.MessageBoxes;
 import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.Category;
 import nl.tue.the30daychallenge.data.LocalChallenge;
+import nl.tue.the30daychallenge.exception.NoServerConnectionException;
+import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 
 public class AddChallenge extends ActionBarActivity {
+    private final Activity me = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +70,30 @@ public class AddChallenge extends ActionBarActivity {
                 String description = getDescription();
                 int categoryID = getCategoryId();
                 Boolean toUpload = getUploadState();
-                LocalChallenge challengeToAdd = null;
+                final LocalChallenge challengeToAdd;
                 challengeToAdd = new LocalChallenge(title, description, categoryID);
                 if (toUpload) {
                     try {
-                        challengeToAdd.upload();
+                        new AsyncTask() {
+
+                            @Override
+                            protected Object doInBackground(Object[] params) {
+                                try {
+                                    challengeToAdd.upload();
+                                } catch (NoServerConnectionException e) {
+                                    nl.tue.the30daychallenge.Globals.MessageBoxes.ShowNetworkError(me);
+                                } catch (RemoteChallengeNotFoundException e) {
+                                    nl.tue.the30daychallenge.Globals.MessageBoxes.ShowOkMessageBox(
+                                            "Unexpected error",
+                                            "There was a problem in the backend, we have no idea" +
+                                                    "why this happened :(",
+                                            me);
+                                }
+                                return null;
+                            }
+                        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } catch (Throwable e) {
+                        nl.tue.the30daychallenge.Globals.MessageBoxes.ShowNetworkError(this);
                         Log.d("LocalChallenge", e.toString());
                     }
                 }
