@@ -17,7 +17,9 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 
+import nl.tue.the30daychallenge.MainActivity;
 import nl.tue.the30daychallenge.R;
+import nl.tue.the30daychallenge.Share;
 import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.details.DetailsActivity;
 
@@ -112,7 +114,21 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                                     ((LocalChallenge) challenge).delete();
                                     break;
                                 case R.id.action_share:
-                                    // @todo SHARE
+                                    boolean isFailed = ((LocalChallenge) challenge).isFailed();
+                                    boolean isCompleted = ((LocalChallenge) challenge).isCompleted();
+                                    Share.ACTION action = Share.ACTION.COMPLETE;
+                                    if (isCompleted) {
+                                        action = Share.ACTION.COMPLETE;
+                                    } else {
+                                        if (isFailed) {
+                                            action = Share.ACTION.FAIL;
+                                        } else {
+                                            action = Share.ACTION.DO;
+                                        }
+                                    }
+                                    Log.d("Share", "Action: " + action);
+                                    Log.d("Share", "Title: " + challenge.title);
+                                    MainActivity.share.share(activity, action, challenge.title);
                                     break;
                             }
 

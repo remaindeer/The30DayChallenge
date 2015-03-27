@@ -73,12 +73,14 @@ public class Share implements DialogInterface.OnClickListener {
             if (action.equals(ACTION.COMPLETE)) strAction = "complete";
             if (action.equals(ACTION.DO)) strAction = "do";
             if (action.equals(ACTION.FAIL)) strAction = "fail";
+            Log.d("Share", "Found action: " + strAction);
+            Log.d("Share", "Challenge title: " + challengeTitle);
 
             ShareOpenGraphObject.Builder objectBuilder = new ShareOpenGraphObject.Builder();
             objectBuilder
                 .putString("og:type", "the-challenge-app:challenge")
                 .putString("og:title", "The30DayChallenge app")
-                .putString("og:description", "Title of the challenge")
+                .putString("og:description", challengeTitle)
             ;
             if (image != null) {
                 SharePhoto photo = new SharePhoto.Builder()

@@ -6,6 +6,7 @@ import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -62,7 +63,6 @@ public class MainActivity extends ActionBarActivity {
 
         if (share == null) {
             share = new Share();
-            share.share(this, Share.ACTION.COMPLETE, "Challenge titel!");
         }
 
         FacebookSdk.setApplicationId("366234573582332");
