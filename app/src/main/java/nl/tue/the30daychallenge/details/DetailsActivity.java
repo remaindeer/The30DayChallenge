@@ -296,6 +296,7 @@ class UpDownloader extends AsyncTask {
                         parent);
             } else {
                 RemoteConnector.downloadRemoteChallenge(((RemoteChallenge) challenge));
+
                 nl.tue.the30daychallenge.Globals.MessageBoxes.ShowOkMessageBox(
                         "Download succeeded",
                         "This app is downloaded from the server",
