@@ -197,7 +197,7 @@ public class DetailsActivity extends ActionBarActivity {
             switch (state) {
                 case Like:
                     if (challenge instanceof LocalChallenge) {
-                        new Liker(true, (LocalChallenge) challenge).executeOnExecutor(null);
+                        new Liker(true, (LocalChallenge) challenge).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be  liked",
