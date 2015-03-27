@@ -1,6 +1,5 @@
 package nl.tue.the30daychallenge.details;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,8 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import nl.tue.the30daychallenge.Globals.MessageBoxes;
 import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.Challenge;
 import nl.tue.the30daychallenge.data.LocalChallenge;
@@ -41,8 +40,8 @@ public class DetailsActivity extends ActionBarActivity {
         setChallenge(challenge);
     }
 
-    public static void setChallenge(Challenge challenge) {
-        challenge = challenge;
+    public static void setChallenge(Challenge inputChallenge) {
+        challenge = inputChallenge;
         if (challenge instanceof RemoteChallenge) {
             challengeIsLocal = false;
         } else {
@@ -58,46 +57,55 @@ public class DetailsActivity extends ActionBarActivity {
         Bundle data = starterIntent.getExtras();
         challengeIsLocal = data.getBoolean("isLocal");
         if (challengeIsLocal) {
-            getLocalChallenge(data);
+            getLocalChallenge(data.getInt("id"));
         } else {
-            getRemoteChallenge(data);
+            getRemoteChallenge(data.getInt("id"));
         }
         SetButtonContent();
         SetRunningTime();
+        SetTitleAndDescription();
     }
 
-    private void getLocalChallenge(Bundle data) {
-        int id = data.getInt("challengeId");
+    private void SetTitleAndDescription() {
+        TextView TitleView = (TextView) findViewById(R.id.details_challengeTitleBar);
+        TitleView.setText(challenge.title);
+
+        TextView DescriptionView = (TextView) findViewById(R.id.details_challengeDescription);
+        DescriptionView.setText(challenge.description);
+    }
+
+    private void getLocalChallenge(int id) {
         List<LocalChallenge> challenges = LocalConnector.getChallenges();
         for (LocalChallenge challengeToCheck : challenges) {
             if (challengeToCheck.localID == id) {
-                this.challenge = challengeToCheck;
-                break;
+                challenge = challengeToCheck;
+                return;
             }
         }
-        throw new RuntimeException("Local challenge not found");
     }
 
-    private void getRemoteChallenge(Bundle data) {
-        final int id = data.getInt("challengeId");
-        final Activity parent = (Activity) this;
-        try {
-            AsyncTask run = new AsyncTask<Integer, Void, RemoteChallenge>() {
-                @Override
-                protected RemoteChallenge doInBackground(Integer... q) {
-                    try {
-                        return RemoteConnector.getChallenge(q[0]);
-                    } catch (NoServerConnectionException e) {
-                        MessageBoxes.ShowOkMessageBox("Error", "We can't reach the network", parent);
-                    } catch (RemoteChallengeNotFoundException e) {
-                        MessageBoxes.ShowOkMessageBox("Error", "Remote Challenge not found", parent);
-                    }
-                    return null;
+    private void getRemoteChallenge(int id) {
+        final int identifier = id;
+        AsyncTask test = new AsyncTask() {
+
+            @Override
+            protected RemoteChallenge doInBackground(Object[] params) {
+                RemoteChallenge challengeToReturn;
+                try {
+                    challengeToReturn = RemoteConnector.getChallenge(identifier);
+                } catch (Throwable e) {
+                    challengeToReturn = new RemoteChallenge();
+                    ShowMessageBox("Something went wrong ;(", "There is no internet connection");
                 }
-            };
-            run.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, id).get();
-        } catch (Exception e) {
-            MessageBoxes.ShowOkMessageBox("Error", "No idea what went wrong here. I think it's your fault (the end user)", this);
+                return challengeToReturn;
+            }
+        };
+        try {
+            challenge = (Challenge) test.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
     }
 
@@ -111,9 +119,9 @@ public class DetailsActivity extends ActionBarActivity {
     private void SetButtonContent() {
         ButtonState buttonState;
         Button button = (Button) findViewById(R.id.likeSlashUploadSlashDownloadButton);
-        LocalChallenge localChallenge = (LocalChallenge) challenge;
         if (challengeIsLocal) {
             // If liking is available
+            LocalChallenge localChallenge = (LocalChallenge) challenge;
             if (localChallenge.isUploaded) {
                 if (localChallenge.isLiked()) {
                     buttonState = ButtonState.Unlike;
@@ -178,10 +186,6 @@ public class DetailsActivity extends ActionBarActivity {
             this.challenge = challenge;
         }
 
-        public void SetState(ButtonState state) {
-            this.state = state;
-        }
-
         @Override
         public void onClick(View v) {
             switch (state) {
@@ -207,7 +211,9 @@ public class DetailsActivity extends ActionBarActivity {
                     break;
                 case Download:
                     if (challenge instanceof RemoteChallenge) {
-                        new UpDownloader(challenge).executeOnExecutor(null);
+                        UpDownloader test = new UpDownloader(challenge);
+                        test.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        finish();
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be downloaded",
