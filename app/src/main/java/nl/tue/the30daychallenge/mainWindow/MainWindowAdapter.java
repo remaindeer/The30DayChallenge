@@ -27,9 +27,9 @@ import nl.tue.the30daychallenge.data.LocalChallenge;
  * Created by tane on 3/23/15.
  */
 public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.MainChallengeCard>  {
-    List<Challenge> challenges;
+    List<LocalChallenge> challenges;
     public Activity mainactivity;
-    public MainWindowAdapter(List<Challenge> data,Activity activity){
+    public MainWindowAdapter(List<LocalChallenge> data,Activity activity){
         this.challenges = data;
         this.mainactivity = activity;
     }
@@ -51,7 +51,7 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         // TODO: add more info
     }
 
-    public void setChallenges(List<Challenge> challenges) {
+    public void setChallenges(List<LocalChallenge> challenges) {
         this.challenges = challenges;
     }
 
@@ -66,7 +66,7 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         protected TextView completedAmountText;
         protected TextView startDateText;
         protected CardView card;
-        public Challenge challenge;
+        public LocalChallenge challenge;
 
         public MainChallengeCard(View itemView, final Activity activity) {
             super(itemView);
