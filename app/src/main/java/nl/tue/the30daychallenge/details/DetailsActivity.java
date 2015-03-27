@@ -1,5 +1,6 @@
 package nl.tue.the30daychallenge.details;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -138,7 +139,7 @@ public class DetailsActivity extends ActionBarActivity {
             buttonState = ButtonState.Download;
             button.setText("Download");
         }
-        button.setOnClickListener(new ButtonClickListener(buttonState, challenge));
+        button.setOnClickListener(new ButtonClickListener(buttonState, challenge, this));
     }
 
     private void SetRunningTime() {
@@ -180,10 +181,12 @@ public class DetailsActivity extends ActionBarActivity {
 
         ButtonState state;
         Challenge challenge;
+        Activity parent;
 
-        public ButtonClickListener(ButtonState state, Challenge challenge) {
+        public ButtonClickListener(ButtonState state, Challenge challenge, Activity parent) {
             this.state = state;
             this.challenge = challenge;
+            this.parent = parent;
         }
 
         @Override
@@ -211,8 +214,8 @@ public class DetailsActivity extends ActionBarActivity {
                     break;
                 case Download:
                     if (challenge instanceof RemoteChallenge) {
-                        UpDownloader test = new UpDownloader(challenge);
-                        test.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        UpDownloader downloader = new UpDownloader(challenge, parent);
+                        downloader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         finish();
                     } else {
                         ShowMessageBox(
@@ -223,7 +226,8 @@ public class DetailsActivity extends ActionBarActivity {
                     break;
                 case Upload:
                     if (challenge instanceof LocalChallenge) {
-                        new UpDownloader(challenge).executeOnExecutor(null);
+                        UpDownloader upLoader = new UpDownloader(challenge, parent);
+                        upLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be uploaded",
@@ -266,9 +270,11 @@ class UpDownloader extends AsyncTask {
 
     Challenge challenge;
     boolean isLocal = false;
+    Activity parent;
 
-    public UpDownloader(Challenge challenge) {
+    public UpDownloader(Challenge challenge, Activity parent) {
         this.challenge = challenge;
+        this.parent = parent;
         if (challenge instanceof LocalChallenge) {
             isLocal = true;
         }
@@ -279,8 +285,16 @@ class UpDownloader extends AsyncTask {
         try {
             if (isLocal) {
                 ((LocalChallenge) challenge).upload();
+                nl.tue.the30daychallenge.Globals.MessageBoxes.ShowOkMessageBox(
+                        "Upload succeeded",
+                        "This app is uploaded to the server",
+                        parent);
             } else {
                 RemoteConnector.downloadRemoteChallenge(((RemoteChallenge) challenge));
+                nl.tue.the30daychallenge.Globals.MessageBoxes.ShowOkMessageBox(
+                        "Download succeeded",
+                        "This app is downloaded from the server",
+                        parent);
             }
         } catch (NoServerConnectionException e) {
 

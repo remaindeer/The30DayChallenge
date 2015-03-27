@@ -20,4 +20,8 @@ public class MessageBoxes {
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
     }
+
+    public static void ShowNetworkError(Activity parent) {
+        ShowOkMessageBox("Network Error", "There is no connection with the server", parent);
+    }
 }
