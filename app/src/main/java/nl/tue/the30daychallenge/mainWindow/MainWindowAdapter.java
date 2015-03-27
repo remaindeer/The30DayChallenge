@@ -103,10 +103,10 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                         challenge.check();
                     } catch (ChallengeFailedException e) {
                         FailedChallengeResetFragment resetDialog = new FailedChallengeResetFragment();
-                        resetDialog.challengex = challenge;
+                        resetDialog.challengeFragment = challenge;
                         resetDialog.show(((Activity)v.getContext()).getFragmentManager(), "");
                     } catch (ChallengeAlreadyCheckedException e) {
-
+                    // do nothing
                     }
                 }
             });
