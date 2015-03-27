@@ -267,7 +267,9 @@ public class LocalChallenge extends Challenge {
 
     public void reset(){
         checkCount = 0;
-        lastChecked = new Timestamp(Calendar.getInstance().getTime().getTime());
+        startDate = new Timestamp(Calendar.getInstance().getTime().getTime());
+        lastChecked = new Timestamp(getMidnight().getLastMidnight().getTime() - 1000);
+        save();
     }
 
     @Override

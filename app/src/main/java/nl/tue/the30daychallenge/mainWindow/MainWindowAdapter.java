@@ -22,6 +22,8 @@ import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.Share;
 import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.details.DetailsActivity;
+import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
+import nl.tue.the30daychallenge.exception.ChallengeFailedException;
 
 /**
  * Created by tane on 3/23/15.
@@ -84,6 +86,7 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         protected TextView completedAmountText;
         protected TextView startDateText;
         protected CardView card;
+        protected ImageButton checkedbutton;
 
         public MainChallengeCard(View itemView, final Activity activity) {
             super(itemView);
@@ -91,6 +94,23 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
             descriptionText = (TextView) itemView.findViewById(R.id.descriptionTextView);
             downloadsText = (TextView) itemView.findViewById(R.id.downloadsTextView);
             completedAmountText = (TextView) itemView.findViewById(R.id.completionsTextView);
+            checkedbutton = (ImageButton) itemView.findViewById(R.id.checkbutton);
+
+            checkedbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        challenge.check();
+                    } catch (ChallengeFailedException e) {
+                        FailedChallengeResetFragment resetDialog = new FailedChallengeResetFragment();
+                        resetDialog.challengex = challenge;
+                        resetDialog.show(((Activity)v.getContext()).getFragmentManager(), "");
+                    } catch (ChallengeAlreadyCheckedException e) {
+
+                    }
+                }
+            });
+
             ((ImageButton) itemView.findViewById(R.id.optionsbutton)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
