@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -150,6 +151,7 @@ public class DetailsActivity extends ActionBarActivity {
         } else{
             RemoteChallenge remote = (RemoteChallenge)challenge;
             String startedAt = String.format("Challenge downloaded %d times", remote.downloads);
+            Log.d("DetailsActivity", startedAt);
             ((TextView)findViewById(R.id.details_StartedAt)).setText(startedAt);
         }
     }
