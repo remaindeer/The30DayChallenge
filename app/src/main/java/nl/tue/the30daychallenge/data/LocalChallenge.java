@@ -22,9 +22,6 @@ public class LocalChallenge extends Challenge {
 
     public int localID = -1;
     public int remoteChallengeID = -1;
-    private RemoteChallenge remoteChallenge = null;
-    private boolean isCompleted = false;
-    private boolean hasLiked = false;
     public int highscore = 0;
     public int amountOfTimesFailed = 0;
     public boolean isUploaded = false;
@@ -32,6 +29,58 @@ public class LocalChallenge extends Challenge {
     public Timestamp lastChecked;
     public boolean shouldBeUploaded = false;
     public boolean inSync = false;
+    private RemoteChallenge remoteChallenge = null;
+    private boolean isCompleted = false;
+    private boolean hasLiked = false;
+
+    public LocalChallenge(String title, String description, int categoryID) {
+        createChallenge(title, description, categoryID);
+    }
+
+    public LocalChallenge(int localID) {
+        this.load(localID);
+    }
+
+    public LocalChallenge(RemoteChallenge remoteChallenge) throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        createChallenge(remoteChallenge.title, remoteChallenge.description, remoteChallenge.categoryID);
+        remoteChallengeID = remoteChallenge.challengeID;
+        this.remoteChallenge = remoteChallenge;
+        this.isUploaded = true;
+        save();
+        setDownloaded();
+    }
+
+    public static void create() {
+        SQLiteDatabase db = LocalConnector.db;
+        db.execSQL("CREATE TABLE IF NOT EXISTS LocalChallenge ("
+                + "localID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "title TEXT, "
+                + "description TEXT, "
+                + "categoryID TEXT, "
+                + "created_at TEXT, "
+                + "isCompleted TEXT, "
+                + "hasLiked TEXT, "
+                + "highscore INTEGER, "
+                + "amountOfTimesFailed INTEGER, "
+                + "isUploaded TEXT, "
+                + "startDate TEXT, "
+                + "lastChecked TEXT, "
+                + "inSync INTEGER, "
+                + "shouldBeUploaded INTEGER, "
+                + "remoteChallengeID INTEGER)");
+    }
+
+    public static void syncAll() throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        SQLiteDatabase db = LocalConnector.db;
+        Cursor cursor = db.query("LocalChallenge", new String[]{"*"}, "inSync = 0", null, null, null, null);
+        if (cursor.getCount() == 0) return;
+        cursor.moveToFirst();
+        do {
+            int localID = cursor.getInt(cursor.getColumnIndexOrThrow("localID"));
+            new LocalChallenge(localID).sync();
+        } while (cursor.moveToNext());
+        cursor.close();
+    }
 
     public void save() {
         SQLiteDatabase db = LocalConnector.db;
@@ -87,10 +136,6 @@ public class LocalChallenge extends Challenge {
         db.execSQL("DELETE FROM LocalChallenge WHERE localID = ?", new String[]{"" + this.localID});
     }
 
-    public LocalChallenge(String title, String description, int categoryID) {
-        createChallenge(title, description, categoryID);
-    }
-
     public void createChallenge(String title, String description, int categoryID) {
         this.title = title;
         this.description = description;
@@ -100,42 +145,6 @@ public class LocalChallenge extends Challenge {
         this.lastChecked = new Timestamp(getMidnight().getLastMidnight().getTime() - 1000);
         Log.d("LocalChallenge", "New local challenge: " + toString());
         save();
-    }
-
-    public LocalChallenge(int localID) {
-        this.load(localID);
-    }
-
-    public static void create() {
-        SQLiteDatabase db = LocalConnector.db;
-        db.execSQL("CREATE TABLE IF NOT EXISTS LocalChallenge ("
-                + "localID INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "title TEXT, "
-                + "description TEXT, "
-                + "categoryID TEXT, "
-                + "created_at TEXT, "
-                + "isCompleted TEXT, "
-                + "hasLiked TEXT, "
-                + "highscore INTEGER, "
-                + "amountOfTimesFailed INTEGER, "
-                + "isUploaded TEXT, "
-                + "startDate TEXT, "
-                + "lastChecked TEXT, "
-                + "inSync INTEGER, "
-                + "shouldBeUploaded INTEGER, "
-                + "remoteChallengeID INTEGER)");
-    }
-
-    public static void syncAll() throws NoServerConnectionException, RemoteChallengeNotFoundException {
-        SQLiteDatabase db = LocalConnector.db;
-        Cursor cursor = db.query("LocalChallenge", new String[]{"*"}, "inSync = 0", null, null, null, null);
-        if (cursor.getCount() == 0) return;
-        cursor.moveToFirst();
-        do {
-            int localID = cursor.getInt(cursor.getColumnIndexOrThrow("localID"));
-            new LocalChallenge(localID).sync();
-        } while (cursor.moveToNext());
-        cursor.close();
     }
 
     public void sync() throws NoServerConnectionException, RemoteChallengeNotFoundException {
@@ -151,6 +160,9 @@ public class LocalChallenge extends Challenge {
 
             loadRemoteChallenge(this.remoteChallengeID);
 
+            RemoteConnector.createAttempt(this.remoteChallengeID);
+            this.save();
+
             RemoteConnector.likeChallenge(this.remoteChallengeID, this.hasLiked);
             this.save();
 
@@ -158,9 +170,6 @@ public class LocalChallenge extends Challenge {
                 RemoteConnector.completeChallenge(this.remoteChallengeID);
                 this.save();
             }
-
-            RemoteConnector.createAttempt(this.remoteChallengeID);
-            this.save();
 
             this.inSync = true;
             this.save();
@@ -174,15 +183,10 @@ public class LocalChallenge extends Challenge {
         }
     }
 
-    public LocalChallenge(RemoteChallenge remoteChallenge) throws NoServerConnectionException, RemoteChallengeNotFoundException {
-        createChallenge(remoteChallenge.title, remoteChallenge.description, remoteChallenge.categoryID);
-        remoteChallengeID = remoteChallenge.challengeID;
-        this.remoteChallenge = remoteChallenge;
-    }
-
     public boolean isLiked() {
         return this.hasLiked;
     }
+    public boolean isCompleted() {return this.isCompleted;}
 
     public void setLike(boolean hasLiked) throws NoServerConnectionException, RemoteChallengeNotFoundException {
         this.hasLiked = hasLiked;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -100,7 +101,7 @@ public class MainActivity extends ActionBarActivity {
 
                 Settings.scheduleNotification(me.getApplicationContext());
 
-                //new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
+                new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
                 new LocalConnector(me);
                 /*try {
                     //RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
@@ -130,12 +131,11 @@ public class MainActivity extends ActionBarActivity {
              * */
             private void selectItemFromDrawer(int position) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
-
+                Fragment fragmentInMain = new MainFragment();
                 switch (position) {
                     case 0:
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, new MainFragment())
-                                .commit();
+                        fragmentInMain.onStop();
+                        fragmentInMain = new MainFragment();
 
                         mDrawerList.setItemChecked(position, true);
                         setTitle(mNavItems.get(position).mTitle);
@@ -144,9 +144,8 @@ public class MainActivity extends ActionBarActivity {
                         mDrawerLayout.closeDrawer(mDrawerPane);
                         break;
                     case 1:
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.mainContent, new LibraryFragment())
-                                .commit();
+                        fragmentInMain.onPause();
+                        fragmentInMain = new LibraryFragment();
 
                         mDrawerList.setItemChecked(position, true);
                         setTitle(mNavItems.get(position).mTitle);
@@ -155,6 +154,7 @@ public class MainActivity extends ActionBarActivity {
                         mDrawerLayout.closeDrawer(mDrawerPane);
                         break;
                     case 2:
+                        fragmentInMain.onPause();
                         Intent settingsIntent = new Intent(me, SettingsActivity.class);
                         startActivity(settingsIntent);
                         mDrawerList.setItemChecked(position, true);
@@ -163,6 +163,9 @@ public class MainActivity extends ActionBarActivity {
                         mDrawerLayout.closeDrawer(mDrawerPane);
                         break;
                 }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.mainContent, fragmentInMain)
+                        .commit();
             }
 
             @Override

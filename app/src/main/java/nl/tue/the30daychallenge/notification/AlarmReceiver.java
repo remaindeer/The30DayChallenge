@@ -22,7 +22,9 @@ import nl.tue.the30daychallenge.data.LocalConnector;
  */
 public class AlarmReceiver extends BroadcastReceiver {
 
-    protected long[] vibratePattern = new long[]{0, 300, 50, 300, 50, 300};
+    //protected long[] vibratePattern = new long[]{0, 300, 50, 300, 50, 300};
+    protected long[] vibratePattern = new long[]{100,200,100,200,100,200,100,200,100,100,100,100,100,200,100,200,100,200,100,200,100,100,100,100,100,200,100,200,100,200,100,200,100,100,100,100,100,100,100,100,100,100,50,50,100,800};
+
     protected NotificationCompat.Builder notificationBuilder = null;
     public static int currentID = 1;
 

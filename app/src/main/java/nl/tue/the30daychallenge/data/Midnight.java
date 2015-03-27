@@ -27,7 +27,7 @@ public class Midnight {
         midnight.setHours(hours);
         midnight.setMinutes(minutes);
         midnight.setSeconds(0);
-        if (midnight.getTime()>now.getTime()) {
+        if (midnight.getTime() > now.getTime()) {
             // midnight is in the future!
             midnight.setTime(midnight.getTime() - 24 * 60 * 60 * 1000);
         }
@@ -38,5 +38,4 @@ public class Midnight {
     public String toString() {
         return "Midnight{" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(this.getLastMidnight()) + '}';
     }
-
 }
