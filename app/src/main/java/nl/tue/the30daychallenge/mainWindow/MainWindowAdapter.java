@@ -52,7 +52,8 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
 
         Long delta = today - startDate;
         Long amountOfMillisecondsInADay = Long.valueOf(1000 * 3600 * 24);
-        Long amountOfDays = delta / amountOfMillisecondsInADay;
+        Long amountOfDays = (long)((float) delta / amountOfMillisecondsInADay);
+      //  Long amountOfDays = delta / amountOfMillisecondsInADay;
 
         newHolder.startDateText.setText(
                 String.format("Challenge started %d days ago",
