@@ -45,6 +45,7 @@ public class LocalChallenge extends Challenge {
         createChallenge(remoteChallenge.title, remoteChallenge.description, remoteChallenge.categoryID);
         remoteChallengeID = remoteChallenge.challengeID;
         this.remoteChallenge = remoteChallenge;
+        setDownloaded();
     }
 
     public static void create() {
