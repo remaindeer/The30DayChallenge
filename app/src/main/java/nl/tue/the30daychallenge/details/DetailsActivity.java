@@ -207,7 +207,7 @@ public class DetailsActivity extends ActionBarActivity {
                     break;
                 case Unlike:
                     if (challenge instanceof LocalChallenge) {
-                        new Liker(false, (LocalChallenge) challenge).executeOnExecutor(null);
+                        new Liker(false, (LocalChallenge) challenge).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be unliked",
