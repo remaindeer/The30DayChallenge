@@ -146,7 +146,7 @@ public class DetailsActivity extends ActionBarActivity {
     private void SetRunningTime() {
         if (challengeIsLocal) {
             LocalChallenge local = (LocalChallenge) challenge;
-            String startedAt = String.format("Challenge started at %d", local.startDate);
+            String startedAt = String.format("Challenge started at %s", local.startDate.toString());
             ((TextView) findViewById(R.id.details_StartedAt)).setText(startedAt);
         } else{
             RemoteChallenge remote = (RemoteChallenge)challenge;
