@@ -23,8 +23,6 @@ package com.facebook.share.model;
 import android.os.Parcel;
 import android.support.annotation.Nullable;
 
-import com.facebook.share.internal.ShareConstants;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,6 +61,7 @@ public final class SharePhotoContent
 
     public void writeToParcel(final Parcel out, final int flags) {
         super.writeToParcel(out, flags);
+        out.writeString("Hello tester!");
         SharePhoto.Builder.writeListTo(out, this.photos);
     }
 

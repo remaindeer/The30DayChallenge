@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
 import com.facebook.share.widget.ShareDialog;
 
 import java.util.ArrayList;
@@ -40,24 +41,37 @@ import nl.tue.the30daychallenge.mainWindow.MainFragment;
 public class MainActivity extends ActionBarActivity {
 
     private static String TAG = MainActivity.class.getSimpleName();
-    public CallbackManager callbackManager;
-    public ShareDialog shareDialog;
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
     ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    public static Share share = null;
+    public static CallbackManager callbackManager;
+    public static ShareDialog shareDialog;
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        share.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
+
+        if (share == null) {
+            share = new Share();
+        }
+
+        FacebookSdk.setApplicationId("366234573582332");
+        FacebookSdk.setApplicationName("The30DayChallenge");
+        FacebookSdk.setIsDebugEnabled(true);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
 
         Settings.loadSettings(getSharedPreferences("settings", 0));
 
@@ -147,7 +161,7 @@ public class MainActivity extends ActionBarActivity {
 
                         // Close the drawer
                         mDrawerLayout.closeDrawer(mDrawerPane);
-                        return;
+                        break;
                 }
                 fragmentManager.beginTransaction()
                         .replace(R.id.mainContent, fragmentInMain)
