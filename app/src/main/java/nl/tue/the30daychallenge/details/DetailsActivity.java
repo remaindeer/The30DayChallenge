@@ -11,12 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import nl.tue.the30daychallenge.Globals.Categories;
 import nl.tue.the30daychallenge.R;
+import nl.tue.the30daychallenge.data.Category;
 import nl.tue.the30daychallenge.data.Challenge;
 import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
@@ -25,31 +28,15 @@ import nl.tue.the30daychallenge.data.RemoteConnector;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 
+/**
+ * To use this activity, create an intent, with as data:
+ * - an id, which uses key challengeId,
+ * - a bool, which uses key isLocal;
+ */
 public class DetailsActivity extends ActionBarActivity {
 
     private static boolean challengeIsLocal = false;
     private static Challenge challenge;
-
-    /**
-     * To use this activity, create an intent, with as data:
-     * - an id, which uses key challengeId,
-     * - a bool, which uses key isLocal;
-     */
-    public DetailsActivity() {
-    }
-
-    /*public DetailsActivity(Challenge challenge) {
-        setChallenge(challenge);
-    }
-
-    public static void setChallenge(Challenge inputChallenge) {
-        challenge = inputChallenge;
-        if (challenge instanceof RemoteChallenge) {
-            challengeIsLocal = false;
-        } else {
-            challengeIsLocal = true;
-        }
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +56,21 @@ public class DetailsActivity extends ActionBarActivity {
     }
 
     private void SetTitleAndDescription() {
-        TextView TitleView = (TextView) findViewById(R.id.details_challengeTitleBar);
-        TitleView.setText(challenge.title);
+        TextView titleView = (TextView) findViewById(R.id.details_challengeTitleBar);
+        titleView.setText(challenge.title);
 
-        TextView DescriptionView = (TextView) findViewById(R.id.details_challengeDescription);
-        DescriptionView.setText(challenge.description);
+        TextView descriptionView = (TextView) findViewById(R.id.details_challengeDescription);
+        descriptionView.setText(challenge.description);
+
+        ImageView imageView = (ImageView) findViewById(R.id.details_challengeLogo);
+
+        List<Category> categories = Categories.getList();
+        for (Category category : categories) {
+            if (category.categoryID == challenge.categoryID) {
+                imageView.setImageResource(Categories.icons.get(category.title));
+                break;
+            }
+        }
     }
 
     private void getLocalChallenge(int id) {
@@ -149,6 +146,9 @@ public class DetailsActivity extends ActionBarActivity {
             LocalChallenge local = (LocalChallenge) challenge;
             String startedAt = String.format("Challenge started at %s", local.startDate.toString());
             ((TextView) findViewById(R.id.details_StartedAt)).setText(startedAt);
+
+            String runningFor = String.format("Challenge running for %d days", local.checkCount);
+            ((TextView) findViewById(R.id.details_RunningFor)).setText(runningFor);
         } else {
             RemoteChallenge remote = (RemoteChallenge) challenge;
             String startedAt = String.format("Challenge downloaded %d times", remote.downloads);
@@ -197,7 +197,7 @@ public class DetailsActivity extends ActionBarActivity {
             switch (state) {
                 case Like:
                     if (challenge instanceof LocalChallenge) {
-                        new Liker(true, (LocalChallenge) challenge).executeOnExecutor(null);
+                        new Liker(true, (LocalChallenge) challenge).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be  liked",
@@ -207,7 +207,7 @@ public class DetailsActivity extends ActionBarActivity {
                     break;
                 case Unlike:
                     if (challenge instanceof LocalChallenge) {
-                        new Liker(false, (LocalChallenge) challenge).executeOnExecutor(null);
+                        new Liker(false, (LocalChallenge) challenge).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be unliked",

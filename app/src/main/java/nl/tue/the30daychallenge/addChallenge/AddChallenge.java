@@ -34,6 +34,7 @@ public class AddChallenge extends ActionBarActivity implements View.OnClickListe
         Spinner categorySpinner = (Spinner)findViewById(R.id.create_categorySpinner);
         categorySpinner.setAdapter(new ArrayAdapter(this, R.layout.activity_add_challenge_spinner_item, categories));
         ImageButton test = (ImageButton) findViewById(R.id.doneCheck);
+        test.setOnClickListener(this);
     }
 
     private CategorySpinnerItem[] getCategories() {
@@ -54,25 +55,7 @@ public class AddChallenge extends ActionBarActivity implements View.OnClickListe
         return true;
     }
 
-    /* @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        if (id == R.id.create_addChallenge) {
-            AddChallenge();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
-    private void AddChallenge() {
+    private void addChallenge() {
         try {
             Log.d("AddChallenge", "Adding challenge");
             String title = getChallengeTitle();
@@ -143,7 +126,7 @@ public class AddChallenge extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-
+        addChallenge();
     }
 
     private class CategorySpinnerItem extends Category {
