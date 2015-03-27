@@ -184,6 +184,7 @@ public class LocalChallenge extends Challenge {
     public boolean isLiked() {
         return this.hasLiked;
     }
+    public boolean isCompleted() {return this.isCompleted;}
 
     public void setLike(boolean hasLiked) throws NoServerConnectionException, RemoteChallengeNotFoundException {
         this.hasLiked = hasLiked;
