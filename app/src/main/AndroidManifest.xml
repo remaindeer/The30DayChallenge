@@ -46,6 +46,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.facebook.FacebookActivity">
+        </activity>
+        <activity
             android:name=".library.ChallengesActivity"
             android:label="@string/app_name"
             android:parentActivityName=".MainActivity">

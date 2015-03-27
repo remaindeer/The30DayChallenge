@@ -2,12 +2,9 @@ package nl.tue.the30daychallenge;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -26,11 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
 
 import java.util.ArrayList;
@@ -45,25 +38,20 @@ import nl.tue.the30daychallenge.mainWindow.MainFragment;
 
 public class MainActivity extends ActionBarActivity {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static String TAG = MainActivity.class.getSimpleName();
-    public CallbackManager callbackManager;
-    public ShareDialog shareDialog;
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
     ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    public static Share share = null;
+    public static CallbackManager callbackManager;
+    public static ShareDialog shareDialog;
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Log.d("Camera", imageBitmap.toString());
-        }
-        //super.onActivityResult(requestCode, resultCode, data);
-        //callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        share.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -71,53 +59,18 @@ public class MainActivity extends ActionBarActivity {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
 
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        if (share == null) {
+            share = new Share();
+            share.share(this, Share.ACTION.COMPLETE, "Challenge titel!");
         }
 
         FacebookSdk.setApplicationId("366234573582332");
         FacebookSdk.setApplicationName("The30DayChallenge");
         FacebookSdk.setIsDebugEnabled(true);
         FacebookSdk.sdkInitialize(getApplicationContext());
+
         callbackManager = CallbackManager.Factory.create();
         shareDialog = new ShareDialog(this);
-        // this part is optional
-        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-            @Override
-            public void onSuccess(Sharer.Result result) {
-                Log.d("Facebook", "Callback");
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d("Facebook", "Callback");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d("Facebook", "Callback");
-            }
-        });
-
-        if (ShareDialog.canShow(ShareLinkContent.class)) {
-            /*ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle("Hello Facebook")
-                    .setContentDescription(
-                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
-                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-                    .build();*/
-
-            ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle("Hello Facebook")
-                    .setContentDescription(
-                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
-                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-                    .build();
-            Log.d("Facebook", "Share dialog: " + shareDialog.toString());
-            Log.d("Facebook", "Link content: " + linkContent.toString());
-            //shareDialog.show(linkContent);
-        }
 
         Settings.loadSettings(getSharedPreferences("settings", 0));
 
