@@ -69,7 +69,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -78,28 +78,27 @@
             android:layout_marginTop="20dp"
             >
 
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Description"
+                android:layout_toLeftOf="@+id/checkbutton"
+                android:layout_alignParentLeft="true"
                 android:id="@+id/descriptionTextView"
                 android:textColor="@color/secondary_text" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
+
             <ImageButton
                 android:id="@+id/checkbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="0dp"
+                android:layout_alignParentRight="true"
                 android:src="@drawable/ic_action_done_white"
                 android:contentDescription="Description"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
 

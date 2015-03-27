@@ -10,7 +10,7 @@ import android.util.Log;
 import nl.tue.the30daychallenge.data.LocalChallenge;
 
 /**
- * Created by s130968 on 27-Mar-15.
+ * Created by Kagan on 27-Mar-15.
  */
 public class FailedChallengeResetFragment extends DialogFragment {
     LocalChallenge challengex;
