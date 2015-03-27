@@ -1,32 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="nl.tue.the30daychallenge" >
+    package="nl.tue.the30daychallenge">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <provider
+        android:name="com.facebook.FacebookContentProvider"
+        android:authorities="com.facebook.app.FacebookContentProvider366234573582332"
+        android:exported="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <receiver
             android:name=".notification.AlarmReceiverChallengeFailed"
             android:process=":remote" />
         <receiver
             android:name=".notification.AlarmReceiverReminder"
             android:process=":remote" />
-        <receiver android:name=".notification.DeviceBootReceiver" >
-            <intent-filter>
+        <receiver android:name=".notification.DeviceBootReceiver">
+        <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider366234573582332"
+            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
+            android:label="@string/app_name">
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -35,35 +45,34 @@
         <activity
             android:name=".library.ChallengesActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
+            android:parentActivityName=".MainActivity">
+        <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.tue.the30daychallenge.MainActivity" />
         </activity>
         <activity
             android:name=".addChallenge.AddChallenge"
             android:label="@string/title_activity_add_challenge"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
+            android:parentActivityName=".MainActivity">
+        <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.tue.the30daychallenge.MainActivity" />
         </activity>
         <activity
             android:name=".details.DetailsActivity"
             android:label="@string/title_activity_details"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
+            android:parentActivityName=".MainActivity">
+        <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.tue.the30daychallenge.MainActivity" />
         </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
+            android:parentActivityName=".MainActivity">
+        <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="nl.tue.the30daychallenge.MainActivity" />
         </activity>
     </application>
-
 </manifest>
