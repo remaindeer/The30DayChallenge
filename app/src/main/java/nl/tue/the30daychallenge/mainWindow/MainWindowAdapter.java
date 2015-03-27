@@ -1,34 +1,32 @@
 package nl.tue.the30daychallenge.mainWindow;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import nl.tue.the30daychallenge.R;
-import nl.tue.the30daychallenge.data.Challenge;
 import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.details.DetailsActivity;
-import nl.tue.the30daychallenge.data.LocalChallenge;
 
 /**
  * Created by tane on 3/23/15.
  */
 public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.MainChallengeCard>  {
-    List<LocalChallenge> challenges;
     public Activity mainactivity;
+    List<LocalChallenge> challenges;
     public MainWindowAdapter(List<LocalChallenge> data,Activity activity){
         this.challenges = data;
         this.mainactivity = activity;
@@ -43,11 +41,23 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
 
     @Override
     public void onBindViewHolder(MainChallengeCard holder, int position) {
+        LocalChallenge local = challenges.get(position);
         MainChallengeCard newHolder = (MainChallengeCard) holder;
-        newHolder.titleText.setText(challenges.get(position).title);
-        newHolder.descriptionText.setText(challenges.get(position).description);
-        newHolder.challenge = challenges.get(position);
+        newHolder.titleText.setText(local.title);
+        newHolder.descriptionText.setText(local.description);
+        newHolder.challenge = local;
 
+        Long startDate = local.startDate.getTime();
+        Long today = new Timestamp(Calendar.getInstance().getTime().getTime()).getTime();
+
+        Long delta = today - startDate;
+        Long amountOfMillisecondsInADay = Long.valueOf(1000 * 3600 * 24);
+        Long amountOfDays = delta / amountOfMillisecondsInADay;
+
+        newHolder.startDateText.setText(
+                String.format("Challenge started %d days ago",
+                        (int) Math.floor((double) amountOfDays))
+        );
         // TODO: add more info
     }
 
@@ -55,10 +65,15 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         this.challenges = challenges;
     }
 
-
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return challenges.size();
+    }
 
     public class MainChallengeCard extends RecyclerView.ViewHolder {
 
+        public LocalChallenge challenge;
         protected PopupMenu optionsButton;
         protected TextView titleText;
         protected TextView descriptionText;
@@ -66,7 +81,6 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         protected TextView completedAmountText;
         protected TextView startDateText;
         protected CardView card;
-        public LocalChallenge challenge;
 
         public MainChallengeCard(View itemView, final Activity activity) {
             super(itemView);
@@ -74,7 +88,7 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
             descriptionText = (TextView) itemView.findViewById(R.id.descriptionTextView);
             downloadsText = (TextView) itemView.findViewById(R.id.downloadsTextView);
             completedAmountText = (TextView) itemView.findViewById(R.id.completionsTextView);
-            ((ImageButton)itemView.findViewById(R.id.optionsbutton)).setOnClickListener(new View.OnClickListener() {
+            ((ImageButton) itemView.findViewById(R.id.optionsbutton)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     PopupMenu popup = new PopupMenu(activity, v);
@@ -85,8 +99,8 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
-                            Log.d("Options", "options clicked"+((LocalChallenge)challenge).toString());
-                            switch(menuItem.getItemId()){
+                            Log.d("Options", "options clicked" + ((LocalChallenge) challenge).toString());
+                            switch (menuItem.getItemId()) {
                                 case R.id.action_openDetails:
                                     Intent TestIntent = new Intent(activity, DetailsActivity.class);
                                     TestIntent.putExtra("id", ((LocalChallenge) challenge).localID);
@@ -94,7 +108,7 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                                     activity.startActivity(TestIntent);
                                     break;
                                 case R.id.action_remove:
-                                    ((LocalChallenge)challenge).delete();
+                                    ((LocalChallenge) challenge).delete();
                                     break;
                                 case R.id.action_share:
                                     // @todo SHARE
@@ -111,11 +125,5 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
             startDateText = (TextView) itemView.findViewById(R.id.startDateTextView);
             card = (CardView) itemView;
         }
-    }
-
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return challenges.size();
     }
 }

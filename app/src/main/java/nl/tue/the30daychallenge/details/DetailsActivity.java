@@ -38,7 +38,7 @@ public class DetailsActivity extends ActionBarActivity {
     public DetailsActivity() {
     }
 
-    public DetailsActivity(Challenge challenge) {
+    /*public DetailsActivity(Challenge challenge) {
         setChallenge(challenge);
     }
 
@@ -49,7 +49,7 @@ public class DetailsActivity extends ActionBarActivity {
         } else {
             challengeIsLocal = true;
         }
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +103,8 @@ public class DetailsActivity extends ActionBarActivity {
             }
         };
         try {
-            challenge = (Challenge) test.execute().get();
+            RemoteChallenge test2 = (RemoteChallenge) test.execute().get();
+            challenge = (Challenge) test2;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -148,11 +149,11 @@ public class DetailsActivity extends ActionBarActivity {
             LocalChallenge local = (LocalChallenge) challenge;
             String startedAt = String.format("Challenge started at %s", local.startDate.toString());
             ((TextView) findViewById(R.id.details_StartedAt)).setText(startedAt);
-        } else{
-            RemoteChallenge remote = (RemoteChallenge)challenge;
+        } else {
+            RemoteChallenge remote = (RemoteChallenge) challenge;
             String startedAt = String.format("Challenge downloaded %d times", remote.downloads);
             Log.d("DetailsActivity", startedAt);
-            ((TextView)findViewById(R.id.details_StartedAt)).setText(startedAt);
+            ((TextView) findViewById(R.id.details_StartedAt)).setText(startedAt);
         }
     }
 

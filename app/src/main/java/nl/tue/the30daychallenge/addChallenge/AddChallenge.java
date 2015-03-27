@@ -6,10 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 
-public class AddChallenge extends ActionBarActivity {
+public class AddChallenge extends ActionBarActivity implements View.OnClickListener {
     private final Activity me = this;
 
     @Override
@@ -31,7 +32,8 @@ public class AddChallenge extends ActionBarActivity {
         setContentView(R.layout.activity_add_challenge);
         CategorySpinnerItem[] categories = getCategories();
         Spinner categorySpinner = (Spinner)findViewById(R.id.create_categorySpinner);
-       categorySpinner.setAdapter(new ArrayAdapter(this, R.layout.activity_add_challenge_spinner_item, categories));
+        categorySpinner.setAdapter(new ArrayAdapter(this, R.layout.activity_add_challenge_spinner_item, categories));
+        ImageButton test = (ImageButton) findViewById(R.id.doneCheck);
     }
 
     private CategorySpinnerItem[] getCategories() {
@@ -46,13 +48,13 @@ public class AddChallenge extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_challenge, menu);
+        //getMenuInflater().inflate(R.menu.menu_add_challenge, menu);
         // Remove the action bar's shadow
         getSupportActionBar().setElevation(0);
         return true;
     }
 
-    @Override
+    /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -64,46 +66,50 @@ public class AddChallenge extends ActionBarActivity {
             return true;
         }
         if (id == R.id.create_addChallenge) {
-            try {
-                Log.d("AddChallenge", "Adding challenge");
-                String title = getChallengeTitle();
-                String description = getDescription();
-                int categoryID = getCategoryId();
-                Boolean toUpload = getUploadState();
-                final LocalChallenge challengeToAdd;
-                challengeToAdd = new LocalChallenge(title, description, categoryID);
-                if (toUpload) {
-                    try {
-                        new AsyncTask() {
-
-                            @Override
-                            protected Object doInBackground(Object[] params) {
-                                try {
-                                    challengeToAdd.upload();
-                                } catch (NoServerConnectionException e) {
-                                    nl.tue.the30daychallenge.Globals.MessageBoxes.ShowNetworkError(me);
-                                } catch (RemoteChallengeNotFoundException e) {
-                                    nl.tue.the30daychallenge.Globals.MessageBoxes.ShowOkMessageBox(
-                                            "Unexpected error",
-                                            "There was a problem in the backend, we have no idea" +
-                                                    "why this happened :(",
-                                            me);
-                                }
-                                return null;
-                            }
-                        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    } catch (Throwable e) {
-                        nl.tue.the30daychallenge.Globals.MessageBoxes.ShowNetworkError(this);
-                        Log.d("LocalChallenge", e.toString());
-                    }
-                }
-                finish();
-            } catch (IllegalArgumentException e) {
-                MessageBoxes.ShowOkMessageBox("You Suck!", "Field can not be empty", this);
-            }
+            AddChallenge();
         }
 
         return super.onOptionsItemSelected(item);
+    }*/
+
+    private void AddChallenge() {
+        try {
+            Log.d("AddChallenge", "Adding challenge");
+            String title = getChallengeTitle();
+            String description = getDescription();
+            int categoryID = getCategoryId();
+            Boolean toUpload = getUploadState();
+            final LocalChallenge challengeToAdd;
+            challengeToAdd = new LocalChallenge(title, description, categoryID);
+            if (toUpload) {
+                try {
+                    new AsyncTask() {
+
+                        @Override
+                        protected Object doInBackground(Object[] params) {
+                            try {
+                                challengeToAdd.upload();
+                            } catch (NoServerConnectionException e) {
+                                MessageBoxes.ShowNetworkError(me);
+                            } catch (RemoteChallengeNotFoundException e) {
+                                MessageBoxes.ShowOkMessageBox(
+                                        "Unexpected error",
+                                        "There was a problem in the backend, we have no idea" +
+                                                "why this happened :(",
+                                        me);
+                            }
+                            return null;
+                        }
+                    }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } catch (Throwable e) {
+                    MessageBoxes.ShowNetworkError(this);
+                    Log.d("LocalChallenge", e.toString());
+                }
+            }
+            finish();
+        } catch (IllegalArgumentException e) {
+            MessageBoxes.ShowOkMessageBox("You Suck!", "Field can not be empty", this);
+        }
     }
 
     private Boolean getUploadState() {
@@ -133,6 +139,11 @@ public class AddChallenge extends ActionBarActivity {
             throw new IllegalArgumentException("Description can't be empty");
         }
         return description;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     private class CategorySpinnerItem extends Category {
