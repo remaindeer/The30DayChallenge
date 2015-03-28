@@ -2,6 +2,7 @@ package nl.tue.the30daychallenge.mainWindow;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.sql.Timestamp;
@@ -51,6 +53,7 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         newHolder.descriptionText.setText(local.description);
         newHolder.challenge = local;
 
+
         Long startDate = local.startDate.getTime();
         Long today = new Timestamp(Calendar.getInstance().getTime().getTime()).getTime();
 
@@ -63,6 +66,7 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                 String.format("Challenge started %d days ago",
                         (int) Math.floor((double) amountOfDays))
         );
+        newHolder.checkAndSetColor();
         // TODO: add more info
     }
 
@@ -87,6 +91,7 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         protected TextView startDateText;
         protected CardView card;
         protected ImageButton checkedbutton;
+        protected LinearLayout cardColor;
 
         public MainChallengeCard(View itemView, final Activity activity) {
             super(itemView);
@@ -95,6 +100,9 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
             downloadsText = (TextView) itemView.findViewById(R.id.downloadsTextView);
             completedAmountText = (TextView) itemView.findViewById(R.id.completionsTextView);
             checkedbutton = (ImageButton) itemView.findViewById(R.id.checkbutton);
+            cardColor = (LinearLayout) itemView.findViewById(R.id.cardColor);
+
+
 
             checkedbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,6 +119,7 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                     }
                 }
             });
+
 
             ((ImageButton) itemView.findViewById(R.id.optionsbutton)).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -160,8 +169,23 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                 }
             });
 
+
             startDateText = (TextView) itemView.findViewById(R.id.startDateTextView);
             card = (CardView) itemView;
+
+
+
+        }
+
+        // checks the status of the challenge and colors the background appropriately
+        public void checkAndSetColor() {
+            if(challenge.isFailed()) {
+                cardColor.setBackgroundColor(Color.parseColor("#FF5252"));
+            } else if(challenge.isAlreadyCheckedToday()) {
+                cardColor.setBackgroundColor(Color.parseColor("#4CAF50"));
+            } else if(challenge.canCheck()) {
+                cardColor.setBackgroundColor(Color.parseColor("#FFAB00"));
+            }
         }
     }
 }

@@ -22,6 +22,7 @@ public class ChallengeAlreadyCheckedFragment extends DialogFragment {
         builder.setMessage("You have already checked this challenge for today.")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        //do nothing
                     }
                 });
         // Create the AlertDialog object and return it
