@@ -106,7 +106,8 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                         resetDialog.challengeFragment = challenge;
                         resetDialog.show(((Activity)v.getContext()).getFragmentManager(), "");
                     } catch (ChallengeAlreadyCheckedException e) {
-                    // do nothing
+                        ChallengeAlreadyCheckedFragment checkedDialog = new ChallengeAlreadyCheckedFragment();
+                        checkedDialog.show(((Activity)v.getContext()).getFragmentManager(), "");
                     }
                 }
             });
