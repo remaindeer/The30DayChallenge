@@ -101,6 +101,16 @@ public class DetailsActivity extends ActionBarActivity {
             toGo.setText("Amount of likes: " + likes);
         }
 
+        TextView amountOfTimesFailed = (TextView) findViewById(R.id.details_AmountOfTimesFailed);
+        if (challengeIsLocal) {
+            LocalChallenge challenge2 = (LocalChallenge) challenge;
+            if (challenge2.amountOfTimesFailed > 1) {
+                amountOfTimesFailed.setText("Amount of attempts: " + challenge2.amountOfTimesFailed);
+            } else {
+                amountOfTimesFailed.setEnabled(false);
+            }
+        }
+
         TextView highScore = (TextView) findViewById(R.id.details_HighScore);
         if (challengeIsLocal) {
             highScore.setText("Highscore: " + ((LocalChallenge) challenge).highscore + " days");
@@ -329,20 +339,20 @@ class UpDownloader extends AsyncTask {
         try {
             if (isLocal) {
                 ((LocalChallenge) challenge).upload();
-                Message msg = new Message();
+                /*Message msg = new Message();
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Upload succeeded");
                 bundle.putString("description", "This challenge is uploaded to the server");
                 msg.setData(bundle);
-                parent.messageHandler.sendMessage(msg);
+                parent.messageHandler.sendMessage(msg);*/
             } else {
                 RemoteConnector.downloadRemoteChallenge(((RemoteChallenge) challenge));
-                Message msg = new Message();
+                /*Message msg = new Message();
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Download succeeded");
                 bundle.putString("description", "This challenge is download from server");
                 msg.setData(bundle);
-                parent.messageHandler.sendMessage(msg);
+                parent.messageHandler.sendMessage(msg);*/
             }
         } catch (NoServerConnectionException e) {
 
