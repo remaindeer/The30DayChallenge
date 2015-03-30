@@ -88,6 +88,7 @@ public class LocalChallenge extends Challenge {
         SQLiteDatabase db = LocalConnector.db;
         ContentValues values = new ContentValues();
         values.put("title", title);
+        values.put("remoteChallengeID", remoteChallengeID);
         values.put("description", description);
         values.put("categoryID",categoryID);
         values.put("isCompleted", isCompleted);

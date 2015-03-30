@@ -108,6 +108,15 @@ public class DetailsActivity extends ActionBarActivity {
 
     private void getRemoteChallenge(int id) {
         final int identifier = id;
+        Log.d("Details", "Searching for remote ID: " + id);
+        for (LocalChallenge challenge: LocalConnector.getChallenges()) {
+            Log.d("Details", "Challenge found: " + challenge.remoteChallengeID);
+            if (id == challenge.remoteChallengeID) {
+                challengeIsLocal = true;
+                getLocalChallenge(challenge.localID);
+                return;
+            }
+        }
         AsyncTask test = new AsyncTask() {
 
             @Override
