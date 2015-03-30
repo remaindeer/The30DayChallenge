@@ -54,6 +54,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
     @Override
     public void onAccuracyChanged(int sensor, int accuracy) {
 
+
     }
 
     @Override
