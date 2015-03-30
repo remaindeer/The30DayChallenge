@@ -31,9 +31,12 @@ import com.facebook.share.widget.ShareDialog;
 import java.util.ArrayList;
 
 import nl.tue.the30daychallenge.addChallenge.AddChallenge;
+import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
 import nl.tue.the30daychallenge.details.DetailsActivity;
+import nl.tue.the30daychallenge.exception.NoServerConnectionException;
+import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 import nl.tue.the30daychallenge.library.LibraryFragment;
 import nl.tue.the30daychallenge.mainWindow.MainFragment;
 
@@ -93,6 +96,7 @@ public class MainActivity extends ActionBarActivity {
         RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
         LocalConnector.load(me.getApplicationContext());
 
+
         new AsyncTask<String, Boolean, String>() {
 
             // test code
@@ -103,6 +107,13 @@ public class MainActivity extends ActionBarActivity {
 
                 new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
                 new LocalConnector(me);
+                try {
+                    LocalChallenge.syncAll();
+                } catch (NoServerConnectionException e) {
+                    Log.d("Sync",e.toString());
+                } catch (RemoteChallengeNotFoundException e) {
+                    Log.d("Sync",e.toString());
+                }
                 /*try {
                     //RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
                     //Log.d("Connector", RemoteConnector.getChallenges().toString());
