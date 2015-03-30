@@ -51,6 +51,7 @@ public class LocalChallenge extends Challenge {
         setDownloaded();
     }
 
+
     public static void create() {
         SQLiteDatabase db = LocalConnector.db;
         db.execSQL("CREATE TABLE IF NOT EXISTS LocalChallenge ("
