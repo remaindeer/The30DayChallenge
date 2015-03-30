@@ -39,10 +39,9 @@ public class DetailsActivity extends ActionBarActivity {
 
     private static boolean challengeIsLocal = false;
     private static Challenge challenge;
-    private DetailsActivity me = this;
     public Handler clickHandler = new Handler() {
         public void handleMessage(Message msg) {
-            SetButtonContent();
+            setButtonContent();
         }
     };
     public Handler messageHandler = new Handler() {
@@ -53,6 +52,7 @@ public class DetailsActivity extends ActionBarActivity {
             nl.tue.the30daychallenge.Globals.MessageBoxes.ShowOkMessageBox(title, description, MainActivity.me);
         }
     };
+    private DetailsActivity me = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class DetailsActivity extends ActionBarActivity {
         } else {
             getRemoteChallenge(data.getInt("id"));
         }
-        SetButtonContent();
+        setButtonContent();
         SetRunningTime();
         SetTitleAndDescription();
     }
@@ -86,6 +86,19 @@ public class DetailsActivity extends ActionBarActivity {
                 imageView.setImageResource(Categories.icons.get(category.title));
                 break;
             }
+        }
+
+        TextView toGo = (TextView) findViewById(R.id.details_RunningToGo);
+        if (challengeIsLocal) {
+            LocalChallenge challenge2 = (LocalChallenge) challenge;
+            if (challenge2.checkCount <= 30) {
+                toGo.setText("Amount of days to go: " + (30 - challenge2.checkCount));
+            } else {
+                toGo.setEnabled(false);
+            }
+        } else {
+            int likes = ((RemoteChallenge) challenge).likes;
+            toGo.setText("Amount of likes: " + likes);
         }
 
         TextView highScore = (TextView) findViewById(R.id.details_HighScore);
@@ -139,7 +152,7 @@ public class DetailsActivity extends ActionBarActivity {
         return true;
     }
 
-    private void SetButtonContent() {
+    public void setButtonContent() {
         ButtonState buttonState;
         Button button = (Button) findViewById(R.id.likeSlashUploadSlashDownloadButton);
         if (challengeIsLocal) {
@@ -167,7 +180,7 @@ public class DetailsActivity extends ActionBarActivity {
     private void SetRunningTime() {
         if (challengeIsLocal) {
             LocalChallenge local = (LocalChallenge) challenge;
-            String startedAt = String.format("Challenge started at %s", local.startDate.toString());
+            String startedAt = String.format("Challenge started at %s", local.startDate.toString().substring(0, 10));
             ((TextView) findViewById(R.id.details_StartedAt)).setText(startedAt);
 
             String runningFor = String.format("Challenge running for %d days", local.checkCount);
@@ -221,6 +234,7 @@ public class DetailsActivity extends ActionBarActivity {
                 case Like:
                     if (challenge instanceof LocalChallenge) {
                         new Liker(true, (LocalChallenge) challenge, this.parent).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        parent.setButtonContent();
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be  liked",
@@ -231,6 +245,7 @@ public class DetailsActivity extends ActionBarActivity {
                 case Unlike:
                     if (challenge instanceof LocalChallenge) {
                         new Liker(false, (LocalChallenge) challenge, this.parent).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        parent.setButtonContent();
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be unliked",
