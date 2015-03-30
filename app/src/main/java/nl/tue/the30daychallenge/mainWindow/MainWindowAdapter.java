@@ -30,10 +30,11 @@ import nl.tue.the30daychallenge.exception.ChallengeFailedException;
 /**
  * Created by tane on 3/23/15.
  */
-public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.MainChallengeCard>  {
+public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.MainChallengeCard> {
     public Activity mainactivity;
     List<LocalChallenge> challenges;
-    public MainWindowAdapter(List<LocalChallenge> data,Activity activity){
+
+    public MainWindowAdapter(List<LocalChallenge> data, Activity activity) {
         this.challenges = data;
         this.mainactivity = activity;
     }
@@ -59,8 +60,8 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
 
         Long delta = today - startDate;
         Long amountOfMillisecondsInADay = Long.valueOf(1000 * 3600 * 24);
-        Long amountOfDays = (long)((float) delta / amountOfMillisecondsInADay);
-      //  Long amountOfDays = delta / amountOfMillisecondsInADay;
+        Long amountOfDays = (long) ((float) delta / amountOfMillisecondsInADay);
+        //  Long amountOfDays = delta / amountOfMillisecondsInADay;
 
         newHolder.startDateText.setText(
                 String.format("Challenge started %d days ago",
@@ -83,14 +84,14 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
     public class MainChallengeCard extends RecyclerView.ViewHolder {
 
         public LocalChallenge challenge;
-        protected PopupMenu optionsButton;
+        protected ImageButton optionsButton;
         protected TextView titleText;
         protected TextView descriptionText;
         protected TextView downloadsText;
         protected TextView completedAmountText;
         protected TextView startDateText;
         protected CardView card;
-        protected ImageButton checkedbutton;
+        protected ImageButton checkedButton;
         protected LinearLayout cardColor;
 
         public MainChallengeCard(View itemView, final Activity activity) {
@@ -99,12 +100,11 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
             descriptionText = (TextView) itemView.findViewById(R.id.descriptionTextView);
             downloadsText = (TextView) itemView.findViewById(R.id.downloadsTextView);
             completedAmountText = (TextView) itemView.findViewById(R.id.completionsTextView);
-            checkedbutton = (ImageButton) itemView.findViewById(R.id.checkbutton);
+            checkedButton = (ImageButton) itemView.findViewById(R.id.checkbutton);
             cardColor = (LinearLayout) itemView.findViewById(R.id.cardColor);
+            optionsButton = (ImageButton) itemView.findViewById(R.id.optionsbutton);
 
-
-
-            checkedbutton.setOnClickListener(new View.OnClickListener() {
+            checkedButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
@@ -112,22 +112,21 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                     } catch (ChallengeFailedException e) {
                         FailedChallengeResetFragment resetDialog = new FailedChallengeResetFragment();
                         resetDialog.challengeFragment = challenge;
-                        resetDialog.show(((Activity)v.getContext()).getFragmentManager(), "");
+                        resetDialog.show(((Activity) v.getContext()).getFragmentManager(), "");
                     } catch (ChallengeAlreadyCheckedException e) {
                         ChallengeAlreadyCheckedFragment checkedDialog = new ChallengeAlreadyCheckedFragment();
-                        checkedDialog.show(((Activity)v.getContext()).getFragmentManager(), "");
+                        checkedDialog.show(((Activity) v.getContext()).getFragmentManager(), "");
                     }
+                    checkAndSetColor();
                 }
             });
 
-
-            ((ImageButton) itemView.findViewById(R.id.optionsbutton)).setOnClickListener(new View.OnClickListener() {
+            optionsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     PopupMenu popup = new PopupMenu(activity, v);
 
                     // This activity implements OnMenuItemClickListener
-                    optionsButton = popup;
                     popup.inflate(R.menu.menu_main_challenge);
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
@@ -161,7 +160,6 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                                     MainActivity.share.share(activity, action, challenge.title);
                                     break;
                             }
-
                             return true;
                         }
                     });
@@ -169,21 +167,17 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                 }
             });
 
-
             startDateText = (TextView) itemView.findViewById(R.id.startDateTextView);
             card = (CardView) itemView;
-
-
-
         }
 
         // checks the status of the challenge and colors the background appropriately
         public void checkAndSetColor() {
-            if(challenge.isFailed()) {
+            if (challenge.isFailed()) {
                 cardColor.setBackgroundColor(Color.parseColor("#FF5252"));
-            } else if(challenge.isAlreadyCheckedToday()) {
+            } else if (challenge.isAlreadyCheckedToday()) {
                 cardColor.setBackgroundColor(Color.parseColor("#4CAF50"));
-            } else if(challenge.canCheck()) {
+            } else if (challenge.canCheck()) {
                 cardColor.setBackgroundColor(Color.parseColor("#FFAB00"));
             }
         }

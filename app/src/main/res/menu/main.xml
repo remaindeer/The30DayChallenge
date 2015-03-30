@@ -12,9 +12,4 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_mock_details"
-        android:orderInCategory="100"
-        android:title="Mock details activity"
-        app:showAsAction="never" />
 </menu>

@@ -34,7 +34,6 @@ import nl.tue.the30daychallenge.addChallenge.AddChallenge;
 import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
-import nl.tue.the30daychallenge.details.DetailsActivity;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 import nl.tue.the30daychallenge.library.LibraryFragment;
@@ -43,16 +42,16 @@ import nl.tue.the30daychallenge.mainWindow.MainFragment;
 
 public class MainActivity extends ActionBarActivity {
 
+    public static Share share = null;
+    public static CallbackManager callbackManager;
+    public static ShareDialog shareDialog;
+    public static MainActivity me;
     private static String TAG = MainActivity.class.getSimpleName();
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
     ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    public static Share share = null;
-    public static CallbackManager callbackManager;
-    public static ShareDialog shareDialog;
-    public static MainActivity me;
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
@@ -280,12 +279,6 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
-            return true;
-        }
-        if (id == R.id.action_mock_details) {
-            Intent DetailsIntent = new Intent(this, DetailsActivity.class);
-            //DetailsIntent.putExtra("challenge", new LocalChallenge("4","3",4));
-            startActivity(DetailsIntent);
             return true;
         }
 

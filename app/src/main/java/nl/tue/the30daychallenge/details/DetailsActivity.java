@@ -39,10 +39,9 @@ public class DetailsActivity extends ActionBarActivity {
 
     private static boolean challengeIsLocal = false;
     private static Challenge challenge;
-    private DetailsActivity me = this;
     public Handler clickHandler = new Handler() {
         public void handleMessage(Message msg) {
-            SetButtonContent();
+            setButtonContent();
         }
     };
     public Handler messageHandler = new Handler() {
@@ -53,6 +52,7 @@ public class DetailsActivity extends ActionBarActivity {
             nl.tue.the30daychallenge.Globals.MessageBoxes.ShowOkMessageBox(title, description, MainActivity.me);
         }
     };
+    private DetailsActivity me = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class DetailsActivity extends ActionBarActivity {
         } else {
             getRemoteChallenge(data.getInt("id"));
         }
-        SetButtonContent();
+        setButtonContent();
         SetRunningTime();
         SetTitleAndDescription();
     }
@@ -85,6 +85,29 @@ public class DetailsActivity extends ActionBarActivity {
             if (category.categoryID == challenge.categoryID) {
                 imageView.setImageResource(Categories.icons.get(category.title));
                 break;
+            }
+        }
+
+        TextView toGo = (TextView) findViewById(R.id.details_RunningToGo);
+        if (challengeIsLocal) {
+            LocalChallenge challenge2 = (LocalChallenge) challenge;
+            if (challenge2.checkCount <= 30) {
+                toGo.setText("Amount of days to go: " + (30 - challenge2.checkCount));
+            } else {
+                toGo.setEnabled(false);
+            }
+        } else {
+            int likes = ((RemoteChallenge) challenge).likes;
+            toGo.setText("Amount of likes: " + likes);
+        }
+
+        TextView amountOfTimesFailed = (TextView) findViewById(R.id.details_AmountOfTimesFailed);
+        if (challengeIsLocal) {
+            LocalChallenge challenge2 = (LocalChallenge) challenge;
+            if (challenge2.amountOfTimesFailed > 1) {
+                amountOfTimesFailed.setText("Amount of attempts: " + challenge2.amountOfTimesFailed);
+            } else {
+                amountOfTimesFailed.setEnabled(false);
             }
         }
 
@@ -148,7 +171,7 @@ public class DetailsActivity extends ActionBarActivity {
         return true;
     }
 
-    private void SetButtonContent() {
+    public void setButtonContent() {
         ButtonState buttonState;
         Button button = (Button) findViewById(R.id.likeSlashUploadSlashDownloadButton);
         if (challengeIsLocal) {
@@ -176,7 +199,7 @@ public class DetailsActivity extends ActionBarActivity {
     private void SetRunningTime() {
         if (challengeIsLocal) {
             LocalChallenge local = (LocalChallenge) challenge;
-            String startedAt = String.format("Challenge started at %s", local.startDate.toString());
+            String startedAt = String.format("Challenge started at %s", local.startDate.toString().substring(0, 10));
             ((TextView) findViewById(R.id.details_StartedAt)).setText(startedAt);
 
             String runningFor = String.format("Challenge running for %d days", local.checkCount);
@@ -230,6 +253,7 @@ public class DetailsActivity extends ActionBarActivity {
                 case Like:
                     if (challenge instanceof LocalChallenge) {
                         new Liker(true, (LocalChallenge) challenge, this.parent).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        parent.setButtonContent();
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be  liked",
@@ -240,6 +264,7 @@ public class DetailsActivity extends ActionBarActivity {
                 case Unlike:
                     if (challenge instanceof LocalChallenge) {
                         new Liker(false, (LocalChallenge) challenge, this.parent).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        parent.setButtonContent();
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be unliked",
@@ -323,20 +348,20 @@ class UpDownloader extends AsyncTask {
         try {
             if (isLocal) {
                 ((LocalChallenge) challenge).upload();
-                Message msg = new Message();
+                /*Message msg = new Message();
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Upload succeeded");
                 bundle.putString("description", "This challenge is uploaded to the server");
                 msg.setData(bundle);
-                parent.messageHandler.sendMessage(msg);
+                parent.messageHandler.sendMessage(msg);*/
             } else {
                 RemoteConnector.downloadRemoteChallenge(((RemoteChallenge) challenge));
-                Message msg = new Message();
+                /*Message msg = new Message();
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "Download succeeded");
                 bundle.putString("description", "This challenge is download from server");
                 msg.setData(bundle);
-                parent.messageHandler.sendMessage(msg);
+                parent.messageHandler.sendMessage(msg);*/
             }
         } catch (NoServerConnectionException e) {
 
