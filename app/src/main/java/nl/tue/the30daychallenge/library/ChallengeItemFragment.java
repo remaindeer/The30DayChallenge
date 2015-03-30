@@ -151,9 +151,6 @@ public class ChallengeItemFragment extends Fragment implements AbsListView.OnIte
         intent.putExtra("id", item.challengeID);
         intent.putExtra("isLocal", false);
         startActivity(intent);
-
-        Toast.makeText(getActivity(), item.title + " Clicked!"
-                , Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -63,8 +63,6 @@ public class MainActivity extends ActionBarActivity {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
 
-        MainActivity.me = this;
-
         if (share == null) {
             share = new Share();
         }
@@ -100,6 +98,7 @@ public class MainActivity extends ActionBarActivity {
         // @test
         createTestEnvironment();
 
+
         new AsyncTask<String, Boolean, String>() {
 
             // test code
@@ -110,6 +109,13 @@ public class MainActivity extends ActionBarActivity {
 
                 new RemoteConnector(Secure.getString(getContentResolver(), Secure.ANDROID_ID));
                 new LocalConnector(me);
+                try {
+                    LocalChallenge.syncAll();
+                } catch (NoServerConnectionException e) {
+                    Log.d("Sync",e.toString());
+                } catch (RemoteChallengeNotFoundException e) {
+                    Log.d("Sync",e.toString());
+                }
                 /*try {
                     //RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
                     //Log.d("Connector", RemoteConnector.getChallenges().toString());
