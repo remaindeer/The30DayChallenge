@@ -97,10 +97,6 @@ public class MainActivity extends ActionBarActivity {
         RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
         LocalConnector.load(me.getApplicationContext());
 
-        // @test
-        createTestEnvironment();
-
-
         new AsyncTask<String, Boolean, String>() {
 
             // test code
