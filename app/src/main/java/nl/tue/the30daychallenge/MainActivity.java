@@ -128,6 +128,7 @@ public class MainActivity extends ActionBarActivity {
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+
         // DrawerLayout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
