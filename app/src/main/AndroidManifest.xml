@@ -9,11 +9,6 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-    <!--<provider
-        android:name="com.facebook.FacebookContentProvider"
-        android:authorities="com.facebook.app.FacebookContentProvider366234573582332"
-        android:exported="true" />
--->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
