@@ -154,11 +154,12 @@ public class LocalChallenge extends Challenge {
 
     public void sync() throws NoServerConnectionException, RemoteChallengeNotFoundException {
         if (!inSync) {
-            if (this.remoteChallengeID == -1 && this.shouldBeUploaded) {
+            if ((this.remoteChallengeID == -1 || this.remoteChallengeID == 0 ) && this.shouldBeUploaded) {
                 // not in sync
                 this.remoteChallenge = RemoteConnector.addChallenge(categoryID, title, description);
                 if (this.remoteChallenge != null) {
                     this.remoteChallengeID = this.remoteChallenge.challengeID;
+                    this.isUploaded = true;
                     this.save();
                 }
             }
@@ -257,6 +258,15 @@ public class LocalChallenge extends Challenge {
             this.lastChecked = now;
             checkCount++;
             highscore = Math.max(highscore,checkCount);
+            if(checkCount == 30){
+                try {
+                    setCompleted();
+                } catch (NoServerConnectionException e) {
+                    Log.d("Check",e.toString());
+                } catch (RemoteChallengeNotFoundException e) {
+                    Log.d("Check",e.toString());
+                }
+            }
             this.save();
         } else {
             if (isFailed()) throw new ChallengeFailedException();
