@@ -259,6 +259,7 @@ public class LocalChallenge extends Challenge {
         return false;
     }
 
+
     public void check() throws ChallengeFailedException, ChallengeAlreadyCheckedException {
         Date nowDate = Calendar.getInstance().getTime();
         Timestamp now = new Timestamp(nowDate.getTime());
