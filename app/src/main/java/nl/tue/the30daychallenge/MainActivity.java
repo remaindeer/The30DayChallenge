@@ -31,6 +31,7 @@ import com.facebook.share.widget.ShareDialog;
 import java.util.ArrayList;
 
 import nl.tue.the30daychallenge.addChallenge.AddChallenge;
+import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
 import nl.tue.the30daychallenge.details.DetailsActivity;
@@ -49,6 +50,7 @@ public class MainActivity extends ActionBarActivity {
     public static Share share = null;
     public static CallbackManager callbackManager;
     public static ShareDialog shareDialog;
+    public static MainActivity me;
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
@@ -60,6 +62,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
+
+        MainActivity.me = this;
 
         if (share == null) {
             share = new Share();
@@ -92,6 +96,9 @@ public class MainActivity extends ActionBarActivity {
         // DO NOT REMOVE OR MODIFY THIS LINE (NEVER EVER, REALLY)!!!!!!!!!11!!
         RemoteConnector.setCertificate(me.getResources().openRawResource(R.raw.certificate));
         LocalConnector.load(me.getApplicationContext());
+
+        // @test
+        createTestEnvironment();
 
         new AsyncTask<String, Boolean, String>() {
 
@@ -211,6 +218,16 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    public void createCompletedChallenge() {
+        LocalChallenge challenge = new LocalChallenge("Completed challenge", "This challenge should be completed", 1);
+        challenge.forceCompleted();
+        challenge.save();
+    }
+
+    public void createTestEnvironment() {
+        LocalConnector.dropDatabase();
+        createCompletedChallenge();
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

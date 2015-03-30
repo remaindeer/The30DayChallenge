@@ -31,7 +31,7 @@ public class LocalChallenge extends Challenge {
     public boolean shouldBeUploaded = false;
     public boolean inSync = false;
     private RemoteChallenge remoteChallenge = null;
-    private boolean isCompleted = false;
+    public boolean isCompleted = false;
     private boolean hasLiked = false;
 
     public LocalChallenge(String title, String description, int categoryID) {
@@ -198,6 +198,11 @@ public class LocalChallenge extends Challenge {
         this.inSync = false;
         this.save();
         sync();
+    }
+
+    public void forceCompleted() {
+        this.isCompleted = true;
+        this.save();
     }
 
     public void setCompleted() throws NoServerConnectionException, RemoteChallengeNotFoundException {

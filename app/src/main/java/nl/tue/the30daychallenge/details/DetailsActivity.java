@@ -1,10 +1,11 @@
 package nl.tue.the30daychallenge.details;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import nl.tue.the30daychallenge.Globals.Categories;
+import nl.tue.the30daychallenge.MainActivity;
 import nl.tue.the30daychallenge.R;
 import nl.tue.the30daychallenge.data.Category;
 import nl.tue.the30daychallenge.data.Challenge;
@@ -37,6 +39,20 @@ public class DetailsActivity extends ActionBarActivity {
 
     private static boolean challengeIsLocal = false;
     private static Challenge challenge;
+    private DetailsActivity me = this;
+    public Handler clickHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            SetButtonContent();
+        }
+    };
+    public Handler messageHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            String title = data.getString("title");
+            String description = data.getString("description");
+            nl.tue.the30daychallenge.Globals.MessageBoxes.ShowOkMessageBox(title, description, MainActivity.me);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,8 +220,7 @@ public class DetailsActivity extends ActionBarActivity {
             switch (state) {
                 case Like:
                     if (challenge instanceof LocalChallenge) {
-                        new Liker(true, (LocalChallenge) challenge).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        parent.SetButtonContent();
+                        new Liker(true, (LocalChallenge) challenge, this.parent).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be  liked",
@@ -215,8 +230,7 @@ public class DetailsActivity extends ActionBarActivity {
                     break;
                 case Unlike:
                     if (challenge instanceof LocalChallenge) {
-                        new Liker(false, (LocalChallenge) challenge).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        parent.SetButtonContent();
+                        new Liker(false, (LocalChallenge) challenge, this.parent).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be unliked",
@@ -259,16 +273,19 @@ class Liker extends AsyncTask {
 
     boolean like;
     LocalChallenge challenge;
+    DetailsActivity parent;
 
-    public Liker(boolean like, LocalChallenge challenge) {
+    public Liker(boolean like, LocalChallenge challenge, DetailsActivity parent) {
         this.like = like;
         this.challenge = challenge;
+        this.parent = parent;
     }
 
     @Override
     protected Object doInBackground(Object[] params) {
         try {
             challenge.setLike(like);
+            parent.clickHandler.sendEmptyMessage(1);
         } catch (NoServerConnectionException e) {
 
         } catch (RemoteChallengeNotFoundException e) {
@@ -282,9 +299,9 @@ class UpDownloader extends AsyncTask {
 
     Challenge challenge;
     boolean isLocal = false;
-    Activity parent;
+    DetailsActivity parent;
 
-    public UpDownloader(Challenge challenge, Activity parent) {
+    public UpDownloader(Challenge challenge, DetailsActivity parent) {
         this.challenge = challenge;
         this.parent = parent;
         if (challenge instanceof LocalChallenge) {
@@ -297,17 +314,20 @@ class UpDownloader extends AsyncTask {
         try {
             if (isLocal) {
                 ((LocalChallenge) challenge).upload();
-                nl.tue.the30daychallenge.Globals.MessageBoxes.ShowOkMessageBox(
-                        "Upload succeeded",
-                        "This app is uploaded to the server",
-                        parent);
+                Message msg = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "Upload succeeded");
+                bundle.putString("description", "This challenge is uploaded to the server");
+                msg.setData(bundle);
+                parent.messageHandler.sendMessage(msg);
             } else {
                 RemoteConnector.downloadRemoteChallenge(((RemoteChallenge) challenge));
-
-                nl.tue.the30daychallenge.Globals.MessageBoxes.ShowOkMessageBox(
-                        "Download succeeded",
-                        "This app is downloaded from the server",
-                        parent);
+                Message msg = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "Download succeeded");
+                bundle.putString("description", "This challenge is download from server");
+                msg.setData(bundle);
+                parent.messageHandler.sendMessage(msg);
             }
         } catch (NoServerConnectionException e) {
 

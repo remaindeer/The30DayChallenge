@@ -19,6 +19,7 @@ public class LocalConnector extends SQLiteOpenHelper {
 
     public static void dropDatabase() {
         LocalConnector.db.execSQL("DROP TABLE IF EXISTS LocalChallenge");
+        LocalChallenge.create();
     }
 
     public static void load(Context context) {
