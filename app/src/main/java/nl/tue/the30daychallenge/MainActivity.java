@@ -35,6 +35,8 @@ import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
 import nl.tue.the30daychallenge.details.DetailsActivity;
+import nl.tue.the30daychallenge.exception.NoServerConnectionException;
+import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 import nl.tue.the30daychallenge.library.LibraryFragment;
 import nl.tue.the30daychallenge.mainWindow.MainFragment;
 
