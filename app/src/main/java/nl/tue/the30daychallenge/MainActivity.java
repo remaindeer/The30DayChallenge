@@ -234,8 +234,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void createTestEnvironment() {
-        LocalConnector.dropDatabase();
-        createCompletedChallenge();
+        //LocalConnector.dropDatabase();
+        //createCompletedChallenge();
     }
 
     @Override

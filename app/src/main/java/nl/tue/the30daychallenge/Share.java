@@ -106,6 +106,7 @@ public class Share implements DialogInterface.OnClickListener {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == parent.RESULT_OK) {
             Bundle extras = data.getExtras();
             this.image = (Bitmap) extras.get("data");
+            Log.d("Share", "Image: " + this.image);
             shareOnFacebook();
         } else {
             MainActivity.callbackManager.onActivityResult(requestCode, resultCode, data);
