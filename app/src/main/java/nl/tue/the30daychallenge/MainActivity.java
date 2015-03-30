@@ -64,6 +64,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
+        MainActivity.me = this;
 
         if (share == null) {
             share = new Share();
