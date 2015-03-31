@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -49,7 +50,7 @@ public class AddChallenge extends ActionBarActivity implements View.OnClickListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_add_challenge, menu);
+        getMenuInflater().inflate(R.menu.menu_add_challenge, menu);
         // Remove the action bar's shadow
         getSupportActionBar().setElevation(0);
         return true;
@@ -91,7 +92,7 @@ public class AddChallenge extends ActionBarActivity implements View.OnClickListe
             }
             finish();
         } catch (IllegalArgumentException e) {
-            MessageBoxes.ShowOkMessageBox("You Suck!", "Field can not be empty", this);
+            MessageBoxes.ShowOkMessageBox("Empty fields", "All fields have to be filled in.", this);
         }
     }
 
@@ -104,7 +105,7 @@ public class AddChallenge extends ActionBarActivity implements View.OnClickListe
         EditText titleField = (EditText) findViewById(R.id.create_titleField);
         String text = titleField.getText().toString();
         if (text.equals("")) {
-            throw new IllegalArgumentException("Title can't be empty");
+            throw new IllegalArgumentException("Title cannot be empty");
         }
         return text;
     }
@@ -119,7 +120,7 @@ public class AddChallenge extends ActionBarActivity implements View.OnClickListe
         EditText descriptionField = (EditText) findViewById(R.id.create_descriptionField);
         String description = descriptionField.getText().toString();
         if (description.equals("")) {
-            throw new IllegalArgumentException("Description can't be empty");
+            throw new IllegalArgumentException("Description cannot be empty");
         }
         return description;
     }
@@ -143,5 +144,19 @@ public class AddChallenge extends ActionBarActivity implements View.OnClickListe
             return this.title;
         }
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.create_addChallenge) {
+            addChallenge();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

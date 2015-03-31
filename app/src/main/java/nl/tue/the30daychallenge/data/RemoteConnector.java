@@ -269,14 +269,13 @@ public class RemoteConnector {
 
     // sorting fields
     public static enum SortField {
-        LIKES,          // sort on the number of likes
-        COMPLETIONS,    // sort on the number of completions
-        DOWNLOADS,      // sort on the number of download
-        CREATED_AT,     // sort on when the challenges are created
-        UPDATED_AT,     // sort on when the challenges were modified
-        RANDOM,         // sort in a random manner
-        TITLE,          // sort on the challenge title
-        DESCRIPTION     // sort on the description of the challenges
+        Likes,          // sort on the number of likes
+        Completions,    // sort on the number of completions
+        Popularity,      // sort on the number of download
+        Creation,        // sort on when the challenges are created
+        Updated,     // sort on when the challenges were modified
+        Title,          // sort on the challenge title
+        Random,          // sort random
     }
 
     // a class which contains response information from a HTTP request
@@ -307,7 +306,7 @@ public class RemoteConnector {
     public static class SortFilter extends Filter {
 
         // sort field
-        public SortField sortBy = SortField.LIKES;
+        public SortField sortBy = SortField.Likes;
         // whether or not to reverse the results
         public boolean reverse = false;
 
@@ -336,29 +335,26 @@ public class RemoteConnector {
             String query = "";
             String field = "";
             switch (sortBy) {
-                case LIKES:
+                case Likes:
                     field = "likes";
                     break;
-                case COMPLETIONS:
+                case Completions:
                     field = "completions";
                     break;
-                case DOWNLOADS:
+                case Popularity:
                     field = "downloads";
                     break;
-                case CREATED_AT:
+                case Creation:
                     field = "created_at";
                     break;
-                case UPDATED_AT:
+                case Updated:
                     field = "updated_at";
                     break;
-                case TITLE:
+                case Title:
                     field = "title";
                     break;
-                case DESCRIPTION:
-                    field = "description";
-                    break;
-                case RANDOM:
-                    field = "random";
+                case Random:
+                    field = "title";
                     break;
             }
             query += "sort=" + field;

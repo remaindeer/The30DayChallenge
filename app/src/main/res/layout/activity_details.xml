@@ -2,12 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
-    android:background="@color/icons"
     android:padding="16dp"
     tools:context="nl.tue.the30daychallenge.DetailsFragment"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:paddingRight="18dp">
 
     <RelativeLayout
         android:orientation="horizontal"
@@ -54,12 +53,12 @@
         android:layout_marginTop="8dp" />
 
     <TextView
-            android:id="@+id/details_challengeDescription"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/details_challengeTitleBar"
+        android:id="@+id/details_challengeDescription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/details_challengeTitleBar"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-            android:textSize="@dimen/abc_text_size_body_2_material"
+        android:textSize="@dimen/abc_text_size_body_2_material"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:textColor="@color/secondary_text" />
@@ -76,12 +75,12 @@
         android:layout_marginTop="8dp" />
 
     <TextView
-                android:id="@+id/details_StartedAt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
+        android:id="@+id/details_StartedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
         android:layout_row="0"
-                android:text="Challenge started 2 days ago"
+        android:text="Challenge started 2 days ago"
         android:layout_marginLeft="8dp"
         android:textColor="@color/secondary_text" />
 
@@ -105,20 +104,20 @@
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/secondary_text" />
 
-            <TextView
-                android:id="@+id/details_AmountOfTimesFailed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="3"
-                android:layout_marginLeft="8dp"
-                android:textColor="@color/secondary_text" />
-
 
     <TextView
-            android:id="@+id/details_HighScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        android:id="@+id/details_HighScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/secondary_text" />
+
+    <TextView
+        android:id="@+id/details_AmountOfTimesFailed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_row="3"
         android:layout_marginLeft="8dp"
         android:textColor="@color/secondary_text" />
 
@@ -126,13 +125,15 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <Button
-                android:id="@+id/likeSlashUploadSlashDownloadButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Like/Upload/Download"
+        <ImageButton
+            android:id="@+id/likeSlashUploadSlashDownloadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_thumb_up_fab"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/circle"
+            android:gravity="center_vertical"
+            android:padding="16dp" />
     </RelativeLayout>
-
 </LinearLayout>
