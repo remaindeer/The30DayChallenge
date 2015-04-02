@@ -93,15 +93,15 @@ public class Categories {
             title = "Other";
         }});
         categoryList.add(new Category() {{
-            categoryID = 0;
+            categoryID = 12;
             title = "Creativity";
         }});
         categoryList.add(new Category() {{
-            categoryID = 0;
+            categoryID = 13;
             title = "Outgoing";
         }});
         categoryList.add(new Category() {{
-            categoryID = 0;
+            categoryID = 14;
             title = "Social";
         }});
     }
