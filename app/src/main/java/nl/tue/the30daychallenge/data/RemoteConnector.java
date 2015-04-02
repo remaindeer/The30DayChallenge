@@ -354,7 +354,7 @@ public class RemoteConnector {
                     field = "title";
                     break;
                 case Random:
-                    field = "title";
+                    field = "random";
                     break;
             }
             query += "sort=" + field;
