@@ -1,9 +1,11 @@
 package nl.tue.the30daychallenge.mainWindow;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,9 +16,11 @@ import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 /**
  * Created by Kagan on 02-Apr-15.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ChallengeCompletedFragment extends DialogFragment {
     LocalChallenge challengeFragment;
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -29,7 +33,7 @@ public class ChallengeCompletedFragment extends DialogFragment {
                         } catch (NoServerConnectionException e) {
                             Log.d("Check", e.toString());
                         } catch (RemoteChallengeNotFoundException e) {
-                            Log.d("Check",e.toString());
+                            Log.d("Check", e.toString());
                         }
                     }
                 })
