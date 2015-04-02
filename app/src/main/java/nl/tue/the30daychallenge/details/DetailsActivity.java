@@ -103,9 +103,9 @@ public class DetailsActivity extends ActionBarActivity {
         TextView amountOfTimesFailed = (TextView) findViewById(R.id.details_AmountOfTimesFailed);
         if (challengeIsLocal) {
             LocalChallenge challenge3 = (LocalChallenge) challenge;
-            if (challenge3.amountOfTimesFailed >= 1) {
-                int intNowFailed = 0;
-                if(challenge3.isFailed()) intNowFailed = 1;
+            int intNowFailed = 0;
+            if(challenge3.isFailed()) intNowFailed = 1;
+            if (challenge3.amountOfTimesFailed + intNowFailed >= 1) {
                 amountOfTimesFailed.setText("Amount of attempts: " + challenge3.amountOfTimesFailed +intNowFailed);
             } else {
                 amountOfTimesFailed.setEnabled(false);
