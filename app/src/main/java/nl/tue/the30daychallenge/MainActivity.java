@@ -99,6 +99,8 @@ public class MainActivity extends ActionBarActivity {
 
         // @test
         createTestEnvironment();
+        createCompletedChallenge();
+
 
 
         new AsyncTask<String, Boolean, String>() {
@@ -106,6 +108,8 @@ public class MainActivity extends ActionBarActivity {
             // test code
             @Override
             protected String doInBackground(String... params) {
+
+
 
                 Settings.scheduleNotification(me.getApplicationContext());
 

@@ -26,6 +26,7 @@ import nl.tue.the30daychallenge.Share;
 import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.details.DetailsActivity;
 import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
+import nl.tue.the30daychallenge.exception.ChallengeCompletedException;
 import nl.tue.the30daychallenge.exception.ChallengeFailedException;
 
 public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.MainChallengeCard> {
@@ -107,6 +108,10 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                 public void onClick(View v) {
                     try {
                         challenge.check();
+                    } catch (ChallengeCompletedException e) {
+                        ChallengeCompletedFragment completedDialog = new ChallengeCompletedFragment();
+                        completedDialog.challengeFragment = challenge;
+                        completedDialog.show(((Activity) v.getContext()).getFragmentManager(), "");
                     } catch (ChallengeFailedException e) {
                         FailedChallengeResetFragment resetDialog = new FailedChallengeResetFragment();
                         resetDialog.challengeFragment = challenge;
@@ -174,10 +179,10 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
             Resources res = itemView.getResources();
             final ImageButton image = (ImageButton) itemView.findViewById(R.id.checkbutton);
 
-            if (challenge.isFailed()) {
-                int newColor = res.getColor(R.color.red);
+            if (challenge.isCompleted()) {
+                int newColor = res.getColor(R.color.gold);
                 cardColor.setBackgroundColor(newColor);
-                image.setImageResource(R.drawable.ic_action_close_grey);
+                image.setImageResource(R.drawable.ic_action_star_rate_grey);
                 image.setColorFilter(newColor, PorterDuff.Mode.SRC_ATOP);
             } else if (challenge.isAlreadyCheckedToday()) {
                 int newColor = res.getColor(R.color.green);
@@ -188,6 +193,11 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                 int newColor = res.getColor(R.color.orange);
                 cardColor.setBackgroundColor(newColor);
                 image.setImageResource(R.drawable.ic_action_done_grey);
+                image.setColorFilter(newColor, PorterDuff.Mode.SRC_ATOP);
+            } else if (challenge.isFailed()) {
+                int newColor = res.getColor(R.color.red);
+                cardColor.setBackgroundColor(newColor);
+                image.setImageResource(R.drawable.ic_action_close_grey);
                 image.setColorFilter(newColor, PorterDuff.Mode.SRC_ATOP);
             }
         }
