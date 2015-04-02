@@ -106,7 +106,7 @@ public class DetailsActivity extends ActionBarActivity {
             int intNowFailed = 0;
             if(challenge3.isFailed()) intNowFailed = 1;
             if (challenge3.amountOfTimesFailed + intNowFailed >= 1) {
-                amountOfTimesFailed.setText("Amount of attempts: " + challenge3.amountOfTimesFailed +intNowFailed);
+                amountOfTimesFailed.setText("Amount of attempts: " + (challenge3.amountOfTimesFailed +intNowFailed));
             } else {
                 amountOfTimesFailed.setEnabled(false);
             }
