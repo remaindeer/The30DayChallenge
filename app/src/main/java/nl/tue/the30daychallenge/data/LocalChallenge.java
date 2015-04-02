@@ -271,24 +271,26 @@ public class LocalChallenge extends Challenge {
         Date nowDate = Calendar.getInstance().getTime();
         Timestamp now = new Timestamp(nowDate.getTime());
 
-        if (isCompleted()) throw new ChallengeCompletedException();
-        if (canCheck()) {
+        if (isCompleted()) {
+            throw new ChallengeCompletedException();
+        } else if (canCheck()) {
             this.lastChecked = now;
             checkCount++;
             highscore = Math.max(highscore,checkCount);
-            if(checkCount == 30){
+            if(checkCount == 30) {
                 try {
                     setCompleted();
                 } catch (NoServerConnectionException e) {
-                    Log.d("Check",e.toString());
+                    Log.d("Check", e.toString());
                 } catch (RemoteChallengeNotFoundException e) {
-                    Log.d("Check",e.toString());
+                    Log.d("Check", e.toString());
                 }
             }
-            this.save();
+        } else if (isFailed()) {
+            throw new ChallengeFailedException();
+        } else if (isAlreadyCheckedToday()) {
+            throw new ChallengeAlreadyCheckedException();
         } else {
-            if (isFailed()) throw new ChallengeFailedException();
-            if (isAlreadyCheckedToday()) throw new ChallengeAlreadyCheckedException();
             throw new IllegalStateException();
         }
     }
