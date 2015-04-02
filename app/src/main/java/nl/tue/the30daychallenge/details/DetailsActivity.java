@@ -11,10 +11,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -173,25 +172,25 @@ public class DetailsActivity extends ActionBarActivity {
 
     public void setButtonContent() {
         ButtonState buttonState;
-        Button button = (Button) findViewById(R.id.likeSlashUploadSlashDownloadButton);
+        ImageButton button = (ImageButton) findViewById(R.id.likeSlashUploadSlashDownloadButton);
         if (challengeIsLocal) {
             // If liking is available
             LocalChallenge localChallenge = (LocalChallenge) challenge;
             if (localChallenge.isUploaded) {
                 if (localChallenge.isLiked()) {
                     buttonState = ButtonState.Unlike;
-                    button.setText("Unlike");
+                    button.setImageResource(R.drawable.ic_action_thumb_down_fab);
                 } else {
                     buttonState = ButtonState.Like;
-                    button.setText("Like");
+                    button.setImageResource(R.drawable.ic_action_thumb_up_fab);
                 }
             } else {
                 buttonState = ButtonState.Upload;
-                button.setText("Upload");
+                button.setImageResource(R.drawable.ic_action_share_fab);
             }
         } else {
             buttonState = ButtonState.Download;
-            button.setText("Download");
+            button.setImageResource(R.drawable.ic_action_add_fab);
         }
         button.setOnClickListener(new ButtonClickListener(buttonState, challenge, this));
     }

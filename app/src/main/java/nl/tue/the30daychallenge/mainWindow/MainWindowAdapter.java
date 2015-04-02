@@ -2,7 +2,8 @@ package nl.tue.the30daychallenge.mainWindow;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +28,6 @@ import nl.tue.the30daychallenge.details.DetailsActivity;
 import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
 import nl.tue.the30daychallenge.exception.ChallengeFailedException;
 
-/**
- * Created by tane on 3/23/15.
- */
 public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.MainChallengeCard> {
     public Activity mainactivity;
     List<LocalChallenge> challenges;
@@ -173,12 +171,22 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
 
         // checks the status of the challenge and colors the background appropriately
         public void checkAndSetColor() {
+            Resources res = itemView.getResources();
+            final ImageButton image = (ImageButton) itemView.findViewById(R.id.checkbutton);
+
             if (challenge.isFailed()) {
-                cardColor.setBackgroundColor(Color.parseColor("#FF5252"));
+                int newColor = res.getColor(R.color.red);
+                cardColor.setBackgroundColor(newColor);
+                image.setImageResource(R.drawable.ic_action_close_grey);
+                image.setColorFilter(newColor, PorterDuff.Mode.SRC_ATOP);
             } else if (challenge.isAlreadyCheckedToday()) {
-                cardColor.setBackgroundColor(Color.parseColor("#4CAF50"));
+                int newColor = res.getColor(R.color.green);
+                cardColor.setBackgroundColor(newColor);
+                image.setColorFilter(newColor, PorterDuff.Mode.SRC_ATOP);
             } else if (challenge.canCheck()) {
-                cardColor.setBackgroundColor(Color.parseColor("#FFAB00"));
+                int newColor = res.getColor(R.color.orange);
+                cardColor.setBackgroundColor(newColor);
+                image.setColorFilter(newColor, PorterDuff.Mode.SRC_ATOP);
             }
         }
     }

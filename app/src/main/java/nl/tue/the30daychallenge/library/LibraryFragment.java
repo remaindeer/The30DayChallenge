@@ -2,6 +2,7 @@ package nl.tue.the30daychallenge.library;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.SensorListener;
 import android.hardware.SensorManager;
@@ -19,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
     private float x, y, z;
     private float last_x, last_y, last_z;
     private State currentState = State.OVERVIEW;
-
+    SharedPreferences prefs = null;
     public LibraryFragment() {
         me = this;
     }
@@ -98,7 +100,14 @@ public class LibraryFragment extends Fragment implements SensorListener {
             sensorMgr.unregisterListener(this,
                     SensorManager.SENSOR_ACCELEROMETER);
         }
-
+        prefs = myContext.getSharedPreferences("nl.tue.the30daychallenge.library", 0);
+        if (prefs.getBoolean("firstrun", true)) {
+            // Do first run stuff here then set 'firstrun' as false
+            // using the following line to edit/commit prefs
+            Toast.makeText(myContext, "Shake the device for a random challenge!",
+                    Toast.LENGTH_LONG).show();
+            prefs.edit().putBoolean("firstrun", false).commit();
+        }
         return v;
     }
 
@@ -125,7 +134,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
                         @Override
                         protected String doInBackground(String... params) {
                             try {
-                                List<RemoteChallenge> challenges = RemoteConnector.getChallenges(new RemoteConnector.SortFilter(RemoteConnector.SortField.RANDOM));
+                                List<RemoteChallenge> challenges = RemoteConnector.getChallenges(new RemoteConnector.SortFilter(RemoteConnector.SortField.Random));
                                 Log.d("Shaker", challenges.get(0).toString());
                                 ShowDetails(challenges.get(0).challengeID, false);
                             } catch (NoServerConnectionException e) {
