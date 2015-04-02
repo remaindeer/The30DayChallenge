@@ -169,6 +169,7 @@ public class DetailsActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_challenge_details, menu);
+        getSupportActionBar().setElevation(0);
         return true;
     }
 
@@ -288,7 +289,14 @@ public class DetailsActivity extends ActionBarActivity {
                 case Upload:
                     if (challenge instanceof LocalChallenge) {
                         UpDownloader upLoader = new UpDownloader(challenge, parent);
-                        upLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        try {
+                            upLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR).get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                        parent.setButtonContent();
                     } else {
                         ShowMessageBox(
                                 "Challenge can't be uploaded",
