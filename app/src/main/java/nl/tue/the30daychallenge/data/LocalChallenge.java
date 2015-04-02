@@ -163,6 +163,7 @@ public class LocalChallenge extends Challenge {
                 if (this.remoteChallenge != null) {
                     this.remoteChallengeID = this.remoteChallenge.challengeID;
                     this.isUploaded = true;
+                    this.shouldBeUploaded = false;
                     this.save();
                 }
             }
