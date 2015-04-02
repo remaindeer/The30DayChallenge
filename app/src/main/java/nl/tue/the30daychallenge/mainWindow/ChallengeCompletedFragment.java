@@ -1,28 +1,31 @@
 package nl.tue.the30daychallenge.mainWindow;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
 
 import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 
 /**
- * Created by Kagan on 27-Mar-15.
+ * Created by Kagan on 02-Apr-15.
  */
-public class FailedChallengeResetFragment extends DialogFragment {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class ChallengeCompletedFragment extends DialogFragment {
     LocalChallenge challengeFragment;
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("The challenge has failed, do you want to reset it?")
+        builder.setMessage("You have already completed this challenge, do you want to reset it?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         try {
@@ -30,7 +33,7 @@ public class FailedChallengeResetFragment extends DialogFragment {
                         } catch (NoServerConnectionException e) {
                             Log.d("Check", e.toString());
                         } catch (RemoteChallengeNotFoundException e) {
-                            Log.d("Check",e.toString());
+                            Log.d("Check", e.toString());
                         }
                     }
                 })

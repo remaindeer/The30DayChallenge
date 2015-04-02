@@ -12,6 +12,7 @@ import java.util.Date;
 
 import nl.tue.the30daychallenge.exception.ChallengeAlreadyCheckedException;
 import nl.tue.the30daychallenge.exception.ChallengeFailedException;
+import nl.tue.the30daychallenge.exception.ChallengeCompletedException;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
 
@@ -217,6 +218,11 @@ public class LocalChallenge extends Challenge {
         sync();
     }
 
+    public void setUnCompleted() throws NoServerConnectionException, RemoteChallengeNotFoundException {
+        this.isCompleted = false;
+        this.save();
+    }
+
     public void setDownloaded() throws NoServerConnectionException, RemoteChallengeNotFoundException {
         this.inSync = false;
         this.save();
@@ -261,9 +267,11 @@ public class LocalChallenge extends Challenge {
     }
 
 
-    public void check() throws ChallengeFailedException, ChallengeAlreadyCheckedException {
+    public void check() throws ChallengeFailedException, ChallengeAlreadyCheckedException, ChallengeCompletedException {
         Date nowDate = Calendar.getInstance().getTime();
         Timestamp now = new Timestamp(nowDate.getTime());
+
+        if (isCompleted()) throw new ChallengeCompletedException();
         if (canCheck()) {
             this.lastChecked = now;
             checkCount++;
@@ -285,8 +293,15 @@ public class LocalChallenge extends Challenge {
         }
     }
 
-    public void reset(){
+    public void reset() throws NoServerConnectionException, RemoteChallengeNotFoundException {
         checkCount = 0;
+        try {
+            setUnCompleted();
+        } catch (NoServerConnectionException e) {
+            Log.d("Check",e.toString());
+        } catch (RemoteChallengeNotFoundException e) {
+            Log.d("Check",e.toString());
+        }
         startDate = new Timestamp(Calendar.getInstance().getTime().getTime());
         lastChecked = new Timestamp(getMidnight().getLastMidnight().getTime() - 1000);
         amountOfTimesFailed++;
