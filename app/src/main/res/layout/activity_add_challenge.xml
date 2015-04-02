@@ -17,7 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-            android:paddingTop="8dp">
+                android:paddingTop="8dp">
 
             <TextView
                 android:id="@+id/textView4"
@@ -34,30 +34,34 @@
                 android:layout_height="1dp"
                 android:background="@color/divider"/>
 
-                <EditText
+            <EditText
                 android:id="@+id/create_titleField"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:maxLength="30"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
-                    android:hint="Title"
-                    android:maxHeight="1dp"
-                    android:maxLines="1"
-                    android:minLines="1" />
+                android:layout_marginTop="8dp"
+                android:hint="Title"
+                android:singleLine="true"
+                android:maxHeight="1dp"
+                android:maxLines="1"
+                android:minLines="1" />
 
             <EditText
-                    android:id="@+id/create_descriptionField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/create_titleField"
+                android:id="@+id/create_descriptionField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/create_titleField"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:ems="10"
+                android:singleLine="true"
+                android:maxLength="200"
                 android:hint="Description"
                 android:inputType="textMultiLine"
-                    android:minLines="3"
+                android:minLines="3"
                 android:layout_marginBottom="16dp" />
 
 
