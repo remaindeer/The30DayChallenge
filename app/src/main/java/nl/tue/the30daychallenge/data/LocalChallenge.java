@@ -288,6 +288,7 @@ public class LocalChallenge extends Challenge {
         checkCount = 0;
         startDate = new Timestamp(Calendar.getInstance().getTime().getTime());
         lastChecked = new Timestamp(getMidnight().getLastMidnight().getTime() - 1000);
+        amountOfTimesFailed++;
         save();
     }
 

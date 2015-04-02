@@ -182,10 +182,12 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
             } else if (challenge.isAlreadyCheckedToday()) {
                 int newColor = res.getColor(R.color.green);
                 cardColor.setBackgroundColor(newColor);
+                image.setImageResource(R.drawable.ic_action_done_grey);
                 image.setColorFilter(newColor, PorterDuff.Mode.SRC_ATOP);
             } else if (challenge.canCheck()) {
                 int newColor = res.getColor(R.color.orange);
                 cardColor.setBackgroundColor(newColor);
+                image.setImageResource(R.drawable.ic_action_done_grey);
                 image.setColorFilter(newColor, PorterDuff.Mode.SRC_ATOP);
             }
         }
