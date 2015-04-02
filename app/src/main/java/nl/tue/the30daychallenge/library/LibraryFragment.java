@@ -47,7 +47,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
     private long lastUpdate = -1;
     private float x, y, z;
     private float last_x, last_y, last_z;
-    private State currentState = State.OVERVIEW;
+    public static State currentState = State.OVERVIEW;
     SharedPreferences prefs = null;
     public LibraryFragment() {
         me = this;
@@ -207,7 +207,7 @@ public class LibraryFragment extends Fragment implements SensorListener {
 
     }
 
-    private enum State {
+    public enum State {
         RANDOM, OVERVIEW
     }
 }

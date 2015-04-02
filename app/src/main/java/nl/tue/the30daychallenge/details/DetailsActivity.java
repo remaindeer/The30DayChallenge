@@ -28,6 +28,7 @@ import nl.tue.the30daychallenge.data.RemoteChallenge;
 import nl.tue.the30daychallenge.data.RemoteConnector;
 import nl.tue.the30daychallenge.exception.NoServerConnectionException;
 import nl.tue.the30daychallenge.exception.RemoteChallengeNotFoundException;
+import nl.tue.the30daychallenge.library.LibraryFragment;
 
 /**
  * To use this activity, create an intent, with as data:
@@ -173,6 +174,12 @@ public class DetailsActivity extends ActionBarActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        LibraryFragment.currentState = LibraryFragment.State.OVERVIEW;
+        super.onBackPressed();
+    }
+
     public void setButtonContent() {
         ButtonState buttonState;
         ImageButton button = (ImageButton) findViewById(R.id.likeSlashUploadSlashDownloadButton);
@@ -218,6 +225,7 @@ public class DetailsActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                LibraryFragment.currentState = LibraryFragment.State.OVERVIEW;
                 finish();
                 return true;
             default:
