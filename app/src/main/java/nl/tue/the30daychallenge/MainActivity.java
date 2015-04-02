@@ -98,7 +98,7 @@ public class MainActivity extends ActionBarActivity {
         LocalConnector.load(me.getApplicationContext());
 
         // @test
-        createTestEnvironment();
+        //createTestEnvironment();
 
 
         new AsyncTask<String, Boolean, String>() {
