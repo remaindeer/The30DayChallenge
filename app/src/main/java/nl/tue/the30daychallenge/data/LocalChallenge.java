@@ -286,6 +286,7 @@ public class LocalChallenge extends Challenge {
                     Log.d("Check", e.toString());
                 }
             }
+            this.save();
         } else if (isFailed()) {
             throw new ChallengeFailedException();
         } else if (isAlreadyCheckedToday()) {
