@@ -99,7 +99,7 @@ public class MainActivity extends ActionBarActivity {
 
         // @test
         //createTestEnvironment();
-        createCompletedChallenge();
+        //createCompletedChallenge();
 
         new AsyncTask<String, Boolean, String>() {
 
