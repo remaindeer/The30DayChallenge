@@ -8,5 +8,15 @@
         android:layout_height="fill_parent">
 
         </android.support.v7.widget.RecyclerView>
-
+    <ImageButton
+        android:id="@+id/addChallengeFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_add_fab"
+        android:background="@drawable/circle"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="16dp" />
 </FrameLayout>

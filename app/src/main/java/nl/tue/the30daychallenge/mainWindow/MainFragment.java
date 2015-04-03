@@ -1,5 +1,6 @@
 package nl.tue.the30daychallenge.mainWindow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import nl.tue.the30daychallenge.R;
+import nl.tue.the30daychallenge.addChallenge.AddChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 
 public class MainFragment extends Fragment implements AbsListView.OnItemClickListener, AbsListView.OnScrollListener {
@@ -131,9 +134,19 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
         cardView.setLayoutManager(layoutManager);
         adapter = new MainWindowAdapter(challengeListItemList, getActivity());
         cardView.setAdapter(adapter);
-
+        ImageButton test = (ImageButton) view.findViewById(R.id.addChallengeFab);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newChallengeIntent;
+                newChallengeIntent = new Intent(getActivity(), AddChallenge.class);
+                startActivity(newChallengeIntent);
+            }
+        });
         return view;
     }
+
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

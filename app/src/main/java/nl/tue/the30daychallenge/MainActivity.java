@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -68,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
         if (share == null) {
             share = new Share();
         }
+
 
         FacebookSdk.setApplicationId("366234573582332");
         FacebookSdk.setApplicationName("The30DayChallenge");
@@ -227,6 +229,7 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+
     public void createCompletedChallenge() {
         LocalChallenge challenge = new LocalChallenge("Completed challenge", "This challenge should be completed", 1);
         challenge.forceCompleted();
@@ -269,13 +272,6 @@ public class MainActivity extends ActionBarActivity {
         }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_example) {
-            Intent newChallengeIntent;
-            newChallengeIntent = new Intent(this, AddChallenge.class);
-            startActivity(newChallengeIntent);
-
-            return true;
-        }
         if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
