@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Set the time on which you would like to start a new day. A challenge would fail is it is not cmpleted within 24 hours of the time stated."
+                android:text="Set the time on which you would like to start a new day. A challenge would fail if it is not completed within 24 hours of the stated time."
                 android:id="@+id/textView4"
                 android:textColor="@color/secondary_text" />
 
