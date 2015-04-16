@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -30,8 +29,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.share.widget.ShareDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
-import nl.tue.the30daychallenge.addChallenge.AddChallenge;
 import nl.tue.the30daychallenge.data.LocalChallenge;
 import nl.tue.the30daychallenge.data.LocalConnector;
 import nl.tue.the30daychallenge.data.RemoteConnector;
@@ -100,7 +99,7 @@ public class MainActivity extends ActionBarActivity {
         LocalConnector.load(me.getApplicationContext());
 
         // @test
-        //createTestEnvironment();
+        createTestEnvironment();
         //createCompletedChallenge();
 
         new AsyncTask<String, Boolean, String>() {
@@ -231,14 +230,24 @@ public class MainActivity extends ActionBarActivity {
 
 
     public void createCompletedChallenge() {
-        LocalChallenge challenge = new LocalChallenge("Completed challenge", "This challenge should be completed", 1);
-        challenge.forceCompleted();
+        LocalChallenge challenge = new LocalChallenge("Completed challenge", "This challenge should be ALMOST completed", 1);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_WEEK, -29);
+        java.sql.Timestamp ts = new java.sql.Timestamp(cal.getTime().getTime());
+        ts.setHours(7);
+        ts.setMinutes(0);
+        challenge.startDate = ts;
+        cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, -25);
+        java.sql.Timestamp ts2 = new java.sql.Timestamp(cal.getTime().getTime());
+        challenge.lastChecked = ts2;
+        challenge.checkCount = 29;
         challenge.save();
     }
 
     public void createTestEnvironment() {
-        //LocalConnector.dropDatabase();
-        //createCompletedChallenge();
+        LocalConnector.dropDatabase();
+        createCompletedChallenge();
     }
 
     @Override

@@ -54,17 +54,17 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
         newHolder.challenge = local;
 
 
-        Long startDate = local.startDate.getTime();
-        Long today = new Timestamp(Calendar.getInstance().getTime().getTime()).getTime();
+        double startDate = local.startDate.getTime();
+        double today = new Timestamp(Calendar.getInstance().getTime().getTime()).getTime();
 
-        Long delta = today - startDate;
-        Long amountOfMillisecondsInADay = Long.valueOf(1000 * 3600 * 24);
-        Long amountOfDays = (long) ((float) delta / amountOfMillisecondsInADay);
+        double delta = today - startDate;
+        double amountOfMilisecondsInADay = 1000 * 60 * 60 * 24;
+        double amountOfDays = delta / (1.0 * amountOfMilisecondsInADay);
         //  Long amountOfDays = delta / amountOfMillisecondsInADay;
 
         newHolder.startDateText.setText(
                 String.format("Challenge started %d days ago",
-                        (int) Math.floor((double) amountOfDays))
+                        (int) Math.floor(amountOfDays))
         );
         newHolder.checkAndSetColor();
         // TODO: add more info
@@ -120,7 +120,6 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
                         ChallengeAlreadyCheckedFragment checkedDialog = new ChallengeAlreadyCheckedFragment();
                         checkedDialog.show(((Activity) v.getContext()).getFragmentManager(), "");
                     }
-                    checkAndSetColor();
                 }
             });
 
@@ -187,7 +186,11 @@ public class MainWindowAdapter extends RecyclerView.Adapter<MainWindowAdapter.Ma
             } else if (challenge.isAlreadyCheckedToday()) {
                 int newColor = res.getColor(R.color.green);
                 cardColor.setBackgroundColor(newColor);
-                image.setImageResource(R.drawable.ic_action_done_grey);
+                if (challenge.isCompleted()) {
+                    image.setImageResource(R.drawable.ic_action_star_rate_grey);
+                } else {
+                    image.setImageResource(R.drawable.ic_action_done_grey);
+                }
                 image.setColorFilter(newColor, PorterDuff.Mode.SRC_ATOP);
             } else if (challenge.canCheck()) {
                 int newColor = res.getColor(R.color.orange);

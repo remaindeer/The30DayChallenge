@@ -130,6 +130,7 @@ public class LocalChallenge extends Challenge {
         this.shouldBeUploaded = (cursor.getInt(cursor.getColumnIndexOrThrow("shouldBeUploaded")) == 1);
         this.amountOfTimesFailed = cursor.getInt(cursor.getColumnIndexOrThrow("amountOfTimesFailed"));
         this.startDate = Timestamp.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("startDate")));
+        this.checkCount = (cursor.getInt(cursor.getColumnIndexOrThrow("checkCount")));
         this.lastChecked = Timestamp.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("lastChecked")));
         cursor.close();
         return true;
@@ -277,14 +278,8 @@ public class LocalChallenge extends Challenge {
             this.lastChecked = now;
             checkCount++;
             highscore = Math.max(highscore,checkCount);
-            if(checkCount == 30) {
-                try {
-                    setCompleted();
-                } catch (NoServerConnectionException e) {
-                    Log.d("Check", e.toString());
-                } catch (RemoteChallengeNotFoundException e) {
-                    Log.d("Check", e.toString());
-                }
+            if(checkCount >= 30) {
+                forceCompleted();
             }
             this.save();
         } else if (isFailed()) {
