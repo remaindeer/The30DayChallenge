@@ -86,7 +86,7 @@ public class MainFragment extends Fragment implements AbsListView.OnItemClickLis
                     Log.d("LocalChallenge", "updating view");
                     _handler.sendMessage(new Message());
                 }
-            }, 0, 3000);
+            }, 0, 500);
         }
 
         getChallenges();
