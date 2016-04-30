@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "311038479622",
+    "project_id": "imperial-vector-129620"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311038479622:android:35cd491bc5aaf3f4",
+        "android_client_info": {
+          "package_name": "nl.tue.the30daychallenge"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZF7nfrtW-hEij4Qc_UlFl9myjltIkjCI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-77153769-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

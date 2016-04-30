@@ -28,6 +28,10 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.share.widget.ShareDialog;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -46,6 +50,7 @@ public class MainActivity extends ActionBarActivity {
     public static CallbackManager callbackManager;
     public static ShareDialog shareDialog;
     public static MainActivity me;
+    private Tracker mTracker;
     private static String TAG = MainActivity.class.getSimpleName();
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
@@ -64,6 +69,12 @@ public class MainActivity extends ActionBarActivity {
         final MainActivity me = this;
         super.onCreate(savedInstanceState);
         MainActivity.me = this;
+
+        // Initialize Google Analytics
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        final Tracker t = application.getDefaultTracker();
+        t.setScreenName("Home");
+        t.send(new HitBuilders.ScreenViewBuilder().build());
 
         if (share == null) {
             share = new Share();
@@ -154,6 +165,9 @@ public class MainActivity extends ActionBarActivity {
                         fragmentInMain.onStop();
                         fragmentInMain = new MainFragment();
 
+                        t.setScreenName("Home");
+                        t.send(new HitBuilders.ScreenViewBuilder().build());
+
                         mDrawerList.setItemChecked(position, true);
                         setTitle(mNavItems.get(position).mTitle);
 
@@ -162,6 +176,10 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case 1:
                         fragmentInMain.onPause();
+
+                        t.setScreenName("Library");
+                        t.send(new HitBuilders.ScreenViewBuilder().build());
+
                         fragmentInMain = new LibraryFragment();
 
                         mDrawerList.setItemChecked(position, true);
@@ -172,6 +190,10 @@ public class MainActivity extends ActionBarActivity {
                         break;
                     case 2:
                         fragmentInMain.onPause();
+
+                        t.setScreenName("Settings");
+                        t.send(new HitBuilders.ScreenViewBuilder().build());
+
                         Intent settingsIntent = new Intent(me, SettingsActivity.class);
                         startActivity(settingsIntent);
                         mDrawerList.setItemChecked(position, true);
@@ -349,4 +371,18 @@ public class MainActivity extends ActionBarActivity {
             return view;
         }
     }
+
+    /**
+     * Gets the default {@link Tracker} for this {@link Application}.
+     * @return tracker
+     */
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            mTracker = analytics.newTracker(R.xml.global_tracker);
+        }
+        return mTracker;
+    }
+
 }

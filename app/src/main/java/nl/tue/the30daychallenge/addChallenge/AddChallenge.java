@@ -16,6 +16,9 @@ import android.widget.Spinner;
 
 import java.util.List;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import nl.tue.the30daychallenge.AnalyticsApplication;
 import nl.tue.the30daychallenge.Globals.Categories;
 import nl.tue.the30daychallenge.Globals.MessageBoxes;
 import nl.tue.the30daychallenge.R;
@@ -30,6 +33,12 @@ public class AddChallenge extends ActionBarActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        final Tracker t = application.getDefaultTracker();
+        t.setScreenName("Add challenge");
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+
         setContentView(R.layout.activity_add_challenge);
         CategorySpinnerItem[] categories = getCategories();
         Spinner categorySpinner = (Spinner)findViewById(R.id.create_categorySpinner);

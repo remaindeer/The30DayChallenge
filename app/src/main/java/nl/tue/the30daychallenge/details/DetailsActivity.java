@@ -18,6 +18,9 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import nl.tue.the30daychallenge.AnalyticsApplication;
 import nl.tue.the30daychallenge.Globals.Categories;
 import nl.tue.the30daychallenge.MainActivity;
 import nl.tue.the30daychallenge.R;
@@ -64,6 +67,12 @@ public class DetailsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        final Tracker t = application.getDefaultTracker();
+        t.setScreenName("Challenge details");
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+
         DetailsActivity.me = this;
         setContentView(R.layout.activity_details);
         Intent starterIntent = getIntent();
