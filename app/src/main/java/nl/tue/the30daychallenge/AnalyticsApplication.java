@@ -38,6 +38,7 @@ public class AnalyticsApplication extends Application {
             // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
             mTracker = analytics.newTracker(R.xml.global_tracker);
         }
+        mTracker.enableAdvertisingIdCollection(true);
         return mTracker;
     }
 }
